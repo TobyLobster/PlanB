@@ -12,11 +12,10 @@ set -e
 mkdir -p ./build/disk
 
 # Use py8dis to create asm from binary
-python src/planb.py -a >build/planb_acme.asm
-cp -f build/planb_acme.asm src/
+python src/planb.py -a >src/planb_acme.asm
 
 # Assemble binary from asm
-tools/acme -o build/disk/PLANB -r build/report.txt --vicelabels build/labels.sym build/planb_acme.asm
+tools/acme -o build/disk/PLANB -r build/report.txt --vicelabels build/labels.sym src/planb_acme.asm
 
 # Create !BOOT file
 #printf "*BASIC\rPAGE=&1900\r*FX21\rCHAIN \"PLANA\"\r" >build/disk/\!BOOT
