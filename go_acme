@@ -18,7 +18,8 @@ python src/planb.py -a >build/planb_acme.asm
 tools/acme -o build/disk/PLANB -r build/report.txt --vicelabels build/labels.sym build/planb_acme.asm
 
 # Create !BOOT file
-printf "*BASIC\rPAGE=&1900\r*FX21\rCHAIN \"PLANA\"\r" >build/disk/\!BOOT
+#printf "*BASIC\rPAGE=&1900\r*FX21\rCHAIN \"PLANA\"\r" >build/disk/\!BOOT
+printf "*BASIC\rPAGE=&1900\r*FX21\rCLOSE#0:*RUN PLANB\r" >build/disk/\!BOOT
 
 # Create PLANA (tokenise BASIC program)
 ./tools/basictool -2 --tokenise ./src/plana.txt ./build/disk/PLANA
