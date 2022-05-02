@@ -13,7 +13,7 @@ mkdir -p ./build/disk
 
 # Use py8dis to create asm from binary
 python src/planb.py -a >build/planb_acme.asm
-cp -f build/planb_acme.asm .
+cp -f build/planb_acme.asm src/
 
 # Assemble binary from asm
 tools/acme -o build/disk/PLANB -r build/report.txt --vicelabels build/labels.sym build/planb_acme.asm
