@@ -1,0 +1,69 @@
+function create_inf {
+    local name=$1
+    local load=$2
+    local exec=$3
+    myfilesize=$(stat -f %z "build/disk/$name")
+    myfilesizehex=$(printf '%x\n' $myfilesize)
+    echo "$.$name     FFFF$load FFFF$exec $myfilesizehex" >build/disk/$name.INF
+}
+
+set -e
+
+mkdir -p ./build/disk
+
+# Use py8dis to create asm from binary
+python src/planb.py -a >build/planb_acme.asm
+
+# Assemble binary from asm
+tools/acme -o build/disk/PLANB -r build/report.txt --vicelabels build/labels.sym build/planb_acme.asm
+
+# Create !BOOT file
+printf "*BASIC\rPAGE=&1900\r*FX21\rCHAIN \"PLANA\"\r" >build/disk/\!BOOT
+
+# Create PLANA (tokenise BASIC program)
+./tools/basictool -2 --tokenise ./src/plana.txt ./build/disk/PLANA
+
+# Copy logo
+cp -f src/logo build/disk/LOGO
+
+# Compare PLANB binary against original binary
+xxd -o 0 ORIGINAL_DISK/PLANB >build/temp1_acme.hex
+xxd -o 0 build/disk/PLANB >build/temp2_acme.hex
+diff build/temp1_acme.hex build/temp2_acme.hex
+rm build/temp1_acme.hex
+rm build/temp2_acme.hex
+
+# Sort symbols
+sort -o build/labels.sym build/labels.sym
+
+# Show free space
+freeSpace=$(grep -e '\.free_total' build/labels.sym | sed 's/.*C:\([0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]\).*/\1/')
+echo "Free space: $((16#$freeSpace))"
+
+# Get entry point
+entry_point=$(grep -e '\.entry_point$' build/labels.sym | sed 's/.*C:\([0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]\).*/\1/')
+
+# Create INF files
+#          filename  load   exec
+create_inf "!BOOT"  "1900" "1900"
+create_inf "LOGO"   "2A00" "2A00"
+create_inf "PLANA"  "1900" "802B"
+create_inf "PLANB"  "1210" "$entry_point"
+
+# Create new SSD file with the appropriate files
+cp templates/EMPTY.SSD PLANB.SSD
+cd build/disk
+python3 ../../tools/image.py -d ../../PLANB.SSD -i !BOOT -i LOGO -i PLANA -i PLANB
+cd ../..
+
+if [ $USER == "tobynelson" ];
+then
+    # Open SSD in b2
+    osascript -e 'quit app "b2 Debug"'
+    sleep 1
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    open -a 'b2 Debug' --args -0 "$DIR/PLANB.ssd" -b
+else
+    # Open SSD in BeebEm
+    open PLANB.ssd
+fi

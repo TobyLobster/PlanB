@@ -1,0 +1,26 @@
+    0 REM    (c) Bug Byte 1987. 
+   10 ON ERROR CALL !-4
+   20 *FX200,3
+   30 FORI%=0TO&30:I%!&3B0=I%!TOP:NEXT
+   40 MODE7
+   50 VDU23;8202;0;0;0;
+   60 FORI=1TO2:PRINTTAB(15,I)"ÉçPLAN B":NEXT
+   70 PRINT'"ÇPlan A, to bomb the rogue central      Çcomputer has failed. The next step is  ÇPLAN B ... you control a single war    Çdrone teleported inside the complex."
+   80 PRINT"ÇDefeating the security system is enoughÇbut getting out again...?"
+   90 PRINT"ÇYou are in charge of a single war      Çdrone. The job, explore the Togrian    ÇComputer Complex. Destroy the computer Çparts, fight off the security robots"
+  100 PRINT"Çand escape. You must find 10 keys to   Çopen the front door and find other keysÇto open other doors within the complex.";:*FX15
+  110 PRINT"ÇYou start at the arrival lounge in the Çcomplex. You will see on the screen theÇnumber of keys collected, energy level Çdepleted by guards, Ammo, the number ofÇcomputer parts undamaged and score."
+  120 PRINT'"Ü      Press SPACE BAR to continue.";:REPEATUNTILGET=32:CLS
+  130 MODE6
+  140 VDU23;8202;0;0;0;
+  150 PRINT''" Plan B is loading..."
+  160 I=INKEY(200)
+  170 *LOAD LOGO 2000
+  180 MODE 5
+  190 VDU23;8202;0;0;0;
+  200 FOR A%=&2000 TO &29FF STEP 4:!(A%+&3800)=!A%:NEXT A%:*FX15,1
+  210 PRINT''''''''''
+  220 PRINT"       PLAN B "''
+  230 PRINT'"  by Andrew Foord"''
+  240 I=INKEY(500)
+  250 *RUN PLANB
