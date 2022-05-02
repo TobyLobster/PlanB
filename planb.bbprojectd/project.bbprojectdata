@@ -4,11 +4,11 @@
 <dict>
 	<key>HierarchyData</key>
 	<array>
-		<string>701A3909-0DC1-4455-A259-80DD3A7DE2CE</string>
+		<string>FD6B0DAF-4413-400A-B9E4-7AAAC850A972</string>
 		<string>1109B0B2-1462-4AB5-BD7E-DF5312320F27</string>
+		<string>F8235068-8D90-46E5-8D22-034DCD9527C0</string>
 		<string>6B0082FE-E693-4D79-8274-230071EDA6A7</string>
-		<string>D1C17A2C-C0E9-479E-8180-FA16D628854A</string>
-		<string>2786A2A9-7518-4706-9203-A5F82F75A864</string>
+		<string>E6B83D6A-19F6-4E66-B562-495EE5DFBA8E</string>
 	</array>
 	<key>ProjectItems</key>
 	<dict>
@@ -58,56 +58,6 @@
 			</dict>
 			<key>ItemName</key>
 			<string>README.md</string>
-			<key>ItemType</key>
-			<string>FileReference</string>
-			<key>UserOverrideItemName</key>
-			<true/>
-		</dict>
-		<key>2786A2A9-7518-4706-9203-A5F82F75A864</key>
-		<dict>
-			<key>ItemData</key>
-			<dict>
-				<key>BookmarkData</key>
-				<data>
-				Ym9vaygDAAAAAAQQMAAAAJa3Okd8J+S/jEc/2DtWFz1A
-				vQ0Bfhq6JD2jXQx1C/MGJAIAAAQAAAADAwAAAAgAKAUA
-				AAABAQAAVXNlcnMAAAAKAAAAAQEAAHRvYnluZWxzb24A
-				AAQAAAABAQAAQ29kZQQAAAABAQAANjUwMgUAAAABAQAA
-				UGxhbkIAAAAFAAAAAQEAAHRvb2xzAAAACAAAAAEBAABp
-				bWFnZS5weRwAAAABBgAAEAAAACAAAAA0AAAAQAAAAEwA
-				AABcAAAAbAAAAAgAAAAEAwAArWQCAAAAAAAIAAAABAMA
-				AGhVCQAAAAAACAAAAAQDAABOhgkAAAAAAAgAAAAEAwAA
-				ASczAAIAAAAIAAAABAMAADZVkAkCAAAACAAAAAQDAABr
-				VZAJAgAAAAgAAAAEAwAACSu9CQIAAAAcAAAAAQYAAKAA
-				AACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAIAAAAAAQA
-				AEHCw3j8AAAAGAAAAAECAAABAAAAAAAAAA8AAAAAAAAA
-				AAAAAAAAAAAIAAAABAMAAAUAAAAAAAAABAAAAAMDAAD1
-				AQAACAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50
-				b3NoIEhECAAAAAQDAAAAsGBudAAAAAgAAAAABAAAQcHe
-				RIAAAAAkAAAAAQEAAEVDOTcwNDJELTczQjYtMzYzNy1C
-				MEE4LTZEMTNCODg2OTEzMBgAAAABAgAAgQAAAAEAAADv
-				EwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAAAAAAAEF
-				AADMAAAA/v///wEAAAAAAAAAEAAAAAQQAAB8AAAAAAAA
-				AAUQAAAQAQAAAAAAABAQAABEAQAAAAAAAEAQAAA0AQAA
-				AAAAAAIgAAAQAgAAAAAAAAUgAACAAQAAAAAAABAgAACQ
-				AQAAAAAAABEgAADEAQAAAAAAABIgAACkAQAAAAAAABMg
-				AAC0AQAAAAAAACAgAADwAQAAAAAAADAgAAAcAgAAAAAA
-				AAHAAABkAQAAAAAAABHAAAAgAAAAAAAAABLAAAB0AQAA
-				AAAAABDQAAAEAAAAAAAAAA==
-				</data>
-				<key>FileURL</key>
-				<string>file:///Users/tobynelson/Code/6502/PlanB/tools/image.py</string>
-				<key>HasSecurityScope</key>
-				<true/>
-				<key>RelativePath</key>
-				<string>./tools/image.py</string>
-				<key>TypeID</key>
-				<string>_CFileLocator</string>
-				<key>Version</key>
-				<integer>1</integer>
-			</dict>
-			<key>ItemName</key>
-			<string>image.py</string>
 			<key>ItemType</key>
 			<string>FileReference</string>
 			<key>UserOverrideItemName</key>
@@ -164,7 +114,57 @@
 			<key>UserOverrideItemName</key>
 			<true/>
 		</dict>
-		<key>701A3909-0DC1-4455-A259-80DD3A7DE2CE</key>
+		<key>E6B83D6A-19F6-4E66-B562-495EE5DFBA8E</key>
+		<dict>
+			<key>ItemData</key>
+			<dict>
+				<key>BookmarkData</key>
+				<data>
+				Ym9vazADAAAAAAQQMAAAAIOFa2NgqNgTptEmx3deD2ZH
+				oy496z2fHkHcyAGDCMxnLAIAAAQAAAADAwAAAAgAKAUA
+				AAABAQAAVXNlcnMAAAAKAAAAAQEAAHRvYnluZWxzb24A
+				AAQAAAABAQAAQ29kZQQAAAABAQAANjUwMgUAAAABAQAA
+				UGxhbkIAAAAFAAAAAQEAAGJ1aWxkAAAADgAAAAEBAABw
+				bGFuYl9hY21lLmFzbQAAHAAAAAEGAAAQAAAAIAAAADQA
+				AABAAAAATAAAAFwAAABsAAAACAAAAAQDAACtZAIAAAAA
+				AAgAAAAEAwAAaFUJAAAAAAAIAAAABAMAAE6GCQAAAAAA
+				CAAAAAQDAAABJzMAAgAAAAgAAAAEAwAANlWQCQIAAAAI
+				AAAABAMAAJ5DvQkCAAAACAAAAAQDAACgQ70JAgAAABwA
+				AAABBgAAqAAAALgAAADIAAAA2AAAAOgAAAD4AAAACAEA
+				AAgAAAAABAAAQcQQQ+dto/QYAAAAAQIAAAEAAAAAAAAA
+				DwAAAAAAAAAAAAAAAAAAAAgAAAAEAwAABQAAAAAAAAAE
+				AAAAAwMAAPUBAAAIAAAAAQkAAGZpbGU6Ly8vDAAAAAEB
+				AABNYWNpbnRvc2ggSEQIAAAABAMAAACwYG50AAAACAAA
+				AAAEAABBwd5EgAAAACQAAAABAQAARUM5NzA0MkQtNzNC
+				Ni0zNjM3LUIwQTgtNkQxM0I4ODY5MTMwGAAAAAECAACB
+				AAAAAQAAAO8TAAABAAAAAAAAAAAAAAABAAAAAQEAAC8A
+				AAAAAAAAAQUAAMwAAAD+////AQAAAAAAAAAQAAAABBAA
+				AIQAAAAAAAAABRAAABgBAAAAAAAAEBAAAEwBAAAAAAAA
+				QBAAADwBAAAAAAAAAiAAABgCAAAAAAAABSAAAIgBAAAA
+				AAAAECAAAJgBAAAAAAAAESAAAMwBAAAAAAAAEiAAAKwB
+				AAAAAAAAEyAAALwBAAAAAAAAICAAAPgBAAAAAAAAMCAA
+				ACQCAAAAAAAAAcAAAGwBAAAAAAAAEcAAACAAAAAAAAAA
+				EsAAAHwBAAAAAAAAENAAAAQAAAAAAAAA
+				</data>
+				<key>FileURL</key>
+				<string>file:///Users/tobynelson/Code/6502/PlanB/build/planb_acme.asm</string>
+				<key>HasSecurityScope</key>
+				<true/>
+				<key>RelativePath</key>
+				<string>./build/planb_acme.asm</string>
+				<key>TypeID</key>
+				<string>_CFileLocator</string>
+				<key>Version</key>
+				<integer>1</integer>
+			</dict>
+			<key>ItemName</key>
+			<string>planb_acme.asm</string>
+			<key>ItemType</key>
+			<string>FileReference</string>
+			<key>UserOverrideItemName</key>
+			<true/>
+		</dict>
+		<key>F8235068-8D90-46E5-8D22-034DCD9527C0</key>
 		<dict>
 			<key>ItemData</key>
 			<dict>
@@ -214,25 +214,56 @@
 			<key>ItemType</key>
 			<string>FileReference</string>
 		</dict>
-		<key>D1C17A2C-C0E9-479E-8180-FA16D628854A</key>
+		<key>FD6B0DAF-4413-400A-B9E4-7AAAC850A972</key>
 		<dict>
 			<key>ItemData</key>
 			<dict>
+				<key>BookmarkData</key>
+				<data>
+				Ym9va0ADAAAAAAQQMAAAAAiCCoge6yV1b4jNRbeLw5xO
+				vGyyOOAp7nM/UeO7r+EDMAIAAAQAAAADAwAAAAgAKAUA
+				AAABAQAAVXNlcnMAAAAKAAAAAQEAAHRvYnluZWxzb24A
+				AAQAAAABAQAAQ29kZQQAAAABAQAANjUwMgUAAAABAQAA
+				UGxhbkIAAAAKAAAAAQEAAC5naXRpZ25vcmUAABgAAAAB
+				BgAAEAAAACAAAAA0AAAAQAAAAEwAAABcAAAACAAAAAQD
+				AACtZAIAAAAAAAgAAAAEAwAAaFUJAAAAAAAIAAAABAMA
+				AE6GCQAAAAAACAAAAAQDAAABJzMAAgAAAAgAAAAEAwAA
+				NlWQCQIAAAAIAAAABAMAAOBQvQkCAAAAGAAAAAEGAACQ
+				AAAAoAAAALAAAADAAAAA0AAAAOAAAAAIAAAAAAQAAEHE
+				EEbZUJmiGAAAAAECAAABAAAAAAAAAA8AAAAAAAAAAAAA
+				AAAAAAAIAAAABAMAAAQAAAAAAAAABAAAAAMDAAD1AQAA
+				CAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3No
+				IEhECAAAAAQDAAAAsGBudAAAAAgAAAAABAAAQcHeRIAA
+				AAAkAAAAAQEAAEVDOTcwNDJELTczQjYtMzYzNy1CMEE4
+				LTZEMTNCODg2OTEzMBgAAAABAgAAgQAAAAEAAADvEwAA
+				AQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAAAAAAAEFAAAa
+				AAAAAQEAAE5TVVJMRG9jdW1lbnRJZGVudGlmaWVyS2V5
+				AAAEAAAAAwMAAFsHAPLYAAAA/v///wEAAAAAAAAAEQAA
+				AAQQAABwAAAAAAAAAAUQAADwAAAAAAAAABAQAAAgAQAA
+				AAAAAEAQAAAQAQAAAAAAAAIgAADsAQAAAAAAAAUgAABc
+				AQAAAAAAABAgAABsAQAAAAAAABEgAACgAQAAAAAAABIg
+				AACAAQAAAAAAABMgAACQAQAAAAAAACAgAADMAQAAAAAA
+				ADAgAAD4AQAAAAAAAAHAAABAAQAAAAAAABHAAAAgAAAA
+				AAAAABLAAABQAQAAAAAAABDQAAAEAAAAAAAAAAACAIAk
+				AgAAAAAAAA==
+				</data>
 				<key>FileURL</key>
-				<string>file:///Users/tobynelson/.Trash/build/planb_acme.asm</string>
+				<string>file:///Users/tobynelson/Code/6502/PlanB/.gitignore</string>
 				<key>HasSecurityScope</key>
 				<true/>
 				<key>RelativePath</key>
-				<string>../../../.Trash/build/planb_acme.asm</string>
+				<string>./.gitignore</string>
 				<key>TypeID</key>
 				<string>_CFileLocator</string>
 				<key>Version</key>
 				<integer>1</integer>
 			</dict>
 			<key>ItemName</key>
-			<string>planb_acme.asm</string>
+			<string>.gitignore</string>
 			<key>ItemType</key>
 			<string>FileReference</string>
+			<key>UserOverrideItemName</key>
+			<true/>
 		</dict>
 	</dict>
 	<key>com.barebones.DocumentFormatVersion</key>
