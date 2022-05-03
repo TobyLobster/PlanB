@@ -167,7 +167,7 @@ label(0x0400, "current_room_cache")
 label(0x0e00, "clock")
 
 # Memory locations
-comment(0x1210, "There are 85 sprites. Sprites are stored upside down, in groups of 8x8 character cells.")
+comment(0x1210, "There are 85 sprites. Sprites are stored upside down and right to left, in groups of 8x8 character cells.")
 
 def get_addr(addr, x, y, w, h):
     y = y ^ 7
@@ -175,15 +175,58 @@ def get_addr(addr, x, y, w, h):
     x = (w - 1) - x
     return addr + int(y/8)*w + int(x/8)*8 + (y & 7)
 
+def centre_row(row):
+    split_row = row.splitlines()
+    max_width = 0
+    for entry in split_row:
+        max_width = max(len(entry), max_width)
+
+    for i in range(0, len(split_row)):
+        extra_spaces_to_left = int((80 - len(split_row[i])) / 2)
+        if extra_spaces_to_left > 0:
+            split_row[i] = " "*extra_spaces_to_left + split_row[i]
+    return "\n".join(split_row)
+
+
+# Append a multiline ASCII sprite to the right of an existing sequence of ASCII sprites in a row
+def append_string(row, row_width, string):
+    split_row = row.splitlines()
+    max_width = 0
+    for entry in split_row:
+        max_width = max(len(entry), max_width)
+
+    # make sure there are enough rows
+    split_string = string.splitlines()
+    extra_rows = len(split_string) - len(split_row)
+    while (extra_rows > 0):
+        split_row.append("")
+        extra_rows -= 1
+
+    # make sure they are all the same width
+    for i in range(0, len(split_row)):
+        extra_spaces_to_add = max_width - len(split_row[i])
+        split_row[i] += " "*extra_spaces_to_add
+
+    # append to each row
+    for i in range(0, len(split_string)):
+        split_row[i] += split_string[i]
+    return "\n".join(split_row)
+
 def setc(string, i, val):
     return string[:i] + val + string[i+1:]
 
+gallery_gap = 6
+
 i = 0
 addr = 0x1210
+row = ""
+row_width = 0
+row_height = 0
 for i in range(0, 85):
     stri = str(i)
     picture_sprite(addr, "sprite" + stri, 8, sprite_widths[i] * sprite_heights[i] * 8)
 
+    # ASCII art
     span = 1 + (8 * sprite_widths[i])
     byte_string = '?' * (span * 8 * sprite_heights[i])
     for y in range(0, 8 * sprite_heights[i]):
@@ -198,15 +241,36 @@ for i in range(0, 85):
             byte_string = setc(byte_string, x + y*span, c)
         byte_string = setc(byte_string, (y + 1)*span - 1, '\n')
 
-    framed_string = "/" + "-"*8 * sprite_widths[i] + "\\\n"
+    framed_string = "/" + "-"*8 * sprite_widths[i] + "\\"  + " "*gallery_gap + "\n"
     for line in byte_string.splitlines():
-        line = "|" + line + "|"
+        line = "|" + line + "|" + " "*gallery_gap
         framed_string += line + "\n"
-    framed_string += "\\" + "-"*8 * sprite_widths[i] + "/"
+    framed_string += "\\" + "-"*8 * sprite_widths[i] + "/" + " "*gallery_gap
+    frame_width = 1 + 8 * sprite_widths[i] + 1
+    title_width = len("sprite" + str(i))
+    left_space = int((frame_width - title_width) / 2)
+    right_space = frame_width - left_space - title_width
+    framed_string += "\n" + " " * left_space + "sprite" + str(i) + " "*right_space + " "*gallery_gap + "\n\n"
 
-    formatted_comment(0x1210, "\nsprite" + str(i) + ":\n" + framed_string)
+    # Start a new row?
+    if ((row_width + frame_width) >= 80) or ((row_height != 0) and (row_height != sprite_heights[i])):
+        row = centre_row(row)
+        formatted_comment(0x1210, "\n" + row)
+        row = ""
+        row_width = 0
+        row_height = 0
+
+    row = append_string(row, row_width, framed_string)
+    row_width += frame_width + gallery_gap
+    row_height = sprite_heights[i]
+
+    # Move on to next sprite
     addr += sprite_heights[i] * 8 * sprite_widths[i]
     i = i + 1
+
+if (row != ""):
+    row = centre_row(row)
+    formatted_comment(0x1210, "\n" + row)
 
 #formatted_comment(0x1210, """
 #################
