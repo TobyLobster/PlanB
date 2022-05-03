@@ -198,7 +198,13 @@ for i in range(0, 85):
             byte_string = setc(byte_string, x + y*span, c)
         byte_string = setc(byte_string, (y + 1)*span - 1, '\n')
 
-    formatted_comment(0x1210, "\nsprite" + str(i) + ":\n" + byte_string)
+    framed_string = "/" + "-"*8 * sprite_widths[i] + "\\\n"
+    for line in byte_string.splitlines():
+        line = "|" + line + "|"
+        framed_string += line + "\n"
+    framed_string += "\\" + "-"*8 * sprite_widths[i] + "/"
+
+    formatted_comment(0x1210, "\nsprite" + str(i) + ":\n" + framed_string)
     addr += sprite_heights[i] * 8 * sprite_widths[i]
     i = i + 1
 
