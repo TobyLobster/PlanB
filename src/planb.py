@@ -185,6 +185,8 @@ def centre_row(row):
         extra_spaces_to_left = int((80 - len(split_row[i])) / 2)
         if extra_spaces_to_left > 0:
             split_row[i] = " "*extra_spaces_to_left + split_row[i]
+        split_row[i] = split_row[i].rstrip()
+
     return "\n".join(split_row)
 
 
