@@ -127,8 +127,13 @@ label(0x0006, "delta_y")
 label(0x0008, "current_room_low")
 label(0x0009, "current_room_high")
 label(0x000d, "current_room_index")
+label(0x001a, "player_x")
+label(0x001b, "player_y")
+label(0x001c, "player_sprite")
 label(0x001d, "temp_addr_low")
 label(0x001e, "temp_addr_high")
+label(0x0022, "old_player_x")
+label(0x0023, "old_player_y")
 label(0x0028, "score_digits_0")
 label(0x0029, "score_digits_1")
 label(0x002a, "score_digits_2")
@@ -164,13 +169,50 @@ label(0x0e00, "clock")
 # Memory locations
 comment(0x1210, "There are 85 sprites. Sprites are stored upside down, in groups of 8x8 character cells.")
 
+def get_addr(addr, x, y, w, h):
+    y = y ^ 7
+    #y = h - 1 - y
+    x = (w - 1) - x
+    return addr + int(y/8)*w + int(x/8)*8 + (y & 7)
+
+def setc(string, i, val):
+    return string[:i] + val + string[i+1:]
+
 i = 0
 addr = 0x1210
 for i in range(0, 85):
     stri = str(i)
     picture_sprite(addr, "sprite" + stri, 8, sprite_widths[i] * sprite_heights[i] * 8)
+
+    span = 1 + (8 * sprite_widths[i])
+    byte_string = '?' * (span * 8 * sprite_heights[i])
+    for y in range(0, 8 * sprite_heights[i]):
+        for x in range(0, 8 * sprite_widths[i]):
+            test_addr = get_addr(addr, x, y, 8 *sprite_widths[i], 8 * sprite_heights[i])
+            by = get_u8(test_addr)
+            bit = (128 >> (x & 7))
+            if by & bit:
+                c = '#'
+            else:
+                c = ' '
+            byte_string = setc(byte_string, x + y*span, c)
+        byte_string = setc(byte_string, (y + 1)*span - 1, '\n')
+
+    formatted_comment(0x1210, "\nsprite" + str(i) + ":\n" + byte_string)
     addr += sprite_heights[i] * 8 * sprite_widths[i]
     i = i + 1
+
+#formatted_comment(0x1210, """
+#################
+####..........###
+#####.#.#.#.#.###
+#.##.#.#.#.#..##.
+#.###.#.#.#.#.##.
+####.#.#.#.#..###
+#####.#.#.#.#.###
+#################
+#""")
+
 comment(0x1fe8, "Width (in pixels) of each sprite")
 comment(0x203d, "Height (in character cells) of each sprite")
 label(0x1fe8, "sprite_width_table")
@@ -204,12 +246,12 @@ for i in range(0,55):
 
 label(0x3b76, "get_random_byte")
 label(0x3b8a, "skip_reset_rnd_addr")
-expr(0x3cfa, "row_offset_low - 5")
-expr(0x3d01, "row_offset_high - 5")
-expr(0x3d3d, "row_offset_low - 5")
-expr(0x3d44, "row_offset_high - 5")
+expr(0x3cfa, "collision_map_addr_low - 5")
+expr(0x3d01, "collision_map_addr_high - 5")
+expr(0x3d3d, "collision_map_addr_low - 5")
+expr(0x3d44, "collision_map_addr_high - 5")
 
-expr(0x3dea, "row_offset_low - 5")
+expr(0x3dea, "collision_map_addr_low - 5")
 label(0x3e3e, "delta_x_table")
 label(0x3e46, "delta_y_table")
 
@@ -220,7 +262,7 @@ label(0x3e6a, "increment_print_address")
 label(0x3e71, "print_decimal_number")
 label(0x3e8d, "divide")
 
-expr(0x3df1, "row_offset_high - 5")
+expr(0x3df1, "collision_map_addr_high - 5")
 label(0x3e78, "divide_by_ten_loop")
 label(0x3e83, "print_digit_loop")
 label(0x3e91, "divide_loop")
@@ -320,9 +362,9 @@ byte(0x409a + 8*8, 8)
 label(0x40c8, "sound5_duration")
 label(0x40d0, "sound6_duration")
 label(0x40d6, "sound7_pitch")
-label(0x40dd + 5, "row_offset_low")
+label(0x40dd + 5, "collision_map_addr_low")
 byte(0x40dd + 5, 27)
-label(0x40f8 + 5, "row_offset_high")
+label(0x40f8 + 5, "collision_map_addr_high")
 byte(0x40f8 + 5, 27)
 
 label(0x4118, "room_decoder_routine_table_low")
@@ -373,13 +415,13 @@ entry(0x4388, "room_decode5")
 label(0x43cf, "dest_low")
 label(0x43d0, "dest_high")
 label(0x43ce, "copy_loop")
-expr(0x43ae, "row_offset_low - 5")
-expr(0x43b4, "row_offset_high - 5")
+expr(0x43ae, "collision_map_addr_low - 5")
+expr(0x43b4, "collision_map_addr_high - 5")
 label(0x43e8, "clear_play_area")
 label(0x43f3, "play_area_screen_addr_high")
 label(0x43f1, "clear_play_area_loop")
-expr(0x4408, "row_offset_low - 5")
-expr(0x440d, "row_offset_high - 5")
+expr(0x4408, "collision_map_addr_low - 5")
+expr(0x440d, "collision_map_addr_high - 5")
 
 label(0x4431, "screen_address_table_low")
 label(0x4451, "screen_address_table_high")
@@ -448,12 +490,14 @@ label(0x45de, "sprite_addr_high")
 label(0x45e0, "sprite_mask_addr_low")
 label(0x45e1, "sprite_mask_addr_high")
 label(0x4600, "decode_room")
+label(0x46fe, "skip_animation_reset")
+label(0x4704, "store_player_sprite")
 expr(0x4e9d, "clock + 1")
-expr(0x4948, "row_offset_low - 5")
-expr(0x494f, "row_offset_high - 5")
+expr(0x4948, "collision_map_addr_low - 5")
+expr(0x494f, "collision_map_addr_high - 5")
 label(0x4954, "read_key")
-expr(0x49cb, "row_offset_low - 5")
-expr(0x49d2, "row_offset_high - 5")
+expr(0x49cb, "collision_map_addr_low - 5")
+expr(0x49d2, "collision_map_addr_high - 5")
 
 comment(0x4a7d, "add 50 to score")
 comment(0x5004, "add 5000 to score")
