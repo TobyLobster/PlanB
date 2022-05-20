@@ -12,7 +12,8 @@ set -e
 mkdir -p ./build/disk
 
 # Use py8dis to create asm from binary
-python src/planb.py -a >src/planb_acme.asm
+python src/planb.py -a >src/temp.asm
+mv -f src/temp.asm src/planb_acme.asm
 
 # Assemble binary from asm
 tools/acme -o build/disk/PLANB -r build/report.txt --vicelabels build/labels.sym src/planb_acme.asm
@@ -57,14 +58,14 @@ cd build/disk
 python3 ../../tools/image.py -d ../../PLANB.SSD -i !BOOT -i LOGO -i PLANA -i PLANB
 cd ../..
 
-if [ $USER == "tobynelson" ];
-then
-    # Open SSD in b2
-    osascript -e 'quit app "b2 Debug"'
-    sleep 1
-    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-    open -a 'b2 Debug' --args -0 "$DIR/PLANB.ssd" -b
-else
-    # Open SSD in BeebEm
-    open PLANB.ssd
-fi
+#if [ $USER == "tobynelson" ];
+#then
+#    # Open SSD in b2
+#    osascript -e 'quit app "b2 Debug"'
+#    sleep 1
+#    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+#    open -a 'b2 Debug' --args -0 "$DIR/PLANB.ssd" -b
+#else
+#    # Open SSD in BeebEm
+#    open PLANB.ssd
+#fi
