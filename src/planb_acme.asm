@@ -43,8 +43,10 @@ room_decode_sprite_height = $13
 current_room_door_celly = $13
 room_decode_sprite_width = $14
 current_room_door_cellx = $14
+temp_sprite = $14
 room_decode_rect_width = $15
-current_room_header2 = $15
+current_room_door_info = $15
+temp_door_byte = $15
 temp_y = $16
 l0017 = $17
 l0018 = $18
@@ -54,9 +56,9 @@ player_y = $1b
 player_sprite = $1c
 temp_addr_low = $1d
 temp_addr_high = $1e
-l001f = $1f
-l0020 = $20
-l0021 = $21
+number_of_arrows_in_flight = $1f
+arrow_loop_counter = $20
+temp_loop_counter = $21
 old_player_x = $22
 old_player_y = $23
 number_of_key0_held = $24
@@ -78,7 +80,7 @@ ammo_bar_level = $33
 l0034 = $34
 sound_duration = $35
 stack_ptr = $36
-l0037 = $37
+number_of_enemies = $37
 rnd_rom_addr_low = $38
 rnd_rom_addr_high = $39
 temp_counter = $3a
@@ -90,24 +92,18 @@ remember_y = $3f
 computer_bar_level = $40
 suppress_sound_flag = $41
 music_index = $42
-l0043 = $43
+enter_next_room_horizontally = $43
 title_offset = $44
 half_length_of_room_title = $45
-l00ff = $ff
+os_escape_flag = $ff
 evntv = $0220
 current_room_cache = $0400
 l0405 = $0405
 dying_items = $0500
-ammo_slots = $0580
-l05ff = $05ff
+arrow_slots = $0580
 highscore_table_names = $0600
 highscore_table_scores = $06fa
-l0c00 = $0c00
-l0c01 = $0c01
-l0c02 = $0c02
-l0c03 = $0c03
-l0c04 = $0c04
-l0c05 = $0c05
+enemies_state = $0c00
 clock = $0e00
 l0f00 = $0f00
 l1000 = $1000
@@ -5411,6 +5407,7 @@ room_54_definition
     !byte   4, $17, $1f,   5, $34,   4, $1b, $1f,   6, $34,   4, $1f  ; 3b4d: 04 17 1f... ...
     !byte $1f,   7, $34,   4, $23, $1f,   8, $34,   0,   0,   0,   0  ; 3b59: 1f 07 34... ..4
     !text "East Of The Towe", $80+'r'                                 ; 3b65: 45 61 73... Eas
+
 get_random_byte
     sty temp_store_y                                                  ; 3b76: 84 3b       .;
     inc rnd_offset                                                    ; 3b78: e6 3c       .<
@@ -5427,25 +5424,32 @@ skip_reset_rnd_addr
     ldy temp_store_y                                                  ; 3b8c: a4 3b       .;
     rts                                                               ; 3b8e: 60          `
 
-sub_c3b8f
-    ldy l0037                                                         ; 3b8f: a4 37       .7
+; Each enemy state has 6 bytes:
+;     byte 0 = zero means not used, bits 0-4 = countdown to changing direction, bit 5 = alive?, bit 6 = ?
+;     byte 1 = x cell position
+;     byte 2 = y cell position
+;     byte 3 = delta X
+;     byte 4 = delta Y
+;     byte 5 = sprite number
+update_enemies_appearing
+    ldy number_of_enemies                                             ; 3b8f: a4 37       .7
     beq return1                                                       ; 3b91: f0 40       .@
-    sty l0021                                                         ; 3b93: 84 21       .!
+    sty temp_loop_counter                                             ; 3b93: 84 21       .!
     ldy #0                                                            ; 3b95: a0 00       ..
-update_something_loop
-    lda l0c00,y                                                       ; 3b97: b9 00 0c    ...
-    beq c3bcc                                                         ; 3b9a: f0 30       .0
-    bpl c3bfe                                                         ; 3b9c: 10 60       .`
+update_enemies_appearing_loop
+    lda enemies_state,y                                               ; 3b97: b9 00 0c    ...
+    beq next_enemy                                                    ; 3b9a: f0 30       .0
+    bpl draw_enemy_and_update_animation                               ; 3b9c: 10 60       .`
     and #3                                                            ; 3b9e: 29 03       ).
-    beq c3bef                                                         ; 3ba0: f0 4d       .M
+    beq clear_direction_draw_enemy_and_update_animation               ; 3ba0: f0 4d       .M
     clc                                                               ; 3ba2: 18          .
-    adc #$34                                                          ; 3ba3: 69 34       i4
+    adc #$34                                                          ; 3ba3: 69 34       i4             ; choose which dissolving sprite to plot
     sta sprite_mask                                                   ; 3ba5: 85 3d       .=
-    lda l0c05,y                                                       ; 3ba7: b9 05 0c    ...
+    lda enemies_state + 5,y                                           ; 3ba7: b9 05 0c    ...            ; enemy sprite number
     pha                                                               ; 3baa: 48          H
     sty delta_y                                                       ; 3bab: 84 06       ..
-    ldx l0c01,y                                                       ; 3bad: be 01 0c    ...
-    lda l0c02,y                                                       ; 3bb0: b9 02 0c    ...
+    ldx enemies_state + 1,y                                           ; 3bad: be 01 0c    ...            ; get enemy X position
+    lda enemies_state + 2,y                                           ; 3bb0: b9 02 0c    ...            ; get enemy Y position
     tay                                                               ; 3bb3: a8          .
     lda #$84                                                          ; 3bb4: a9 84       ..
     sta collision_map_byte_to_write                                   ; 3bb6: 85 0c       ..
@@ -5453,19 +5457,19 @@ update_something_loop
     pha                                                               ; 3bb9: 48          H
     jsr plot_sprite_xy_mask                                           ; 3bba: 20 af 45     .E
     pla                                                               ; 3bbd: 68          h
-    jsr plot_room_sprite_a                                            ; 3bbe: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 3bbe: 20 a7 43     .C
     ldy delta_y                                                       ; 3bc1: a4 06       ..
     ldx delta_y                                                       ; 3bc3: a6 06       ..
-    dec l0c00,x                                                       ; 3bc5: de 00 0c    ...
-c3bc8
-    dec l0021                                                         ; 3bc8: c6 21       .!
+    dec enemies_state,x                                               ; 3bc5: de 00 0c    ...
+decrement_loop_counter
+    dec temp_loop_counter                                             ; 3bc8: c6 21       .!
     beq return1                                                       ; 3bca: f0 07       ..
-c3bcc
+next_enemy
     tya                                                               ; 3bcc: 98          .
     clc                                                               ; 3bcd: 18          .
     adc #6                                                            ; 3bce: 69 06       i.
     tay                                                               ; 3bd0: a8          .
-    bne update_something_loop                                         ; 3bd1: d0 c4       ..
+    bne update_enemies_appearing_loop                                 ; 3bd1: d0 c4       ..
 return1
     rts                                                               ; 3bd3: 60          `
 
@@ -5473,136 +5477,138 @@ c3bd4
     jsr sub_c3d28                                                     ; 3bd4: 20 28 3d     (=
     bcs c3be0                                                         ; 3bd7: b0 07       ..
     lda #$20                                                          ; 3bd9: a9 20       .
-    sta l0c00,y                                                       ; 3bdb: 99 00 0c    ...
+    sta enemies_state,y                                               ; 3bdb: 99 00 0c    ...
     bne c3c4c                                                         ; 3bde: d0 6c       .l
 c3be0
     ldx delta_y                                                       ; 3be0: a6 06       ..
-    dec l0c00,x                                                       ; 3be2: de 00 0c    ...
-    lda l0c00,y                                                       ; 3be5: b9 00 0c    ...
+    dec enemies_state,x                                               ; 3be2: de 00 0c    ...
+    lda enemies_state,y                                               ; 3be5: b9 00 0c    ...
     and #3                                                            ; 3be8: 29 03       ).
     bne c3c0f                                                         ; 3bea: d0 23       .#
-    jmp c3cd0                                                         ; 3bec: 4c d0 3c    L.<
+    jmp enemy_dies                                                    ; 3bec: 4c d0 3c    L.<
 
-c3bef
+clear_direction_draw_enemy_and_update_animation
     lda #$20                                                          ; 3bef: a9 20       .
-    sta l0c00,y                                                       ; 3bf1: 99 00 0c    ...
+    sta enemies_state,y                                               ; 3bf1: 99 00 0c    ...
     lda #0                                                            ; 3bf4: a9 00       ..
-    sta l0c03,y                                                       ; 3bf6: 99 03 0c    ...
-    sta l0c04,y                                                       ; 3bf9: 99 04 0c    ...
-    beq c3c0f                                                         ; 3bfc: f0 11       ..
-c3bfe
-    lda l0c00,y                                                       ; 3bfe: b9 00 0c    ...
+    sta enemies_state + 3,y                                           ; 3bf6: 99 03 0c    ...            ; set enemy delta X
+    sta enemies_state + 4,y                                           ; 3bf9: 99 04 0c    ...            ; set enemy delta Y
+    beq c3c0f                                                         ; 3bfc: f0 11       ..             ; ALWAYS branch
+
+draw_enemy_and_update_animation
+    lda enemies_state,y                                               ; 3bfe: b9 00 0c    ...
     and #$40                                                          ; 3c01: 29 40       )@
     bne c3bd4                                                         ; 3c03: d0 cf       ..
     jsr sub_c3d28                                                     ; 3c05: 20 28 3d     (=
     bcc c3c4c                                                         ; 3c08: 90 42       .B
     lda #$63                                                          ; 3c0a: a9 63       .c
-    sta l0c00,y                                                       ; 3c0c: 99 00 0c    ...
+    sta enemies_state,y                                               ; 3c0c: 99 00 0c    ...
 c3c0f
-    lda l0c05,y                                                       ; 3c0f: b9 05 0c    ...
+    lda enemies_state + 5,y                                           ; 3c0f: b9 05 0c    ...            ; enemy sprite number
     pha                                                               ; 3c12: 48          H
     sty delta_y                                                       ; 3c13: 84 06       ..
-    ldx l0c01,y                                                       ; 3c15: be 01 0c    ...
-    lda l0c02,y                                                       ; 3c18: b9 02 0c    ...
+    ldx enemies_state + 1,y                                           ; 3c15: be 01 0c    ...            ; get enemy position (X,Y)
+    lda enemies_state + 2,y                                           ; 3c18: b9 02 0c    ...            ; get enemy Y position
     tay                                                               ; 3c1b: a8          .
     lda #$a0                                                          ; 3c1c: a9 a0       ..
     sta collision_map_byte_to_write                                   ; 3c1e: 85 0c       ..
     pla                                                               ; 3c20: 68          h
     jsr plot_room_sprite_xy                                           ; 3c21: 20 9e 43     .C
     ldy delta_y                                                       ; 3c24: a4 06       ..
-    lda l0c05,y                                                       ; 3c26: b9 05 0c    ...
+    lda enemies_state + 5,y                                           ; 3c26: b9 05 0c    ...            ; get enemy sprite number
     clc                                                               ; 3c29: 18          .
     adc #1                                                            ; 3c2a: 69 01       i.
-    sta l0c05,y                                                       ; 3c2c: 99 05 0c    ...
+    sta enemies_state + 5,y                                           ; 3c2c: 99 05 0c    ...            ; get enemy sprite number
     sec                                                               ; 3c2f: 38          8
     sbc #$45                                                          ; 3c30: e9 45       .E
     and #3                                                            ; 3c32: 29 03       ).
     bne c3c3f                                                         ; 3c34: d0 09       ..
-    lda l0c05,y                                                       ; 3c36: b9 05 0c    ...
+    lda enemies_state + 5,y                                           ; 3c36: b9 05 0c    ...            ; get enemy sprite number
     sec                                                               ; 3c39: 38          8
     sbc #4                                                            ; 3c3a: e9 04       ..
-    sta l0c05,y                                                       ; 3c3c: 99 05 0c    ...
+    sta enemies_state + 5,y                                           ; 3c3c: 99 05 0c    ...            ; get enemy sprite number
 c3c3f
     jsr sub_c3d28                                                     ; 3c3f: 20 28 3d     (=
-    bcc c3bc8                                                         ; 3c42: 90 84       ..
+    bcc decrement_loop_counter                                        ; 3c42: 90 84       ..
     jsr decrement_energy_bar                                          ; 3c44: 20 6f 3f     o?
     ldy delta_y                                                       ; 3c47: a4 06       ..
-    jmp c3bc8                                                         ; 3c49: 4c c8 3b    L.;
+    jmp decrement_loop_counter                                        ; 3c49: 4c c8 3b    L.;
 
 c3c4c
-    lda l0c05,y                                                       ; 3c4c: b9 05 0c    ...
-    ldx l0c01,y                                                       ; 3c4f: be 01 0c    ...
+    lda enemies_state + 5,y                                           ; 3c4c: b9 05 0c    ...            ; get enemy sprite number
+    ldx enemies_state + 1,y                                           ; 3c4f: be 01 0c    ...            ; get enemy X position
     pha                                                               ; 3c52: 48          H
     pha                                                               ; 3c53: 48          H
-    lda l0c02,y                                                       ; 3c54: b9 02 0c    ...
+    lda enemies_state + 2,y                                           ; 3c54: b9 02 0c    ...            ; get enemy Y position
     tay                                                               ; 3c57: a8          .
     pla                                                               ; 3c58: 68          h
     jsr plot_sprite_xy_clear                                          ; 3c59: 20 2e 45     .E
     lda #0                                                            ; 3c5c: a9 00       ..
     sta collision_map_byte_to_write                                   ; 3c5e: 85 0c       ..
     pla                                                               ; 3c60: 68          h
-    jsr plot_room_sprite_a                                            ; 3c61: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 3c61: 20 a7 43     .C
     ldy delta_y                                                       ; 3c64: a4 06       ..
-    lda l0c00,y                                                       ; 3c66: b9 00 0c    ...
+    lda enemies_state,y                                               ; 3c66: b9 00 0c    ...
     and #$1f                                                          ; 3c69: 29 1f       ).
-    beq c3cb0                                                         ; 3c6b: f0 43       .C
-c3c6d
+    beq set_random_new_direction                                      ; 3c6b: f0 43       .C
+move_enemy_if_possible
     clc                                                               ; 3c6d: 18          .
-    lda l0c01,y                                                       ; 3c6e: b9 01 0c    ...
-    adc l0c03,y                                                       ; 3c71: 79 03 0c    y..
+    lda enemies_state + 1,y                                           ; 3c6e: b9 01 0c    ...            ; get enemy X position
+    adc enemies_state + 3,y                                           ; 3c71: 79 03 0c    y..            ; add enemy delta X
     sta cell_x                                                        ; 3c74: 85 00       ..
-    beq c3ca9                                                         ; 3c76: f0 31       .1
+    beq not_suitable_for_moving_enemy                                 ; 3c76: f0 31       .1
     adc delta_x                                                       ; 3c78: 65 05       e.
     cmp #$28                                                          ; 3c7a: c9 28       .(
-    bcs c3ca9                                                         ; 3c7c: b0 2b       .+
+    bcs not_suitable_for_moving_enemy                                 ; 3c7c: b0 2b       .+
     clc                                                               ; 3c7e: 18          .
-    lda l0c02,y                                                       ; 3c7f: b9 02 0c    ...
-    adc l0c04,y                                                       ; 3c82: 79 04 0c    y..
+    lda enemies_state + 2,y                                           ; 3c7f: b9 02 0c    ...            ; get enemy Y position
+    adc enemies_state + 4,y                                           ; 3c82: 79 04 0c    y..            ; add enemy delta Y
     sta cell_y                                                        ; 3c85: 85 01       ..
     cmp #7                                                            ; 3c87: c9 07       ..
-    bcc c3ca9                                                         ; 3c89: 90 1e       ..
+    bcc not_suitable_for_moving_enemy                                 ; 3c89: 90 1e       ..
     clc                                                               ; 3c8b: 18          .
     adc delta_x                                                       ; 3c8c: 65 05       e.
     cmp #$20                                                          ; 3c8e: c9 20       .
-    bcs c3ca9                                                         ; 3c90: b0 17       ..
-    jsr sub_c3cf4                                                     ; 3c92: 20 f4 3c     .<
-    bcs c3ca9                                                         ; 3c95: b0 12       ..
+    bcs not_suitable_for_moving_enemy                                 ; 3c90: b0 17       ..
+    jsr is_collision_map_empty_here                                   ; 3c92: 20 f4 3c     .<
+    bcs not_suitable_for_moving_enemy                                 ; 3c95: b0 12       ..
     lda cell_x                                                        ; 3c97: a5 00       ..
-    sta l0c01,y                                                       ; 3c99: 99 01 0c    ...
+    sta enemies_state + 1,y                                           ; 3c99: 99 01 0c    ...            ; set enemy X position
     lda cell_y                                                        ; 3c9c: a5 01       ..
-    sta l0c02,y                                                       ; 3c9e: 99 02 0c    ...
+    sta enemies_state + 2,y                                           ; 3c9e: 99 02 0c    ...
     ldx delta_y                                                       ; 3ca1: a6 06       ..
-    dec l0c00,x                                                       ; 3ca3: de 00 0c    ...
+    dec enemies_state,x                                               ; 3ca3: de 00 0c    ...
 loop_c3ca6
     jmp c3c0f                                                         ; 3ca6: 4c 0f 3c    L.<
 
-c3ca9
+not_suitable_for_moving_enemy
     lda #$20                                                          ; 3ca9: a9 20       .
-    sta l0c00,y                                                       ; 3cab: 99 00 0c    ...
-    bne loop_c3ca6                                                    ; 3cae: d0 f6       ..
-c3cb0
+    sta enemies_state,y                                               ; 3cab: 99 00 0c    ...
+    bne loop_c3ca6                                                    ; 3cae: d0 f6       ..             ; ALWAYS branch
+
+set_random_new_direction
     jsr get_random_byte                                               ; 3cb0: 20 76 3b     v;
     and #$0f                                                          ; 3cb3: 29 0f       ).
     clc                                                               ; 3cb5: 18          .
     adc #$21                                                          ; 3cb6: 69 21       i!
-    sta l0c00,y                                                       ; 3cb8: 99 00 0c    ...
-    jsr get_random_byte                                               ; 3cbb: 20 76 3b     v;
+    sta enemies_state,y                                               ; 3cb8: 99 00 0c    ...            ; set the new 'countdown to change in direction' and other flags
+    jsr get_random_byte                                               ; 3cbb: 20 76 3b     v;            ; choose a new random direction
     and #7                                                            ; 3cbe: 29 07       ).
     tax                                                               ; 3cc0: aa          .
     lda delta_x_table,x                                               ; 3cc1: bd 3e 3e    .>>
-    sta l0c03,y                                                       ; 3cc4: 99 03 0c    ...
+    sta enemies_state + 3,y                                           ; 3cc4: 99 03 0c    ...            ; set enemy delta X
     lda delta_y_table,x                                               ; 3cc7: bd 46 3e    .F>
-    sta l0c04,y                                                       ; 3cca: 99 04 0c    ...
-    jmp c3c6d                                                         ; 3ccd: 4c 6d 3c    Lm<
+    sta enemies_state + 4,y                                           ; 3cca: 99 04 0c    ...            ; set enemy delta Y
+    jmp move_enemy_if_possible                                        ; 3ccd: 4c 6d 3c    Lm<
 
-c3cd0
+enemy_dies
     lda #0                                                            ; 3cd0: a9 00       ..
-    sta l0c00,y                                                       ; 3cd2: 99 00 0c    ...
-    dec l0037                                                         ; 3cd5: c6 37       .7
-    lda l0c05,y                                                       ; 3cd7: b9 05 0c    ...
-    ldx l0c01,y                                                       ; 3cda: be 01 0c    ...
+    sta enemies_state,y                                               ; 3cd2: 99 00 0c    ...
+    dec number_of_enemies                                             ; 3cd5: c6 37       .7
+    lda enemies_state + 5,y                                           ; 3cd7: b9 05 0c    ...            ; enemy sprite number
+    ldx enemies_state + 1,y                                           ; 3cda: be 01 0c    ...            ; get enemy X position
     pha                                                               ; 3cdd: 48          H
-    lda l0c02,y                                                       ; 3cde: b9 02 0c    ...
+    lda enemies_state + 2,y                                           ; 3cde: b9 02 0c    ...            ; get enemy Y position
     tay                                                               ; 3ce1: a8          .
     pla                                                               ; 3ce2: 68          h
     jsr add_dying_item                                                ; 3ce3: 20 5c 46     \F
@@ -5610,9 +5616,11 @@ c3cd0
     jsr decrement_energy_bar                                          ; 3ce9: 20 6f 3f     o?
     jsr decrement_energy_bar                                          ; 3cec: 20 6f 3f     o?
     ldy delta_y                                                       ; 3cef: a4 06       ..
-    jmp c3bc8                                                         ; 3cf1: 4c c8 3b    L.;
+    jmp decrement_loop_counter                                        ; 3cf1: 4c c8 3b    L.;
 
-sub_c3cf4
+; carry set if the collision map is not empty at (cell_x,cell_y) with
+; size delta_x square
+is_collision_map_empty_here
     ldx cell_y                                                        ; 3cf4: a6 01       ..
     clc                                                               ; 3cf6: 18          .
     lda cell_x                                                        ; 3cf7: a5 00       ..
@@ -5624,22 +5632,22 @@ sub_c3cf4
     lda delta_x                                                       ; 3d05: a5 05       ..
     sta temp_byte                                                     ; 3d07: 85 0b       ..
     ldy #0                                                            ; 3d09: a0 00       ..
-loop_c3d0b
+collision_map_check_rows_loop
     tya                                                               ; 3d0b: 98          .
     pha                                                               ; 3d0c: 48          H
     ldx delta_x                                                       ; 3d0d: a6 05       ..
-loop_c3d0f
+collision_map_check_columns_loop
     lda (temp_addr_low),y                                             ; 3d0f: b1 1d       ..
     bne c3d23                                                         ; 3d11: d0 10       ..
     iny                                                               ; 3d13: c8          .
     dex                                                               ; 3d14: ca          .
-    bne loop_c3d0f                                                    ; 3d15: d0 f8       ..
+    bne collision_map_check_columns_loop                              ; 3d15: d0 f8       ..
     pla                                                               ; 3d17: 68          h
     clc                                                               ; 3d18: 18          .
     adc #$28                                                          ; 3d19: 69 28       i(
     tay                                                               ; 3d1b: a8          .
     dec temp_byte                                                     ; 3d1c: c6 0b       ..
-    bne loop_c3d0b                                                    ; 3d1e: d0 eb       ..
+    bne collision_map_check_rows_loop                                 ; 3d1e: d0 eb       ..
     clc                                                               ; 3d20: 18          .
     bcc c3d25                                                         ; 3d21: 90 02       ..
 c3d23
@@ -5650,13 +5658,13 @@ c3d25
     rts                                                               ; 3d27: 60          `
 
 sub_c3d28
-    ldx l0c05,y                                                       ; 3d28: be 05 0c    ...
+    ldx enemies_state + 5,y                                           ; 3d28: be 05 0c    ...            ; enemy sprite number
     lda sprite_height_table,x                                         ; 3d2b: bd 3d 20    .=
     sta delta_x                                                       ; 3d2e: 85 05       ..
     sta temp_byte                                                     ; 3d30: 85 0b       ..
     sty delta_y                                                       ; 3d32: 84 06       ..
-    lda l0c01,y                                                       ; 3d34: b9 01 0c    ...
-    ldx l0c02,y                                                       ; 3d37: be 02 0c    ...
+    lda enemies_state + 1,y                                           ; 3d34: b9 01 0c    ...            ; get enemy X position
+    ldx enemies_state + 2,y                                           ; 3d37: be 02 0c    ...            ; get enemy Y position
     dex                                                               ; 3d3a: ca          .
     clc                                                               ; 3d3b: 18          .
     adc collision_map_addr_low - 5,x                                  ; 3d3c: 7d dd 40    }.@
@@ -5718,26 +5726,26 @@ c3d8a
 return2
     rts                                                               ; 3d8b: 60          `
 
-sub_c3d8c
+update_enemies
     ldy #0                                                            ; 3d8c: a0 00       ..
-    ldx l0037                                                         ; 3d8e: a6 37       .7
+    ldx number_of_enemies                                             ; 3d8e: a6 37       .7
     cpx l0405                                                         ; 3d90: ec 05 04    ...
     beq return2                                                       ; 3d93: f0 f6       ..
-loop_c3d95
-    lda l0c00,y                                                       ; 3d95: b9 00 0c    ...
-    beq c3da1                                                         ; 3d98: f0 07       ..
+update_enemies_loop
+    lda enemies_state,y                                               ; 3d95: b9 00 0c    ...
+    beq update_enemy                                                  ; 3d98: f0 07       ..
     tya                                                               ; 3d9a: 98          .
     clc                                                               ; 3d9b: 18          .
     adc #6                                                            ; 3d9c: 69 06       i.
     tay                                                               ; 3d9e: a8          .
-    bne loop_c3d95                                                    ; 3d9f: d0 f4       ..
-c3da1
+    bne update_enemies_loop                                           ; 3d9f: d0 f4       ..
+update_enemy
     jsr get_random_byte                                               ; 3da1: 20 76 3b     v;
     and #$3f                                                          ; 3da4: 29 3f       )?
-    sta l0c01,y                                                       ; 3da6: 99 01 0c    ...
+    sta enemies_state + 1,y                                           ; 3da6: 99 01 0c    ...            ; get enemy X position
     jsr get_random_byte                                               ; 3da9: 20 76 3b     v;
     and #$1f                                                          ; 3dac: 29 1f       ).
-    sta l0c02,y                                                       ; 3dae: 99 02 0c    ...
+    sta enemies_state + 2,y                                           ; 3dae: 99 02 0c    ...            ; get enemy Y position
     lda l0034                                                         ; 3db1: a5 34       .4
     and #3                                                            ; 3db3: 29 03       ).
     tax                                                               ; 3db5: aa          .
@@ -5750,14 +5758,14 @@ c3da1
     asl                                                               ; 3dc0: 0a          .
     clc                                                               ; 3dc1: 18          .
     adc #$45                                                          ; 3dc2: 69 45       iE
-    sta l0c05,y                                                       ; 3dc4: 99 05 0c    ...
-    lda l0c01,y                                                       ; 3dc7: b9 01 0c    ...
+    sta enemies_state + 5,y                                           ; 3dc4: 99 05 0c    ...            ; enemy sprite number
+    lda enemies_state + 1,y                                           ; 3dc7: b9 01 0c    ...            ; get enemy X position
     beq return2                                                       ; 3dca: f0 bf       ..
     clc                                                               ; 3dcc: 18          .
     adc delta_x                                                       ; 3dcd: 65 05       e.
     cmp #$28                                                          ; 3dcf: c9 28       .(
     bcs return2                                                       ; 3dd1: b0 b8       ..
-    lda l0c02,y                                                       ; 3dd3: b9 02 0c    ...
+    lda enemies_state + 2,y                                           ; 3dd3: b9 02 0c    ...            ; get enemy Y position
     cmp #7                                                            ; 3dd6: c9 07       ..
     bcc return2                                                       ; 3dd8: 90 b1       ..
     clc                                                               ; 3dda: 18          .
@@ -5765,8 +5773,8 @@ c3da1
     cmp #$20                                                          ; 3ddd: c9 20       .
     bcs return2                                                       ; 3ddf: b0 aa       ..
     sty delta_y                                                       ; 3de1: 84 06       ..
-    lda l0c01,y                                                       ; 3de3: b9 01 0c    ...
-    ldx l0c02,y                                                       ; 3de6: be 02 0c    ...
+    lda enemies_state + 1,y                                           ; 3de3: b9 01 0c    ...
+    ldx enemies_state + 2,y                                           ; 3de6: be 02 0c    ...
     adc collision_map_addr_low - 5,x                                  ; 3de9: 7d dd 40    }.@
     sta temp_addr_low                                                 ; 3dec: 85 1d       ..
     lda #0                                                            ; 3dee: a9 00       ..
@@ -5795,15 +5803,15 @@ loop_c3dff
 c3e12
     ldy delta_y                                                       ; 3e12: a4 06       ..
     inc l0034                                                         ; 3e14: e6 34       .4
-    inc l0037                                                         ; 3e16: e6 37       .7
+    inc number_of_enemies                                             ; 3e16: e6 37       .7
     lda #$a3                                                          ; 3e18: a9 a3       ..
-    sta l0c00,y                                                       ; 3e1a: 99 00 0c    ...
+    sta enemies_state,y                                               ; 3e1a: 99 00 0c    ...
     lda #$38                                                          ; 3e1d: a9 38       .8
     sta sprite_mask                                                   ; 3e1f: 85 3d       .=
-    lda l0c05,y                                                       ; 3e21: b9 05 0c    ...
-    ldx l0c01,y                                                       ; 3e24: be 01 0c    ...
+    lda enemies_state + 5,y                                           ; 3e21: b9 05 0c    ...            ; enemy sprite number
+    ldx enemies_state + 1,y                                           ; 3e24: be 01 0c    ...
     pha                                                               ; 3e27: 48          H
-    lda l0c02,y                                                       ; 3e28: b9 02 0c    ...
+    lda enemies_state + 2,y                                           ; 3e28: b9 02 0c    ...
     tay                                                               ; 3e2b: a8          .
     pla                                                               ; 3e2c: 68          h
     pha                                                               ; 3e2d: 48          H
@@ -5811,7 +5819,7 @@ c3e12
     lda #$84                                                          ; 3e31: a9 84       ..
     sta collision_map_byte_to_write                                   ; 3e33: 85 0c       ..
     pla                                                               ; 3e35: 68          h
-    jsr plot_room_sprite_a                                            ; 3e36: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 3e36: 20 a7 43     .C
     lda #1                                                            ; 3e39: a9 01       ..
     jmp check_play_sound_a                                            ; 3e3b: 4c 65 40    Le@
 
@@ -5819,6 +5827,7 @@ delta_x_table
     !byte   0,   1,   1,   1,   0, $ff, $ff, $ff                      ; 3e3e: 00 01 01... ...
 delta_y_table
     !byte $ff, $ff,   0,   1,   1,   1,   0, $ff                      ; 3e46: ff ff 00... ...
+
 print_following_string
     pla                                                               ; 3e4e: 68          h
     sta print_addr_low                                                ; 3e4f: 85 2f       ./
@@ -5999,11 +6008,11 @@ print_decremented_bar
     lda bar_pixels_set_table,x                                        ; 3f97: bd 5b 3f    .[?
     ldx #6                                                            ; 3f9a: a2 06       ..
     iny                                                               ; 3f9c: c8          .
-loop_c3f9d
+draw_bar_loop
     sta (print_addr_low),y                                            ; 3f9d: 91 2f       ./
     iny                                                               ; 3f9f: c8          .
     dex                                                               ; 3fa0: ca          .
-    bne loop_c3f9d                                                    ; 3fa1: d0 fa       ..
+    bne draw_bar_loop                                                 ; 3fa1: d0 fa       ..
 check_energy
     lda energy_bar_level                                              ; 3fa3: a5 32       .2
     bne return6                                                       ; 3fa5: d0 05       ..
@@ -6202,7 +6211,7 @@ clear_memory_loop
     sta l1100,y                                                       ; 4139: 99 00 11    ...
     sta l110c,y                                                       ; 413c: 99 0c 11    ...
     sta dying_items,y                                                 ; 413f: 99 00 05    ...
-    sta l0c00,y                                                       ; 4142: 99 00 0c    ...
+    sta enemies_state,y                                               ; 4142: 99 00 0c    ...
     iny                                                               ; 4145: c8          .
     bne clear_memory_loop                                             ; 4146: d0 e8       ..
     jmp clear_play_area                                               ; 4148: 4c e8 43    L.C
@@ -6217,8 +6226,8 @@ decode_room_definition
     sty room_decode_sprite                                            ; 4157: 84 07       ..
     dey                                                               ; 4159: 88          .
     sty delta_y                                                       ; 415a: 84 06       ..
-    sty l0037                                                         ; 415c: 84 37       .7
-    sty l001f                                                         ; 415e: 84 1f       ..
+    sty number_of_enemies                                             ; 415c: 84 37       .7
+    sty number_of_arrows_in_flight                                    ; 415e: 84 1f       ..
     sty l0019                                                         ; 4160: 84 19       ..
     sty cell_x                                                        ; 4162: 84 00       ..
     sty temp_byte                                                     ; 4164: 84 0b       ..
@@ -6239,13 +6248,13 @@ decode_room_commands_loop
     and #7                                                            ; 4179: 29 07       ).
     tax                                                               ; 417b: aa          .
     lda room_decoder_routine_table_low,x                              ; 417c: bd 18 41    ..A
-    sta routine_low                                                   ; 417f: 8d 8c 41    ..A
+    sta routine_addr_low                                              ; 417f: 8d 8c 41    ..A
     lda room_decoder_routine_table_high,x                             ; 4182: bd 20 41    . A
-    sta routine_high                                                  ; 4185: 8d 8d 41    ..A
+    sta routine_addr_high                                             ; 4185: 8d 8d 41    ..A
     lda current_room_cache,y                                          ; 4188: b9 00 04    ...
-routine_opcode
-routine_low = routine_opcode+1
-routine_high = routine_opcode+2
+opcode1
+routine_addr_low = opcode1+1
+routine_addr_high = opcode1+2
     jsr address_to_overwrite                                          ; 418b: 20 00 58     .X
     jmp decode_room_commands_loop                                     ; 418e: 4c 70 41    LpA
 
@@ -6261,7 +6270,7 @@ prepare_room_loop
     lda current_room_cache,y                                          ; 419a: b9 00 04    ...
     beq plot_keys                                                     ; 419d: f0 6f       .o
 
-; copy room header to zero page
+; copy five byte room header to zero page
     ldx #4                                                            ; 419f: a2 04       ..
 copy_room_header_loop
     lda current_room_cache,y                                          ; 41a1: b9 00 04    ...
@@ -6270,25 +6279,25 @@ copy_room_header_loop
     dex                                                               ; 41a7: ca          .
     bpl copy_room_header_loop                                         ; 41a8: 10 f7       ..
 
-; current_room_header2:
+; current_room_door_info:
 ;     bit 7    = door is open flag
 ;     bit 6    = door is vertical flag
 ;     bit 5    = door is present flag
 ;     bits 3-4 = door type (0-3)
 ;     bits 0-2 = door animation stage 0-4, 0=closed, 4=open
-    lda current_room_header2                                          ; 41aa: a5 15       ..
+    lda current_room_door_info                                        ; 41aa: a5 15       ..
     bpl skip_reset_bits                                               ; 41ac: 10 09       ..             ; if top bit clear then branch (animation doesn't need resetting)
     and #$78                                                          ; 41ae: 29 78       )x             ; remove top bit and bottom three bits
     ora #4                                                            ; 41b0: 09 04       ..             ; set bit 2, i.e. door is in open animation state
     sta current_room_cache - 5,y                                      ; 41b2: 99 fb 03    ...
-    sta current_room_header2                                          ; 41b5: 85 15       ..
+    sta current_room_door_info                                        ; 41b5: 85 15       ..
 skip_reset_bits
     sty delta_y                                                       ; 41b7: 84 06       ..             ; temp storage for Y
     and #$20                                                          ; 41b9: 29 20       )              ; check bit 5
     beq draw_door_itself                                              ; 41bb: f0 29       .)             ; if bit 5 clear then branch
 
 ; render the door type squares above and below the door
-    lda current_room_header2                                          ; 41bd: a5 15       ..
+    lda current_room_door_info                                        ; 41bd: a5 15       ..
     ror                                                               ; 41bf: 6a          j
     ror                                                               ; 41c0: 6a          j
     ror                                                               ; 41c1: 6a          j
@@ -6303,7 +6312,7 @@ skip_reset_bits
     lda current_room_door_cellx                                       ; 41d1: a5 14       ..
     clc                                                               ; 41d3: 18          .
     adc #5                                                            ; 41d4: 69 05       i.
-    bit current_room_header2                                          ; 41d6: 24 15       $.
+    bit current_room_door_info                                        ; 41d6: 24 15       $.
     bvc got_door_coordinates                                          ; 41d8: 50 07       P.             ; if door is horizontal then branch
     tya                                                               ; 41da: 98          .
     clc                                                               ; 41db: 18          .
@@ -6315,7 +6324,7 @@ got_door_coordinates
     pla                                                               ; 41e2: 68          h
     jsr plot_room_sprite_xy                                           ; 41e3: 20 9e 43     .C
 draw_door_itself
-    lda current_room_header2                                          ; 41e6: a5 15       ..
+    lda current_room_door_info                                        ; 41e6: a5 15       ..
     and #7                                                            ; 41e8: 29 07       ).
     cmp #4                                                            ; 41ea: c9 04       ..
     bne skip_door_fully_open                                          ; 41ec: d0 04       ..
@@ -6325,7 +6334,7 @@ skip_door_fully_open
     clc                                                               ; 41f2: 18          .
     ldy current_room_door_celly                                       ; 41f3: a4 13       ..
     ldx current_room_door_cellx                                       ; 41f5: a6 14       ..
-    bit current_room_header2                                          ; 41f7: 24 15       $.
+    bit current_room_door_info                                        ; 41f7: 24 15       $.
     bvs vertical_door                                                 ; 41f9: 70 05       p.
     adc #$30                                                          ; 41fb: 69 30       i0             ; add 48 to get sprite for horizontal door
     inx                                                               ; 41fd: e8          .
@@ -6394,7 +6403,7 @@ plot_collectibles
     sty offset_to_start_of_collectibles                               ; 425b: 84 0f       ..
 plot_collectibles_loop
     lda current_room_cache,y                                          ; 425d: b9 00 04    ...
-    beq show_room_title                                               ; 4260: f0 14       ..
+    beq plot_room_title                                               ; 4260: f0 14       ..
     bpl next_collectible                                              ; 4262: 10 0d       ..
     and #3                                                            ; 4264: 29 03       ).
     clc                                                               ; 4266: 18          .
@@ -6408,7 +6417,7 @@ next_collectible
     iny                                                               ; 4273: c8          .
     bne plot_collectibles_loop                                        ; 4274: d0 e7       ..             ; ALWAYS branch
 
-show_room_title
+plot_room_title
     iny                                                               ; 4276: c8          .
     sty title_offset                                                  ; 4277: 84 44       .D
     jsr print_following_string                                        ; 4279: 20 4e 3e     N>
@@ -6607,16 +6616,16 @@ plot_room_sprite
     pha                                                               ; 43a2: 48          H
     jsr plot_sprite_set                                               ; 43a3: 20 ad 44     .D
     pla                                                               ; 43a6: 68          h
-plot_room_sprite_a
+plot_room_sprite_a_to_collision_map
     pha                                                               ; 43a7: 48          H
     clc                                                               ; 43a8: 18          .
     ldy cell_y                                                        ; 43a9: a4 01       ..
     lda cell_x                                                        ; 43ab: a5 00       ..
     adc collision_map_addr_low - 5,y                                  ; 43ad: 79 dd 40    y.@
-    sta dest_low                                                      ; 43b0: 8d cf 43    ..C
+    sta collision_map_dest_low                                        ; 43b0: 8d cf 43    ..C
     lda collision_map_addr_high - 5,y                                 ; 43b3: b9 f8 40    ..@
     adc #0                                                            ; 43b6: 69 00       i.
-    sta dest_high                                                     ; 43b8: 8d d0 43    ..C
+    sta collision_map_dest_high                                       ; 43b8: 8d d0 43    ..C
     pla                                                               ; 43bb: 68          h
     tax                                                               ; 43bc: aa          .
     lda sprite_width_table,x                                          ; 43bd: bd e8 1f    ...
@@ -6626,25 +6635,25 @@ plot_room_sprite_a
     sta sprite_pixel_width_minus_one                                  ; 43c3: 85 02       ..
     lda sprite_height_table,x                                         ; 43c5: bd 3d 20    .=
     tax                                                               ; 43c8: aa          .
-erase_loop
+write_collision_map_loop
     ldy sprite_pixel_width_minus_one                                  ; 43c9: a4 02       ..
     dey                                                               ; 43cb: 88          .
     lda collision_map_byte_to_write                                   ; 43cc: a5 0c       ..
-copy_loop
-dest_low = copy_loop+1
-dest_high = copy_loop+2
+inner_loop
+collision_map_dest_low = inner_loop+1
+collision_map_dest_high = inner_loop+2
     sta address_to_overwrite,y                                        ; 43ce: 99 00 58    ..X
     dey                                                               ; 43d1: 88          .
-    bpl copy_loop                                                     ; 43d2: 10 fa       ..
+    bpl inner_loop                                                    ; 43d2: 10 fa       ..
     dex                                                               ; 43d4: ca          .
     beq return9                                                       ; 43d5: f0 10       ..
     clc                                                               ; 43d7: 18          .
-    lda dest_low                                                      ; 43d8: ad cf 43    ..C
+    lda collision_map_dest_low                                        ; 43d8: ad cf 43    ..C
     adc #$28                                                          ; 43db: 69 28       i(
-    sta dest_low                                                      ; 43dd: 8d cf 43    ..C
-    bcc erase_loop                                                    ; 43e0: 90 e7       ..
-    inc dest_high                                                     ; 43e2: ee d0 43    ..C
-    bne erase_loop                                                    ; 43e5: d0 e2       ..
+    sta collision_map_dest_low                                        ; 43dd: 8d cf 43    ..C
+    bcc write_collision_map_loop                                      ; 43e0: 90 e7       ..
+    inc collision_map_dest_high                                       ; 43e2: ee d0 43    ..C
+    bne write_collision_map_loop                                      ; 43e5: d0 e2       ..
 return9
     rts                                                               ; 43e7: 60          `
 
@@ -6664,7 +6673,7 @@ play_area_screen_addr_high = clear_play_area_loop+2
     bne clear_play_area_loop                                          ; 43ff: d0 f0       ..
     rts                                                               ; 4401: 60          `
 
-update_collision_map
+update_collision_map_at_player
     clc                                                               ; 4402: 18          .
     ldy cell_y                                                        ; 4403: a4 01       ..
     lda cell_x                                                        ; 4405: a5 00       ..
@@ -6814,9 +6823,9 @@ plot_internal_loop_set
 source1_sprite_addr_low = plot_internal_loop_set+1
 source1_sprite_addr_high = plot_internal_loop_set+2
     lda address_to_overwrite,x                                        ; 44c3: bd 00 58    ..X
-sub_c44c6
-dest1_screen_addr_low = sub_c44c6+1
-dest1_screen_addr_high = sub_c44c6+2
+opcode2
+dest1_screen_addr_low = opcode2+1
+dest1_screen_addr_high = opcode2+2
     sta address_to_overwrite,y                                        ; 44c6: 99 00 58    ..X
     inx                                                               ; 44c9: e8          .
     dey                                                               ; 44ca: 88          .
@@ -6847,21 +6856,21 @@ plot_sprite_xy_and
     ldx #0                                                            ; 4500: a2 00       ..
 plot_loop_and
     ldy l0017                                                         ; 4502: a4 17       ..
-plot_internal_loop_and
-source2_sprite_addr_low = plot_internal_loop_and+1
-source2_sprite_addr_high = plot_internal_loop_and+2
+opcode3
+source2_sprite_addr_low = opcode3+1
+source2_sprite_addr_high = opcode3+2
     lda address_to_overwrite,x                                        ; 4504: bd 00 58    ..X
-sub_c4507
-mask2_sprite_addr_low = sub_c4507+1
-mask2_sprite_addr_high = sub_c4507+2
+opcode4
+mask2_sprite_addr_low = opcode4+1
+mask2_sprite_addr_high = opcode4+2
     and address_to_overwrite,y                                        ; 4507: 39 00 58    9.X
-sub_c450a
-dest2_screen_addr_low = sub_c450a+1
-dest2_screen_addr_high = sub_c450a+2
+opcode5
+dest2_screen_addr_low = opcode5+1
+dest2_screen_addr_high = opcode5+2
     sta address_to_overwrite,y                                        ; 450a: 99 00 58    ..X
     inx                                                               ; 450d: e8          .
     dey                                                               ; 450e: 88          .
-    bpl plot_internal_loop_and                                        ; 450f: 10 f3       ..
+    bpl opcode3                                                       ; 450f: 10 f3       ..
     dec l0018                                                         ; 4511: c6 18       ..
     beq return12                                                      ; 4513: f0 18       ..
     lda mask2_sprite_addr_low                                         ; 4515: ad 08 45    ..E
@@ -6891,9 +6900,9 @@ plot_loop_clear
     lda #0                                                            ; 4546: a9 00       ..
 plot_internal_loop_clear
     dex                                                               ; 4548: ca          .
-dest3_screen_addr_opcode
-dest3_screen_addr_low = dest3_screen_addr_opcode+1
-dest3_screen_addr_high = dest3_screen_addr_opcode+2
+opcode6
+dest3_screen_addr_low = opcode6+1
+dest3_screen_addr_high = opcode6+2
     sta address_to_overwrite,x                                        ; 4549: 9d 00 58    ..X
     bne plot_internal_loop_clear                                      ; 454c: d0 fa       ..
     dey                                                               ; 454e: 88          .
@@ -6928,13 +6937,13 @@ plot_internal_loop_eor
 source4_sprite_addr_low = plot_internal_loop_eor+1
 source4_sprite_addr_high = plot_internal_loop_eor+2
     lda address_to_overwrite,x                                        ; 4585: bd 00 58    ..X
-mask4_screen_addr_opcode
-mask4_sprite_addr_low = mask4_screen_addr_opcode+1
-mask4_sprite_addr_high = mask4_screen_addr_opcode+2
+opcode7
+mask4_sprite_addr_low = opcode7+1
+mask4_sprite_addr_high = opcode7+2
     eor address_to_overwrite,y                                        ; 4588: 59 00 58    Y.X
-dest4_screen_addr_opcode
-dest4_screen_addr_low = dest4_screen_addr_opcode+1
-dest4_screen_addr_high = dest4_screen_addr_opcode+2
+opcode8
+dest4_screen_addr_low = opcode8+1
+dest4_screen_addr_high = opcode8+2
     sta address_to_overwrite,y                                        ; 458b: 99 00 58    ..X
     inx                                                               ; 458e: e8          .
     dey                                                               ; 458f: 88          .
@@ -6977,13 +6986,13 @@ plot_internal_loop_mask
 sprite_addr_low = plot_internal_loop_mask+1
 sprite_addr_high = plot_internal_loop_mask+2
     lda address_to_overwrite,x                                        ; 45dc: bd 00 58    ..X
-sprite_mask_addr_opcode
-sprite_mask_addr_low = sprite_mask_addr_opcode+1
-sprite_mask_addr_high = sprite_mask_addr_opcode+2
+opcode9
+sprite_mask_addr_low = opcode9+1
+sprite_mask_addr_high = opcode9+2
     and address_to_overwrite,x                                        ; 45df: 3d 00 58    =.X
-screen_addr_opcode
-screen_addr_low = screen_addr_opcode+1
-screen_addr_high = screen_addr_opcode+2
+opcode10
+screen_addr_low = opcode10+1
+screen_addr_high = opcode10+2
     sta address_to_overwrite,y                                        ; 45e2: 99 00 58    ..X
     inx                                                               ; 45e5: e8          .
     dey                                                               ; 45e6: 88          .
@@ -7000,29 +7009,29 @@ screen_addr_high = screen_addr_opcode+2
 return15
     rts                                                               ; 45ff: 60          `
 
-decode_room
+update_doors
     ldy current_room_cache                                            ; 4600: ac 00 04    ...
-decode_room_loop
+update_doors_loop
     lda current_room_cache,y                                          ; 4603: b9 00 04    ...
     beq return16                                                      ; 4606: f0 47       .G
     bpl c4635                                                         ; 4608: 10 2b       .+
-    sta room_decode_rect_width                                        ; 460a: 85 15       ..
+    sta temp_door_byte                                                ; 460a: 85 15       ..
     and #7                                                            ; 460c: 29 07       ).
-    sta room_decode_sprite_width                                      ; 460e: 85 14       ..
+    sta temp_sprite                                                   ; 460e: 85 14       ..
     jsr get_next_two_room_bytes_into_xy                               ; 4610: 20 50 46     PF
     lda #$30                                                          ; 4613: a9 30       .0
     inx                                                               ; 4615: e8          .
-    bit room_decode_rect_width                                        ; 4616: 24 15       $.
+    bit temp_door_byte                                                ; 4616: 24 15       $.
     bvc c461e                                                         ; 4618: 50 04       P.
     lda #$2b                                                          ; 461a: a9 2b       .+
     iny                                                               ; 461c: c8          .
     dex                                                               ; 461d: ca          .
 c461e
     clc                                                               ; 461e: 18          .
-    adc room_decode_sprite_width                                      ; 461f: 65 14       e.
+    adc temp_sprite                                                   ; 461f: 65 14       e.
     pha                                                               ; 4621: 48          H
     jsr plot_sprite_xy_set                                            ; 4622: 20 a9 44     .D
-    lda room_decode_rect_width                                        ; 4625: a5 15       ..
+    lda temp_door_byte                                                ; 4625: a5 15       ..
     and #7                                                            ; 4627: 29 07       ).
     cmp #4                                                            ; 4629: c9 04       ..
     beq c463c                                                         ; 462b: f0 0f       ..
@@ -7036,16 +7045,16 @@ c4635
     iny                                                               ; 4637: c8          .
     iny                                                               ; 4638: c8          .
     iny                                                               ; 4639: c8          .
-    bne decode_room_loop                                              ; 463a: d0 c7       ..
+    bne update_doors_loop                                             ; 463a: d0 c7       ..
 c463c
-    lda room_decode_rect_width                                        ; 463c: a5 15       ..
+    lda temp_door_byte                                                ; 463c: a5 15       ..
     and #$7f                                                          ; 463e: 29 7f       ).
     ldy delta_y                                                       ; 4640: a4 06       ..
     sta current_room_cache,y                                          ; 4642: 99 00 04    ...
     lda #0                                                            ; 4645: a9 00       ..
     sta collision_map_byte_to_write                                   ; 4647: 85 0c       ..
     pla                                                               ; 4649: 68          h
-    jsr plot_room_sprite_a                                            ; 464a: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 464a: 20 a7 43     .C
     bne c4635                                                         ; 464d: d0 e6       ..
 return16
     rts                                                               ; 464f: 60          `
@@ -7084,7 +7093,7 @@ found_dying_item_free_slot
     sta collision_map_byte_to_write                                   ; 4681: 85 0c       ..
     pla                                                               ; 4683: 68          h
     sta dying_items,y                                                 ; 4684: 99 00 05    ...
-    jmp plot_room_sprite_a                                            ; 4687: 4c a7 43    L.C
+    jmp plot_room_sprite_a_to_collision_map                           ; 4687: 4c a7 43    L.C
 
 update_dying_items
     lda l0019                                                         ; 468a: a5 19       ..
@@ -7133,7 +7142,7 @@ remove_fully_dissolved_object
     lda #0                                                            ; 46d2: a9 00       ..
     sta collision_map_byte_to_write                                   ; 46d4: 85 0c       ..
     lda temp_byte                                                     ; 46d6: a5 0b       ..
-    jsr plot_room_sprite_a                                            ; 46d8: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 46d8: 20 a7 43     .C
     ldx delta_y                                                       ; 46db: a6 06       ..
     lda #0                                                            ; 46dd: a9 00       ..
     sta dying_items,x                                                 ; 46df: 9d 00 05    ...
@@ -7171,12 +7180,12 @@ skip_store_player_sprite
     ldy old_player_y                                                  ; 4719: a4 23       .#
     pla                                                               ; 471b: 68          h
     jsr plot_sprite_xy_eor                                            ; 471c: 20 65 45     eE
-    jsr update_collision_map                                          ; 471f: 20 02 44     .D
+    jsr update_collision_map_at_player                                ; 471f: 20 02 44     .D
     ldx player_x                                                      ; 4722: a6 1a       ..
     ldy player_y                                                      ; 4724: a4 1b       ..
     stx cell_x                                                        ; 4726: 86 00       ..
     sty cell_y                                                        ; 4728: 84 01       ..
-    jsr update_collision_map                                          ; 472a: 20 02 44     .D
+    jsr update_collision_map_at_player                                ; 472a: 20 02 44     .D
     jsr sub_c4941                                                     ; 472d: 20 41 49     AI
     ldy #$28                                                          ; 4730: a0 28       .(
     ldx #3                                                            ; 4732: a2 03       ..
@@ -7198,10 +7207,10 @@ check_for_collision_horizontal_loop
     tay                                                               ; 474a: a8          .
     bne check_for_collision_vertical_loop                             ; 474b: d0 e9       ..
 c474d
-    jmp c4836                                                         ; 474d: 4c 36 48    L6H
+    jmp check_fire_key_local                                          ; 474d: 4c 36 48    L6H
 
 check_for_collisions
-    jsr update_collision_map                                          ; 4750: 20 02 44     .D
+    jsr update_collision_map_at_player                                ; 4750: 20 02 44     .D
     lda #0                                                            ; 4753: a9 00       ..
     sta collision_map_byte_to_write                                   ; 4755: 85 0c       ..
     ldy offset_to_start_of_collectibles                               ; 4757: a4 0f       ..
@@ -7236,7 +7245,7 @@ collect
     jsr plot_sprite_xy_eor                                            ; 478d: 20 65 45     eE
     pla                                                               ; 4790: 68          h
     pha                                                               ; 4791: 48          H
-    jsr plot_room_sprite_a                                            ; 4792: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 4792: 20 a7 43     .C
     lda #3                                                            ; 4795: a9 03       ..
     jsr check_play_sound_a                                            ; 4797: 20 65 40     e@
     lda #$19                                                          ; 479a: a9 19       ..
@@ -7280,10 +7289,10 @@ check_keys_collision_loop
     sec                                                               ; 47d8: 38          8
     sbc player_y                                                      ; 47d9: e5 1b       ..
     cmp #3                                                            ; 47db: c9 03       ..
-    bcc c47e3                                                         ; 47dd: 90 04       ..
+    bcc key_taken                                                     ; 47dd: 90 04       ..
     cmp #$ff                                                          ; 47df: c9 ff       ..
     bne check_next_key                                                ; 47e1: d0 43       .C
-c47e3
+key_taken
     lda current_room_cache,y                                          ; 47e3: b9 00 04    ...
     and #$7f                                                          ; 47e6: 29 7f       ).
     sta current_room_cache,y                                          ; 47e8: 99 00 04    ...
@@ -7296,7 +7305,7 @@ c47e3
     lda #$24                                                          ; 47f7: a9 24       .$
     jsr plot_sprite_eor                                               ; 47f9: 20 69 45     iE
     lda #$24                                                          ; 47fc: a9 24       .$
-    jsr plot_room_sprite_a                                            ; 47fe: 20 a7 43     .C
+    jsr plot_room_sprite_a_to_collision_map                           ; 47fe: 20 a7 43     .C
     pla                                                               ; 4801: 68          h
     tax                                                               ; 4802: aa          .
     inc number_of_key0_held,x                                         ; 4803: f6 24       .$
@@ -7324,27 +7333,27 @@ write_to_collision_map
     ldy player_y                                                      ; 482d: a4 1b       ..
     stx cell_x                                                        ; 482f: 86 00       ..
     sty cell_y                                                        ; 4831: 84 01       ..
-    jsr update_collision_map                                          ; 4833: 20 02 44     .D
-c4836
+    jsr update_collision_map_at_player                                ; 4833: 20 02 44     .D
+check_fire_key_local
     jmp check_fire_key                                                ; 4836: 4c 5a 48    LZH
 
 check_ZXShift_keys
     ldx #inkey_key_z                                                  ; 4839: a2 9e       ..
     jsr read_key                                                      ; 483b: 20 54 49     TI
-    bcc skip3                                                         ; 483e: 90 03       ..
+    bcc not_Z                                                         ; 483e: 90 03       ..
     jsr handle_z_pressed                                              ; 4840: 20 b4 48     .H
-skip3
+not_Z
     ldx #inkey_key_x                                                  ; 4843: a2 bd       ..
     jsr read_key                                                      ; 4845: 20 54 49     TI
-    bcc skip4                                                         ; 4848: 90 03       ..
+    bcc not_X                                                         ; 4848: 90 03       ..
     jsr handle_x_pressed                                              ; 484a: 20 df 48     .H
-skip4
+not_X
     ldx #inkey_key_shift                                              ; 484d: a2 ff       ..
     jsr read_key                                                      ; 484f: 20 54 49     TI
-    bcc skip5                                                         ; 4852: 90 03       ..
+    bcc not_Shift                                                     ; 4852: 90 03       ..
     jmp handle_shift_pressed                                          ; 4854: 4c 09 49    L.I
 
-skip5
+not_Shift
     jmp update_falling                                                ; 4857: 4c 25 49    L%I
 
 check_fire_key
@@ -7357,44 +7366,44 @@ check_fire_key
 check_fire_key_done
     jmp check_return_key                                              ; 4868: 4c ff 4a    L.J
 
-; each ammo is stored in three bytes, the first byte has bottom bit
+; each arrow is stored in three bytes, the first byte has bottom bit
 ; for active/dead, and top bit for left/right direction, bytes two and
 ; three are the X,Y position
 handle_fire_key_pressed
     ldy #0                                                            ; 486b: a0 00       ..
-find_free_ammo_slot_loop
-    lda ammo_slots,y                                                  ; 486d: b9 80 05    ...
-    beq got_free_ammo_slot                                            ; 4870: f0 05       ..
+find_free_arrow_slot_loop
+    lda arrow_slots,y                                                 ; 486d: b9 80 05    ...
+    beq got_free_arrow_slot                                           ; 4870: f0 05       ..
     iny                                                               ; 4872: c8          .
     iny                                                               ; 4873: c8          .
     iny                                                               ; 4874: c8          .
-    bne find_free_ammo_slot_loop                                      ; 4875: d0 f6       ..
-got_free_ammo_slot
-    inc l001f                                                         ; 4877: e6 1f       ..
+    bne find_free_arrow_slot_loop                                     ; 4875: d0 f6       ..
+got_free_arrow_slot
+    inc number_of_arrows_in_flight                                    ; 4877: e6 1f       ..
     lda #1                                                            ; 4879: a9 01       ..
-    sta ammo_slots,y                                                  ; 487b: 99 80 05    ...
+    sta arrow_slots,y                                                 ; 487b: 99 80 05    ...
     ldx player_x                                                      ; 487e: a6 1a       ..
     dex                                                               ; 4880: ca          .
     txa                                                               ; 4881: 8a          .
-    sta ammo_slots + 1,y                                              ; 4882: 99 81 05    ...
+    sta arrow_slots + 1,y                                             ; 4882: 99 81 05    ...
     ldx player_y                                                      ; 4885: a6 1b       ..
     inx                                                               ; 4887: e8          .
     txa                                                               ; 4888: 8a          .
-    sta ammo_slots + 2,y                                              ; 4889: 99 82 05    ...
+    sta arrow_slots + 2,y                                             ; 4889: 99 82 05    ...
     lda player_sprite                                                 ; 488c: a5 1c       ..
     cmp #$41                                                          ; 488e: c9 41       .A
-    bcs skip_make_ammo_right_facing                                   ; 4890: b0 0e       ..             ; if player is facing left then branch
-; make ammo right facing
-    lda ammo_slots + 1,y                                              ; 4892: b9 81 05    ...
+    bcs skip_make_arrow_right_facing                                  ; 4890: b0 0e       ..             ; if player is facing left then branch
+; make arrow right facing
+    lda arrow_slots + 1,y                                             ; 4892: b9 81 05    ...
     clc                                                               ; 4895: 18          .
     adc #4                                                            ; 4896: 69 04       i.
-    sta ammo_slots + 1,y                                              ; 4898: 99 81 05    ...
+    sta arrow_slots + 1,y                                             ; 4898: 99 81 05    ...
     lda #$81                                                          ; 489b: a9 81       ..
-    sta ammo_slots,y                                                  ; 489d: 99 80 05    ...
-skip_make_ammo_right_facing
+    sta arrow_slots,y                                                 ; 489d: 99 80 05    ...
+skip_make_arrow_right_facing
     lda #0                                                            ; 48a0: a9 00       ..
     sta temp_counter                                                  ; 48a2: 85 3a       .:
-    jsr update_ammo                                                   ; 48a4: 20 b9 49     .I
+    jsr update_arrow                                                  ; 48a4: 20 b9 49     .I
     lda temp_counter                                                  ; 48a7: a5 3a       .:
     bne return18                                                      ; 48a9: d0 08       ..
     jsr decrement_ammo_bar                                            ; 48ab: 20 7e 3f     ~?
@@ -7509,71 +7518,71 @@ read_key
     ldy #$ff                                                          ; 4956: a0 ff       ..
     jmp osbyte                                                        ; 4958: 4c f4 ff    L..
 
-sub_c495b
-    lda l001f                                                         ; 495b: a5 1f       ..
-    sta l0020                                                         ; 495d: 85 20       .
+draw_arrows
+    lda number_of_arrows_in_flight                                    ; 495b: a5 1f       ..
+    sta arrow_loop_counter                                            ; 495d: 85 20       .
     beq return23                                                      ; 495f: f0 29       .)
     ldy #0                                                            ; 4961: a0 00       ..
-c4963
-    lda ammo_slots,y                                                  ; 4963: b9 80 05    ...
-    beq c4985                                                         ; 4966: f0 1d       ..
+draw_arrows_loop
+    lda arrow_slots,y                                                 ; 4963: b9 80 05    ...
+    beq next_arrow                                                    ; 4966: f0 1d       ..
     ldx #$29                                                          ; 4968: a2 29       .)
-    lda ammo_slots,y                                                  ; 496a: b9 80 05    ...
-    bpl c4970                                                         ; 496d: 10 01       ..
+    lda arrow_slots,y                                                 ; 496a: b9 80 05    ...
+    bpl left_facing_arrow                                             ; 496d: 10 01       ..
     inx                                                               ; 496f: e8          .
-c4970
+left_facing_arrow
     txa                                                               ; 4970: 8a          .
     pha                                                               ; 4971: 48          H
-    ldx ammo_slots + 1,y                                              ; 4972: be 81 05    ...
-    lda ammo_slots + 2,y                                              ; 4975: b9 82 05    ...
-    sty l0021                                                         ; 4978: 84 21       .!
+    ldx arrow_slots + 1,y                                             ; 4972: be 81 05    ...
+    lda arrow_slots + 2,y                                             ; 4975: b9 82 05    ...
+    sty temp_loop_counter                                             ; 4978: 84 21       .!
     tay                                                               ; 497a: a8          .
     pla                                                               ; 497b: 68          h
     jsr plot_sprite_xy_eor                                            ; 497c: 20 65 45     eE
-    dec l0020                                                         ; 497f: c6 20       .
+    dec arrow_loop_counter                                            ; 497f: c6 20       .
     beq return23                                                      ; 4981: f0 07       ..
-    ldy l0021                                                         ; 4983: a4 21       .!
-c4985
+    ldy temp_loop_counter                                             ; 4983: a4 21       .!
+next_arrow
     iny                                                               ; 4985: c8          .
     iny                                                               ; 4986: c8          .
     iny                                                               ; 4987: c8          .
-    bne c4963                                                         ; 4988: d0 d9       ..
+    bne draw_arrows_loop                                              ; 4988: d0 d9       ..
 return23
     rts                                                               ; 498a: 60          `
 
-sub_c498b
+update_all_arrows
     lda #osbyte_vsync                                                 ; 498b: a9 13       ..
     jsr osbyte                                                        ; 498d: 20 f4 ff     ..
-    lda l001f                                                         ; 4990: a5 1f       ..
-    sta l0020                                                         ; 4992: 85 20       .
+    lda number_of_arrows_in_flight                                    ; 4990: a5 1f       ..
+    sta arrow_loop_counter                                            ; 4992: 85 20       .
     beq return24                                                      ; 4994: f0 22       ."
     ldy #0                                                            ; 4996: a0 00       ..
-loop_c4998
+update_all_arrows_loop
     tya                                                               ; 4998: 98          .
     tax                                                               ; 4999: aa          .
-    lda ammo_slots,y                                                  ; 499a: b9 80 05    ...
-    beq c49b3                                                         ; 499d: f0 14       ..
-    bmi c49a7                                                         ; 499f: 30 06       0.
-    dec ammo_slots + 1,x                                              ; 49a1: de 81 05    ...
-    dec ammo_slots + 1,x                                              ; 49a4: de 81 05    ...
-c49a7
-    inc ammo_slots + 1,x                                              ; 49a7: fe 81 05    ...
-    jsr update_ammo                                                   ; 49aa: 20 b9 49     .I
-    dec l0020                                                         ; 49ad: c6 20       .
+    lda arrow_slots,y                                                 ; 499a: b9 80 05    ...
+    beq next_arrow2                                                   ; 499d: f0 14       ..
+    bmi increment_arrow_x                                             ; 499f: 30 06       0.
+    dec arrow_slots + 1,x                                             ; 49a1: de 81 05    ...
+    dec arrow_slots + 1,x                                             ; 49a4: de 81 05    ...
+increment_arrow_x
+    inc arrow_slots + 1,x                                             ; 49a7: fe 81 05    ...
+    jsr update_arrow                                                  ; 49aa: 20 b9 49     .I
+    dec arrow_loop_counter                                            ; 49ad: c6 20       .
     beq return24                                                      ; 49af: f0 07       ..
-    ldy l0021                                                         ; 49b1: a4 21       .!
-c49b3
+    ldy temp_loop_counter                                             ; 49b1: a4 21       .!
+next_arrow2
     iny                                                               ; 49b3: c8          .
     iny                                                               ; 49b4: c8          .
     iny                                                               ; 49b5: c8          .
-    bne loop_c4998                                                    ; 49b6: d0 e0       ..
+    bne update_all_arrows_loop                                        ; 49b6: d0 e0       ..
 return24
     rts                                                               ; 49b8: 60          `
 
-update_ammo
-    sty l0021                                                         ; 49b9: 84 21       .!
-    ldx ammo_slots + 2,y                                              ; 49bb: be 82 05    ...
-    lda ammo_slots + 1,y                                              ; 49be: b9 81 05    ...
+update_arrow
+    sty temp_loop_counter                                             ; 49b9: 84 21       .!
+    ldx arrow_slots + 2,y                                             ; 49bb: be 82 05    ...
+    lda arrow_slots + 1,y                                             ; 49be: b9 81 05    ...
     cmp #$ff                                                          ; 49c1: c9 ff       ..
     beq c49f7                                                         ; 49c3: f0 32       .2
     cmp #$28                                                          ; 49c5: c9 28       .(
@@ -7592,50 +7601,50 @@ update_ammo
     bne c49ff                                                         ; 49e0: d0 1d       ..
 c49e2
     ldx #$29                                                          ; 49e2: a2 29       .)
-    lda ammo_slots,y                                                  ; 49e4: b9 80 05    ...
+    lda arrow_slots,y                                                 ; 49e4: b9 80 05    ...
     bpl c49ea                                                         ; 49e7: 10 01       ..
     inx                                                               ; 49e9: e8          .
 c49ea
     txa                                                               ; 49ea: 8a          .
     pha                                                               ; 49eb: 48          H
-    ldx ammo_slots + 1,y                                              ; 49ec: be 81 05    ...
-    lda ammo_slots + 2,y                                              ; 49ef: b9 82 05    ...
+    ldx arrow_slots + 1,y                                             ; 49ec: be 81 05    ...
+    lda arrow_slots + 2,y                                             ; 49ef: b9 82 05    ...
     tay                                                               ; 49f2: a8          .
     pla                                                               ; 49f3: 68          h
     jmp plot_sprite_xy_eor                                            ; 49f4: 4c 65 45    LeE
 
 c49f7
     lda #0                                                            ; 49f7: a9 00       ..
-    sta ammo_slots,y                                                  ; 49f9: 99 80 05    ...
-    dec l001f                                                         ; 49fc: c6 1f       ..
+    sta arrow_slots,y                                                 ; 49f9: 99 80 05    ...
+    dec number_of_arrows_in_flight                                    ; 49fc: c6 1f       ..
     rts                                                               ; 49fe: 60          `
 
 c49ff
-    ldx ammo_slots + 1,y                                              ; 49ff: be 81 05    ...
+    ldx arrow_slots + 1,y                                             ; 49ff: be 81 05    ...
     stx temp_addr_low                                                 ; 4a02: 86 1d       ..
-    ldx ammo_slots + 2,y                                              ; 4a04: be 82 05    ...
+    ldx arrow_slots + 2,y                                             ; 4a04: be 82 05    ...
     stx temp_addr_high                                                ; 4a07: 86 1e       ..
     pha                                                               ; 4a09: 48          H
     lda #0                                                            ; 4a0a: a9 00       ..
-    sta ammo_slots,y                                                  ; 4a0c: 99 80 05    ...
+    sta arrow_slots,y                                                 ; 4a0c: 99 80 05    ...
     pla                                                               ; 4a0f: 68          h
-    dec l001f                                                         ; 4a10: c6 1f       ..
+    dec number_of_arrows_in_flight                                    ; 4a10: c6 1f       ..
     ror                                                               ; 4a12: 6a          j
     bcc c4a49                                                         ; 4a13: 90 34       .4
     ldy offset_to_start_of_collectibles                               ; 4a15: a4 0f       ..
-c4a17
+collectible_loop
     lda current_room_cache,y                                          ; 4a17: b9 00 04    ...
-    bpl c4a44                                                         ; 4a1a: 10 28       .(
+    bpl next_collectible2                                             ; 4a1a: 10 28       .(
     lda temp_addr_low                                                 ; 4a1c: a5 1d       ..
     sec                                                               ; 4a1e: 38          8
     sbc current_room_cache + 1,y                                      ; 4a1f: f9 01 04    ...
     cmp #2                                                            ; 4a22: c9 02       ..
-    bcs c4a44                                                         ; 4a24: b0 1e       ..
+    bcs next_collectible2                                             ; 4a24: b0 1e       ..
     lda temp_addr_high                                                ; 4a26: a5 1e       ..
     sec                                                               ; 4a28: 38          8
     sbc current_room_cache + 2,y                                      ; 4a29: f9 02 04    ...
     cmp #3                                                            ; 4a2c: c9 03       ..
-    bcs c4a44                                                         ; 4a2e: b0 14       ..
+    bcs next_collectible2                                             ; 4a2e: b0 14       ..
     lda current_room_cache,y                                          ; 4a30: b9 00 04    ...
     and #$7f                                                          ; 4a33: 29 7f       ).
     sta current_room_cache,y                                          ; 4a35: 99 00 04    ...
@@ -7645,30 +7654,30 @@ c4a17
     lda #$26                                                          ; 4a3f: a9 26       .&
     jmp add_dying_item                                                ; 4a41: 4c 5c 46    L\F
 
-c4a44
+next_collectible2
     iny                                                               ; 4a44: c8          .
     iny                                                               ; 4a45: c8          .
     iny                                                               ; 4a46: c8          .
-    bne c4a17                                                         ; 4a47: d0 ce       ..
+    bne collectible_loop                                              ; 4a47: d0 ce       ..
 c4a49
     ror                                                               ; 4a49: 6a          j
     ror                                                               ; 4a4a: 6a          j
     ror                                                               ; 4a4b: 6a          j
     bcc c4a8c                                                         ; 4a4c: 90 3e       .>
     ldy offset_to_start_of_computers                                  ; 4a4e: a4 0e       ..
-c4a50
+computer_loop
     lda current_room_cache,y                                          ; 4a50: b9 00 04    ...
-    bpl c4a87                                                         ; 4a53: 10 32       .2
+    bpl next_computer2                                                ; 4a53: 10 32       .2
     lda temp_addr_low                                                 ; 4a55: a5 1d       ..
     sec                                                               ; 4a57: 38          8
     sbc current_room_cache + 1,y                                      ; 4a58: f9 01 04    ...
     cmp #4                                                            ; 4a5b: c9 04       ..
-    bcs c4a87                                                         ; 4a5d: b0 28       .(
+    bcs next_computer2                                                ; 4a5d: b0 28       .(
     lda temp_addr_high                                                ; 4a5f: a5 1e       ..
     sec                                                               ; 4a61: 38          8
     sbc current_room_cache + 2,y                                      ; 4a62: f9 02 04    ...
     cmp #4                                                            ; 4a65: c9 04       ..
-    bcs c4a87                                                         ; 4a67: b0 1e       ..
+    bcs next_computer2                                                ; 4a67: b0 1e       ..
     lda current_room_cache,y                                          ; 4a69: b9 00 04    ...
     and #$7f                                                          ; 4a6c: 29 7f       ).
     sta current_room_cache,y                                          ; 4a6e: 99 00 04    ...
@@ -7683,11 +7692,11 @@ c4a50
     jsr add_to_score_loop                                             ; 4a81: 20 cc 3f     .?
     jmp decrement_computer_bar                                        ; 4a84: 4c 64 3f    Ld?
 
-c4a87
+next_computer2
     iny                                                               ; 4a87: c8          .
     iny                                                               ; 4a88: c8          .
     iny                                                               ; 4a89: c8          .
-    bne c4a50                                                         ; 4a8a: d0 c4       ..
+    bne computer_loop                                                 ; 4a8a: d0 c4       ..
 c4a8c
     ror                                                               ; 4a8c: 6a          j
     bcc c4a9b                                                         ; 4a8d: 90 0c       ..
@@ -7702,30 +7711,30 @@ c4a9b
     bcc c4afa                                                         ; 4a9c: 90 5c       .\
     ldy #0                                                            ; 4a9e: a0 00       ..
 c4aa0
-    lda l0c00,y                                                       ; 4aa0: b9 00 0c    ...
+    lda enemies_state,y                                               ; 4aa0: b9 00 0c    ...
     beq c4af3                                                         ; 4aa3: f0 4e       .N
     bmi c4af3                                                         ; 4aa5: 30 4c       0L
-    ldx l0c05,y                                                       ; 4aa7: be 05 0c    ...
+    ldx enemies_state + 5,y                                           ; 4aa7: be 05 0c    ...            ; enemy sprite number
     lda sprite_height_table,x                                         ; 4aaa: bd 3d 20    .=
     sta delta_x                                                       ; 4aad: 85 05       ..
     lda temp_addr_low                                                 ; 4aaf: a5 1d       ..
     sec                                                               ; 4ab1: 38          8
-    sbc l0c01,y                                                       ; 4ab2: f9 01 0c    ...
+    sbc enemies_state + 1,y                                           ; 4ab2: f9 01 0c    ...
     cmp delta_x                                                       ; 4ab5: c5 05       ..
     bcs c4af3                                                         ; 4ab7: b0 3a       .:
     lda temp_addr_high                                                ; 4ab9: a5 1e       ..
     sec                                                               ; 4abb: 38          8
-    sbc l0c02,y                                                       ; 4abc: f9 02 0c    ...
+    sbc enemies_state + 2,y                                           ; 4abc: f9 02 0c    ...
     cmp delta_x                                                       ; 4abf: c5 05       ..
     bcs c4af3                                                         ; 4ac1: b0 30       .0
     lda #0                                                            ; 4ac3: a9 00       ..
-    sta l0c00,y                                                       ; 4ac5: 99 00 0c    ...
-    dec l0037                                                         ; 4ac8: c6 37       .7
-    lda l0c05,y                                                       ; 4aca: b9 05 0c    ...
+    sta enemies_state,y                                               ; 4ac5: 99 00 0c    ...
+    dec number_of_enemies                                             ; 4ac8: c6 37       .7
+    lda enemies_state + 5,y                                           ; 4aca: b9 05 0c    ...            ; enemy sprite number
     pha                                                               ; 4acd: 48          H
     pha                                                               ; 4ace: 48          H
-    ldx l0c01,y                                                       ; 4acf: be 01 0c    ...
-    lda l0c02,y                                                       ; 4ad2: b9 02 0c    ...
+    ldx enemies_state + 1,y                                           ; 4acf: be 01 0c    ...
+    lda enemies_state + 2,y                                           ; 4ad2: b9 02 0c    ...
     tay                                                               ; 4ad5: a8          .
     pla                                                               ; 4ad6: 68          h
     jsr add_dying_item                                                ; 4ad7: 20 5c 46     \F
@@ -7767,12 +7776,14 @@ check_for_doors_loop
     bmi next_door                                                     ; 4b0e: 30 2e       0.
     and #$20                                                          ; 4b10: 29 20       )
     beq next_door                                                     ; 4b12: f0 2a       .*
-    jsr is_exit_found                                                 ; 4b14: 20 5c 4c     \L
+; check if there is a door
+    jsr is_closed_door_near_player                                    ; 4b14: 20 5c 4c     \L
     bcs next_door                                                     ; 4b17: b0 25       .%
     lda current_room_cache,y                                          ; 4b19: b9 00 04    ...
     and #7                                                            ; 4b1c: 29 07       ).
     cmp #4                                                            ; 4b1e: c9 04       ..
     beq next_door                                                     ; 4b20: f0 1c       ..
+; door found, check we have a key for the door
     lda current_room_cache,y                                          ; 4b22: b9 00 04    ...
     ror                                                               ; 4b25: 6a          j
     ror                                                               ; 4b26: 6a          j
@@ -7781,6 +7792,7 @@ check_for_doors_loop
     tax                                                               ; 4b2a: aa          .
     lda number_of_key0_held,x                                         ; 4b2b: b5 24       .$
     beq next_door                                                     ; 4b2d: f0 0f       ..
+; found key for the door, remove key and open door
     dec number_of_key0_held,x                                         ; 4b2f: d6 24       .$
     lda current_room_cache,y                                          ; 4b31: b9 00 04    ...
     ora #$80                                                          ; 4b34: 09 80       ..
@@ -7838,7 +7850,7 @@ plot_updated_number
     lda #$20                                                          ; 4b8e: a9 20       .
     jmp oswrch                                                        ; 4b90: 4c ee ff    L..
 
-c4b93
+start_new_room
     tsx                                                               ; 4b93: ba          .
     stx stack_ptr                                                     ; 4b94: 86 36       .6
     jsr set_colour_one_black                                          ; 4b96: 20 8e 50     .P
@@ -7849,35 +7861,35 @@ c4b93
     tax                                                               ; 4ba4: aa          .
     jsr prepare_room                                                  ; 4ba5: 20 92 41     .A
     jsr set_colour_one_white                                          ; 4ba8: 20 84 50     .P
-    bit l0043                                                         ; 4bab: 24 43       $C
-    bpl c4bb2                                                         ; 4bad: 10 03       ..
+    bit enter_next_room_horizontally                                  ; 4bab: 24 43       $C
+    bpl skip_falling                                                  ; 4bad: 10 03       ..
     jsr update_falling                                                ; 4baf: 20 25 49     %I
-c4bb2
+skip_falling
     lda player_sprite                                                 ; 4bb2: a5 1c       ..
     ldx player_x                                                      ; 4bb4: a6 1a       ..
     ldy player_y                                                      ; 4bb6: a4 1b       ..
     jsr plot_sprite_xy_eor                                            ; 4bb8: 20 65 45     eE
-    jsr update_collision_map                                          ; 4bbb: 20 02 44     .D
-c4bbe
-    jsr sub_c498b                                                     ; 4bbe: 20 8b 49     .I
+    jsr update_collision_map_at_player                                ; 4bbb: 20 02 44     .D
+main_loop
+    jsr update_all_arrows                                             ; 4bbe: 20 8b 49     .I
     jsr update_player                                                 ; 4bc1: 20 e7 46     .F
     jsr check_sound_on_off                                            ; 4bc4: 20 1d 40     .@
     jsr check_paws                                                    ; 4bc7: 20 34 40     4@
     jsr wait                                                          ; 4bca: 20 fe 3f     .?
-    jsr sub_c495b                                                     ; 4bcd: 20 5b 49     [I
+    jsr draw_arrows                                                   ; 4bcd: 20 5b 49     [I
     jsr update_dying_items                                            ; 4bd0: 20 8a 46     .F
-    jsr sub_c498b                                                     ; 4bd3: 20 8b 49     .I
-    jsr decode_room                                                   ; 4bd6: 20 00 46     .F
+    jsr update_all_arrows                                             ; 4bd3: 20 8b 49     .I
+    jsr update_doors                                                  ; 4bd6: 20 00 46     .F
     jsr wait                                                          ; 4bd9: 20 fe 3f     .?
-    jsr sub_c495b                                                     ; 4bdc: 20 5b 49     [I
-    jsr sub_c3b8f                                                     ; 4bdf: 20 8f 3b     .;
-    jsr sub_c3d8c                                                     ; 4be2: 20 8c 3d     .=
-    bit l00ff                                                         ; 4be5: 24 ff       $.
-    bpl c4bbe                                                         ; 4be7: 10 d5       ..
+    jsr draw_arrows                                                   ; 4bdc: 20 5b 49     [I
+    jsr update_enemies_appearing                                      ; 4bdf: 20 8f 3b     .;
+    jsr update_enemies                                                ; 4be2: 20 8c 3d     .=
+    bit os_escape_flag                                                ; 4be5: 24 ff       $.
+    bpl main_loop                                                     ; 4be7: 10 d5       ..
     lda #1                                                            ; 4be9: a9 01       ..
     rts                                                               ; 4beb: 60          `
 
-c4bec
+no_teleport_destination_found
     txa                                                               ; 4bec: 8a          .
     rts                                                               ; 4bed: 60          `
 
@@ -7895,8 +7907,8 @@ find_new_room_loop
     lda current_room_cache,y                                          ; 4bfe: b9 00 04    ...
     and #4                                                            ; 4c01: 29 04       ).
     beq c4c0a                                                         ; 4c03: f0 05       ..
-    jsr is_exit_found                                                 ; 4c05: 20 5c 4c     \L
-    bcc found_new_room                                                ; 4c08: 90 07       ..
+    jsr is_closed_door_near_player                                    ; 4c05: 20 5c 4c     \L
+    bcc found_closed_door                                             ; 4c08: 90 07       ..
 c4c0a
     iny                                                               ; 4c0a: c8          .
     iny                                                               ; 4c0b: c8          .
@@ -7904,11 +7916,12 @@ c4c0a
     iny                                                               ; 4c0d: c8          .
     iny                                                               ; 4c0e: c8          .
     bne find_new_room_loop                                            ; 4c0f: d0 ed       ..
-found_new_room
+found_closed_door
     lda current_room_cache + 3,y                                      ; 4c11: b9 03 04    ...
-    ldx current_room_cache + 4,y                                      ; 4c14: be 04 04    ...
+    ldx current_room_cache + 4,y                                      ; 4c14: be 04 04    ...            ; new room index or 255
     cpx #$ff                                                          ; 4c17: e0 ff       ..
-    beq c4bec                                                         ; 4c19: f0 d1       ..
+    beq no_teleport_destination_found                                 ; 4c19: f0 d1       ..
+; teleport to new room
     stx current_room_index                                            ; 4c1b: 86 0d       ..
     jsr sub_c4c98                                                     ; 4c1d: 20 98 4c     .L
     lda (temp_addr_low),y                                             ; 4c20: b1 1d       ..
@@ -7916,7 +7929,7 @@ found_new_room
     beq skip2                                                         ; 4c24: f0 1a       ..
     iny                                                               ; 4c26: c8          .
     lda #$ff                                                          ; 4c27: a9 ff       ..
-    sta l0043                                                         ; 4c29: 85 43       .C
+    sta enter_next_room_horizontally                                  ; 4c29: 85 43       .C
     lda (temp_addr_low),y                                             ; 4c2b: b1 1d       ..
     sta player_x                                                      ; 4c2d: 85 1a       ..
     beq skip1                                                         ; 4c2f: f0 05       ..
@@ -7933,7 +7946,7 @@ skip1
 skip2
     iny                                                               ; 4c40: c8          .
     lda #0                                                            ; 4c41: a9 00       ..
-    sta l0043                                                         ; 4c43: 85 43       .C
+    sta enter_next_room_horizontally                                  ; 4c43: 85 43       .C
     lda (temp_addr_low),y                                             ; 4c45: b1 1d       ..
     clc                                                               ; 4c47: 18          .
     adc #1                                                            ; 4c48: 69 01       i.
@@ -7946,46 +7959,47 @@ skip2
     beq c4c59                                                         ; 4c55: f0 02       ..
     sta player_y                                                      ; 4c57: 85 1b       ..
 c4c59
-    jmp c4b93                                                         ; 4c59: 4c 93 4b    L.K
+    jmp start_new_room                                                ; 4c59: 4c 93 4b    L.K
 
-is_exit_found
+; returns with carry clear if a closed door is near the player
+is_closed_door_near_player
     lda current_room_cache,y                                          ; 4c5c: b9 00 04    ...
-    and #$40                                                          ; 4c5f: 29 40       )@             ; check type of exit
-    beq c4c7d                                                         ; 4c61: f0 1a       ..
+    and #$40                                                          ; 4c5f: 29 40       )@             ; check type of door (vertical or horizontal)
+    beq check_vertical_door                                           ; 4c61: f0 1a       ..
     lda player_x                                                      ; 4c63: a5 1a       ..
     sec                                                               ; 4c65: 38          8
     sbc current_room_cache + 1,y                                      ; 4c66: f9 01 04    ...
     cmp #2                                                            ; 4c69: c9 02       ..
-    bcc c4c71                                                         ; 4c6b: 90 04       ..
+    bcc is_horizontal_door_open                                       ; 4c6b: 90 04       ..
     cmp #$fd                                                          ; 4c6d: c9 fd       ..
-    bcc no_exit                                                       ; 4c6f: 90 25       .%
-c4c71
+    bcc no_door_found                                                 ; 4c6f: 90 25       .%
+is_horizontal_door_open
     lda player_y                                                      ; 4c71: a5 1b       ..
     sec                                                               ; 4c73: 38          8
     sbc current_room_cache + 2,y                                      ; 4c74: f9 02 04    ...
     cmp #4                                                            ; 4c77: c9 04       ..
-    bcs no_exit                                                       ; 4c79: b0 1b       ..
+    bcs no_door_found                                                 ; 4c79: b0 1b       ..
     bcc return26                                                      ; 4c7b: 90 18       ..             ; ALWAYS branch
 
-c4c7d
+check_vertical_door
     lda player_y                                                      ; 4c7d: a5 1b       ..
     sec                                                               ; 4c7f: 38          8
     sbc current_room_cache + 2,y                                      ; 4c80: f9 02 04    ...
     cmp #2                                                            ; 4c83: c9 02       ..
-    bcc c4c8b                                                         ; 4c85: 90 04       ..
+    bcc is_vertical_door_open                                         ; 4c85: 90 04       ..
     cmp #$fd                                                          ; 4c87: c9 fd       ..
-    bcc no_exit                                                       ; 4c89: 90 0b       ..
-c4c8b
+    bcc no_door_found                                                 ; 4c89: 90 0b       ..
+is_vertical_door_open
     lda player_x                                                      ; 4c8b: a5 1a       ..
     sec                                                               ; 4c8d: 38          8
     sbc current_room_cache + 1,y                                      ; 4c8e: f9 01 04    ...
     cmp #4                                                            ; 4c91: c9 04       ..
-    bcs no_exit                                                       ; 4c93: b0 01       ..
-; found exit
+    bcs no_door_found                                                 ; 4c93: b0 01       ..
+; found door
 return26
     rts                                                               ; 4c95: 60          `
 
-no_exit
+no_door_found
     sec                                                               ; 4c96: 38          8
     rts                                                               ; 4c97: 60          `
 
@@ -8142,7 +8156,7 @@ show_title_and_play_game
     sta player_sprite                                                 ; 4eb1: 85 1c       ..
     stx player_x                                                      ; 4eb3: 86 1a       ..
     sty player_y                                                      ; 4eb5: 84 1b       ..
-    jsr c4b93                                                         ; 4eb7: 20 93 4b     .K
+    jsr start_new_room                                                ; 4eb7: 20 93 4b     .K
     pha                                                               ; 4eba: 48          H
     lda #osbyte_read_write_escape_break_effect                        ; 4ebb: a9 c8       ..
     ldx #3                                                            ; 4ebd: a2 03       ..
@@ -8166,16 +8180,16 @@ show_title_and_play_game
     lda #$8a                                                          ; 4ee5: a9 8a       ..
     sta sound_duration                                                ; 4ee7: 85 35       .5
 end_of_game
-    jsr sub_c498b                                                     ; 4ee9: 20 8b 49     .I
+    jsr update_all_arrows                                             ; 4ee9: 20 8b 49     .I
     jsr sub_c500b                                                     ; 4eec: 20 0b 50     .P
     jsr wait                                                          ; 4eef: 20 fe 3f     .?
-    jsr sub_c495b                                                     ; 4ef2: 20 5b 49     [I
+    jsr draw_arrows                                                   ; 4ef2: 20 5b 49     [I
     jsr update_dying_items                                            ; 4ef5: 20 8a 46     .F
-    jsr sub_c498b                                                     ; 4ef8: 20 8b 49     .I
-    jsr decode_room                                                   ; 4efb: 20 00 46     .F
+    jsr update_all_arrows                                             ; 4ef8: 20 8b 49     .I
+    jsr update_doors                                                  ; 4efb: 20 00 46     .F
     jsr wait                                                          ; 4efe: 20 fe 3f     .?
-    jsr sub_c495b                                                     ; 4f01: 20 5b 49     [I
-    jsr sub_c3b8f                                                     ; 4f04: 20 8f 3b     .;
+    jsr draw_arrows                                                   ; 4f01: 20 5b 49     [I
+    jsr update_enemies_appearing                                      ; 4f04: 20 8f 3b     .;
     lda sound_duration                                                ; 4f07: a5 35       .5
     bne end_of_game                                                   ; 4f09: d0 de       ..
     jsr clear_play_area                                               ; 4f0b: 20 e8 43     .C
@@ -8275,18 +8289,18 @@ skip_reset_item
     iny                                                               ; 5060: c8          .
     bne reset_room_loop                                               ; 5061: d0 eb       ..
 goto_next_room
-    jsr sub_c5075                                                     ; 5063: 20 75 50     uP
-    jsr sub_c5075                                                     ; 5066: 20 75 50     uP
-    jsr sub_c5075                                                     ; 5069: 20 75 50     uP
+    jsr reset_next_section                                            ; 5063: 20 75 50     uP            ; reset section
+    jsr reset_next_section                                            ; 5066: 20 75 50     uP            ; reset section
+    jsr reset_next_section                                            ; 5069: 20 75 50     uP            ; reset section
     inc sprite_cell_height                                            ; 506c: e6 03       ..
     ldx sprite_cell_height                                            ; 506e: a6 03       ..
     cpx #room_count                                                   ; 5070: e0 37       .7
     bne reset_rooms_loop                                              ; 5072: d0 cb       ..
     rts                                                               ; 5074: 60          `
 
-sub_c5075
+reset_next_section
     iny                                                               ; 5075: c8          .
-loop_c5076
+reset_next_section_loop
     lda (temp_addr_low),y                                             ; 5076: b1 1d       ..
     beq return29                                                      ; 5078: f0 09       ..
     ora #$80                                                          ; 507a: 09 80       ..
@@ -8294,7 +8308,7 @@ loop_c5076
     iny                                                               ; 507e: c8          .
     iny                                                               ; 507f: c8          .
     iny                                                               ; 5080: c8          .
-    bne loop_c5076                                                    ; 5081: d0 f3       ..
+    bne reset_next_section_loop                                       ; 5081: d0 f3       ..
 return29
     rts                                                               ; 5083: 60          `
 
@@ -8326,8 +8340,8 @@ one_time_init
 copy_highscores_loop
 copy_highscores_source_addr_high = copy_highscores_loop+2
     lda initial_highscore_table - $70,y                               ; 50b2: b9 a7 53    ..S
-store_highscore_opcode
-copy_highscores_dest_addr_high = store_highscore_opcode+2
+opcode11
+copy_highscores_dest_addr_high = opcode11+2
     sta highscore_table_names - $70,y                                 ; 50b5: 99 90 05    ...
     iny                                                               ; 50b8: c8          .
     bne copy_highscores_loop                                          ; 50b9: d0 f7       ..
@@ -8469,6 +8483,7 @@ c52c9
     !text $1f, 2, 6, "Your score is good enough to go into", $1f, 2   ; 52d3: 1f 02 06... ...
     !text 8, "the top ten, please enter your name", $80+':'           ; 52fc: 08 74 68... .th
     jsr set_inverse_colours                                           ; 5321: 20 a3 50     .P
+; show cursor and start to position the cursor
     jsr print_following_string                                        ; 5324: 20 4e 3e     N>
     !text $17, 1, 1, 0, 0, 0, 0, 0, 0, 0, $1f, $80+$03                ; 5327: 17 01 01... ...
     lda #$0a                                                          ; 5333: a9 0a       ..
@@ -8476,53 +8491,57 @@ c52c9
     sbc delta_x                                                       ; 5336: e5 05       ..
     asl                                                               ; 5338: 0a          .
     adc #$0b                                                          ; 5339: 69 0b       i.
-    jsr oswrch                                                        ; 533b: 20 ee ff     ..
+    jsr oswrch                                                        ; 533b: 20 ee ff     ..            ; finish positioning the cursor by setting the Y coordinate
+; input name routine
     lda #osbyte_clear_escape                                          ; 533e: a9 7c       .|
-    jsr osbyte                                                        ; 5340: 20 f4 ff     ..
+    jsr osbyte                                                        ; 5340: 20 f4 ff     ..            ; clear escape condition
     lda #osbyte_flush_buffer                                          ; 5343: a9 15       ..
     ldx #0                                                            ; 5345: a2 00       ..
-    jsr osbyte                                                        ; 5347: 20 f4 ff     ..
+    jsr osbyte                                                        ; 5347: 20 f4 ff     ..            ; flush keyboard buffer
     ldx #0                                                            ; 534a: a2 00       ..
     stx player_y                                                      ; 534c: 86 1b       ..
-c534e
+input_name_loop
     jsr check_for_key                                                 ; 534e: 20 78 4e     xN
-    bcc c5367                                                         ; 5351: 90 14       ..
+    bcc input_name_key_pressed                                        ; 5351: 90 14       ..
+; check for ESCAPE key
     cpy #$1b                                                          ; 5353: c0 1b       ..
-    bne c534e                                                         ; 5355: d0 f7       ..
-loop_c5357
+    bne input_name_loop                                               ; 5355: d0 f7       ..
+; hide cursor
+return_key_pressed
     jsr print_following_string                                        ; 5357: 20 4e 3e     N>
     !text $17, 1, 0, 0, 0, 0, 0, 0, 0, $80+$00                        ; 535a: 17 01 00... ...
     jmp reset_current_text_colours                                    ; 5364: 4c 98 50    L.P
 
-c5367
+input_name_key_pressed
     cpx #$0d                                                          ; 5367: e0 0d       ..
-    beq loop_c5357                                                    ; 5369: f0 ec       ..
+    beq return_key_pressed                                            ; 5369: f0 ec       ..
     cpx #$20                                                          ; 536b: e0 20       .
-    bcc c534e                                                         ; 536d: 90 df       ..
+    bcc input_name_loop                                               ; 536d: 90 df       ..             ; ignore CTRL codes
     cpx #$7f                                                          ; 536f: e0 7f       ..
-    beq c538a                                                         ; 5371: f0 17       ..
-    bcs c534e                                                         ; 5373: b0 d9       ..
+    beq delete_pressed                                                ; 5371: f0 17       ..             ; if DELETE pressed, branch
+    bcs input_name_loop                                               ; 5373: b0 d9       ..             ; ignore codes above DELETE
     txa                                                               ; 5375: 8a          .
     ldx player_y                                                      ; 5376: a6 1b       ..
     cpx #$19                                                          ; 5378: e0 19       ..
-    beq c534e                                                         ; 537a: f0 d2       ..
+    beq input_name_loop                                               ; 537a: f0 d2       ..
     ldy player_x                                                      ; 537c: a4 1a       ..
     sta highscore_table_names,y                                       ; 537e: 99 00 06    ...
     jsr oswrch                                                        ; 5381: 20 ee ff     ..
     inc player_x                                                      ; 5384: e6 1a       ..
     inc player_y                                                      ; 5386: e6 1b       ..
-    bne c534e                                                         ; 5388: d0 c4       ..
-c538a
+    bne input_name_loop                                               ; 5388: d0 c4       ..             ; ALWAYS branch
+
+delete_pressed
     lda player_y                                                      ; 538a: a5 1b       ..
-    beq c534e                                                         ; 538c: f0 c0       ..
+    beq input_name_loop                                               ; 538c: f0 c0       ..             ; if no characters to delete then branch
     txa                                                               ; 538e: 8a          .
     jsr oswrch                                                        ; 538f: 20 ee ff     ..
     lda #$20                                                          ; 5392: a9 20       .
     ldy player_x                                                      ; 5394: a4 1a       ..
-    sta l05ff,y                                                       ; 5396: 99 ff 05    ...
+    sta highscore_table_names - 1,y                                   ; 5396: 99 ff 05    ...
     dec player_x                                                      ; 5399: c6 1a       ..
     dec player_y                                                      ; 539b: c6 1b       ..
-    jmp c534e                                                         ; 539d: 4c 4e 53    LNS
+    jmp input_name_loop                                               ; 539d: 4c 4e 53    LNS
 
 compare_scores
     ldx #6                                                            ; 53a0: a2 06       ..
@@ -8617,20 +8636,12 @@ initial_highscore_table
 pydis_end
 
 ; Automatically generated labels:
-;     c3bc8
-;     c3bcc
 ;     c3bd3
 ;     c3bd4
 ;     c3be0
-;     c3bef
-;     c3bfe
 ;     c3c0f
 ;     c3c3f
 ;     c3c4c
-;     c3c6d
-;     c3ca9
-;     c3cb0
-;     c3cd0
 ;     c3d23
 ;     c3d25
 ;     c3d85
@@ -8638,7 +8649,6 @@ pydis_end
 ;     c3d87
 ;     c3d8a
 ;     c3d8b
-;     c3da1
 ;     c3e12
 ;     c3e70
 ;     c3e8c
@@ -8663,29 +8673,18 @@ pydis_end
 ;     c46cc
 ;     c474d
 ;     c476e
-;     c47e3
-;     c4836
 ;     c48b3
 ;     c48db
 ;     c4908
 ;     c4924
 ;     c4940
-;     c4963
-;     c4970
-;     c4985
 ;     c498a
-;     c49a7
-;     c49b3
 ;     c49b8
 ;     c49e2
 ;     c49ea
 ;     c49f7
 ;     c49ff
-;     c4a17
-;     c4a44
 ;     c4a49
-;     c4a50
-;     c4a87
 ;     c4a8c
 ;     c4a9b
 ;     c4aa0
@@ -8693,15 +8692,8 @@ pydis_end
 ;     c4afa
 ;     c4afe
 ;     c4b81
-;     c4b93
-;     c4bb2
-;     c4bbe
-;     c4bec
 ;     c4c0a
 ;     c4c59
-;     c4c71
-;     c4c7d
-;     c4c8b
 ;     c4c95
 ;     c4cb1
 ;     c4e4d
@@ -8712,60 +8704,28 @@ pydis_end
 ;     c5274
 ;     c52b2
 ;     c52c9
-;     c534e
-;     c5367
-;     c538a
 ;     c53b1
 ;     l0017
 ;     l0018
 ;     l0019
-;     l001f
-;     l0020
-;     l0021
 ;     l0034
-;     l0037
-;     l0043
-;     l00ff
 ;     l0405
-;     l05ff
-;     l0c00
-;     l0c01
-;     l0c02
-;     l0c03
-;     l0c04
-;     l0c05
 ;     l0f00
 ;     l1000
 ;     l1100
 ;     l110c
 ;     loop_c3ca6
-;     loop_c3d0b
-;     loop_c3d0f
 ;     loop_c3d4c
 ;     loop_c3d5a
 ;     loop_c3d78
-;     loop_c3d95
 ;     loop_c3dfb
 ;     loop_c3dff
 ;     loop_c3f54
-;     loop_c3f9d
-;     loop_c4998
 ;     loop_c4cac
-;     loop_c5076
-;     loop_c5357
-;     sub_c3b8f
-;     sub_c3cf4
 ;     sub_c3d28
-;     sub_c3d8c
-;     sub_c44c6
-;     sub_c4507
-;     sub_c450a
 ;     sub_c4941
-;     sub_c495b
-;     sub_c498b
 ;     sub_c4c98
 ;     sub_c500b
-;     sub_c5075
 !if ($80+$00) != $80 {
     !error "Assertion failed: $80+$00 == $80"
 }
@@ -9566,6 +9526,9 @@ pydis_end
 }
 !if (highscore_table_names - $70) != $0590 {
     !error "Assertion failed: highscore_table_names - $70 == $0590"
+}
+!if (highscore_table_names - 1) != $05ff {
+    !error "Assertion failed: highscore_table_names - 1 == $05ff"
 }
 !if (highscore_table_scores - 7) != $06f3 {
     !error "Assertion failed: highscore_table_scores - 7 == $06f3"
