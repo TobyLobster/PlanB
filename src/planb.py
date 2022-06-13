@@ -13,7 +13,7 @@
 
 
 
-# Alternative (lets face it, better) random number routine:
+# Alternative (lets face it, better suited) random number routine:
 #
 # rng_zp_low = $38
 # rng_zp_high = $39
