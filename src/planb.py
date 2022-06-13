@@ -418,11 +418,12 @@ def end_room(addr, room_title):
     comment_str = comment_str.rstrip("\n")
 
     # Strip off first six rows of top empty space
-    comment_str = comment_str.lstrip("........................................\n........................................\n........................................\n........................................\n........................................\n........................................\n")
+    if comment_str.startswith("\n........................................\n........................................\n........................................\n........................................\n........................................\n........................................\n"):
+        comment_str = comment_str[246:]
 
     # Add title, centred
     blank(addr)
-    comment_str = " "*(19-len(room_title)//2) + room_title + "\n" + comment_str
+    comment_str = " "*(19-len(room_title)//2) + room_title + comment_str
 
     # Add comment
     formatted_comment(addr, comment_str)
