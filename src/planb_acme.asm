@@ -48,9 +48,9 @@ room_decode_rect_width = $15
 current_room_door_info = $15
 temp_door_byte = $15
 temp_y = $16
-l0017 = $17
-l0018 = $18
-l0019 = $19
+sprite_width_minus_one = $17
+sprite_height = $18
+number_of_dying_items = $19
 player_x = $1a
 player_y = $1b
 player_sprite = $1c
@@ -77,7 +77,7 @@ print_addr_high = $30
 temp_slash_divisor = $31
 energy_bar_level = $32
 ammo_bar_level = $33
-l0034 = $34
+temp_enemy_count = $34
 sound_duration = $35
 stack_ptr = $36
 number_of_enemies = $37
@@ -98,7 +98,6 @@ half_length_of_room_title = $45
 os_escape_flag = $ff
 evntv = $0220
 current_room_cache = $0400
-l0405 = $0405
 dying_items = $0500
 arrow_slots = $0580
 highscore_table_names = $0600
@@ -4604,7 +4603,8 @@ sprite_offset_table_high
 ; 1***************************************
 room_0_definition
     !byte $3d                                                         ; 213c: 3d          =              ; offset to start of doors
-    !byte 2, 2, 2, 2, 1                                               ; 213d: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 213d: 02 02 02... ...            ; four enemy types
+    !byte 1                                                           ; 2141: 01          .              ; max enemies to show is 1
     !byte $28                                                         ; 2142: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2143: 71          q              ; set delta to 0,1
     !byte $19                                                         ; 2144: 19          .              ; plot strip at 39,6 of length 25
@@ -4690,7 +4690,8 @@ room_0_definition
 ; *****************......*****************
 room_1_definition
     !byte $25                                                         ; 2199: 25          %              ; offset to start of doors
-    !byte   1,   1,   1,   1, $14                                     ; 219a: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 219a: 01 01 01... ...            ; four enemy types
+    !byte $14                                                         ; 219e: 14          .              ; max enemies to show is 20
     !byte $e4, $11                                                    ; 219f: e4 11       ..             ; draw rect from 0,6 with size 17x4
     !byte $e6,   9                                                    ; 21a1: e6 09       ..             ; draw rect from 0,10 with size 9x6
     !byte $96,   0                                                    ; 21a3: 96 00       ..             ; set position to 0,22
@@ -4747,7 +4748,8 @@ room_1_definition
 ; ****************************************
 room_2_definition
     !byte $4d                                                         ; 21e0: 4d          M              ; offset to start of doors
-    !byte 3, 3, 3, 3, 6                                               ; 21e1: 03 03 03... ...            ; room header
+    !byte 3, 3, 3, 3                                                  ; 21e1: 03 03 03... ...            ; four enemy types
+    !byte 6                                                           ; 21e5: 06          .              ; max enemies to show is 6
     !byte $42                                                         ; 21e6: 42          B              ; set sprite 2, collision byte 128
     !byte $eb,   4                                                    ; 21e7: eb 04       ..             ; draw rect from 0,6 with size 4x11
     !byte $95,   0                                                    ; 21e9: 95 00       ..             ; set position to 0,21
@@ -4847,7 +4849,8 @@ room_2_definition
 ; ****************************************
 room_3_definition
     !byte $4c                                                         ; 2260: 4c          L              ; offset to start of doors
-    !byte   0,   0,   0,   0, $0a                                     ; 2261: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 2261: 00 00 00... ...            ; four enemy types
+    !byte $0a                                                         ; 2265: 0a          .              ; max enemies to show is 10
     !byte $42                                                         ; 2266: 42          B              ; set sprite 2, collision byte 128
     !byte $e8,   2                                                    ; 2267: e8 02       ..             ; draw rect from 0,6 with size 2x8
     !byte $86,   6                                                    ; 2269: 86 06       ..             ; set position to 6,6
@@ -4935,7 +4938,8 @@ room_3_definition
 ; ************************....************
 room_4_definition
     !byte $25                                                         ; 22d1: 25          %              ; offset to start of doors
-    !byte 0, 0, 0, 0, 5                                               ; 22d2: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 22d2: 00 00 00... ...            ; four enemy types
+    !byte 5                                                           ; 22d6: 05          .              ; max enemies to show is 5
     !byte $42                                                         ; 22d7: 42          B              ; set sprite 2, collision byte 128
     !byte $e4, $28                                                    ; 22d8: e4 28       .(             ; draw rect from 0,6 with size 40x4
     !byte $e3,   4                                                    ; 22da: e3 04       ..             ; draw rect from 0,10 with size 4x3
@@ -4995,7 +4999,8 @@ room_4_definition
 ; ************************....************
 room_5_definition
     !byte $0e                                                         ; 2319: 0e          .              ; offset to start of doors
-    !byte 0, 0, 0, 0, 2                                               ; 231a: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 231a: 00 00 00... ...            ; four enemy types
+    !byte 2                                                           ; 231e: 02          .              ; max enemies to show is 2
     !byte $43                                                         ; 231f: 43          C              ; set sprite 3, collision byte 128
     !byte $fa, $18                                                    ; 2320: fa 18       ..             ; draw rect from 0,6 with size 24x26
     !byte $86, $1c                                                    ; 2322: 86 1c       ..             ; set position to 28,6
@@ -5038,7 +5043,8 @@ room_5_definition
 ; ****************************************
 room_6_definition
     !byte $5f                                                         ; 234a: 5f          _              ; offset to start of doors
-    !byte 0, 1, 0, 1, 5                                               ; 234b: 00 01 00... ...            ; room header
+    !byte 0, 1, 0, 1                                                  ; 234b: 00 01 00... ...            ; four enemy types
+    !byte 5                                                           ; 234f: 05          .              ; max enemies to show is 5
     !byte $43                                                         ; 2350: 43          C              ; set sprite 3, collision byte 128
     !byte $e2, $18                                                    ; 2351: e2 18       ..             ; draw rect from 0,6 with size 24x2
     !byte $f4,   2                                                    ; 2353: f4 02       ..             ; draw rect from 0,8 with size 2x20
@@ -5150,7 +5156,8 @@ room_6_definition
 ; ****....********************************
 room_7_definition
     !byte $2a                                                         ; 23ee: 2a          *              ; offset to start of doors
-    !byte 2, 2, 2, 0, 6                                               ; 23ef: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 0                                                  ; 23ef: 02 02 02... ...            ; four enemy types
+    !byte 6                                                           ; 23f3: 06          .              ; max enemies to show is 6
     !byte $42                                                         ; 23f4: 42          B              ; set sprite 2, collision byte 128
     !byte $e2, $28                                                    ; 23f5: e2 28       .(             ; draw rect from 0,6 with size 40x2
     !byte $88, $24                                                    ; 23f7: 88 24       .$             ; set position to 36,8
@@ -5210,7 +5217,8 @@ room_7_definition
 ; ****************************************
 room_8_definition
     !byte $3b                                                         ; 242c: 3b          ;              ; offset to start of doors
-    !byte   0,   1,   2,   3, $0a                                     ; 242d: 00 01 02... ...            ; room header
+    !byte 0, 1, 2, 3                                                  ; 242d: 00 01 02... ...            ; four enemy types
+    !byte $0a                                                         ; 2431: 0a          .              ; max enemies to show is 10
     !byte $42                                                         ; 2432: 42          B              ; set sprite 2, collision byte 128
     !byte $e4,   3                                                    ; 2433: e4 03       ..             ; draw rect from 0,6 with size 3x4
     !byte $8e,   0                                                    ; 2435: 8e 00       ..             ; set position to 0,14
@@ -5284,7 +5292,8 @@ room_8_definition
 ; *********************....***************
 room_9_definition
     !byte $57                                                         ; 248c: 57          W              ; offset to start of doors
-    !byte 1, 2, 2, 1, 5                                               ; 248d: 01 02 02... ...            ; room header
+    !byte 1, 2, 2, 1                                                  ; 248d: 01 02 02... ...            ; four enemy types
+    !byte 5                                                           ; 2491: 05          .              ; max enemies to show is 5
     !byte $42                                                         ; 2492: 42          B              ; set sprite 2, collision byte 128
     !byte $28                                                         ; 2493: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2494: 71          q              ; set delta to 0,1
@@ -5390,7 +5399,8 @@ room_9_definition
 ; ****************************************
 room_10_definition
     !byte $49                                                         ; 2519: 49          I              ; offset to start of doors
-    !byte 0, 1, 0, 1, 5                                               ; 251a: 00 01 00... ...            ; room header
+    !byte 0, 1, 0, 1                                                  ; 251a: 00 01 00... ...            ; four enemy types
+    !byte 5                                                           ; 251e: 05          .              ; max enemies to show is 5
     !byte $42                                                         ; 251f: 42          B              ; set sprite 2, collision byte 128
     !byte $28                                                         ; 2520: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2521: 71          q              ; set delta to 0,1
@@ -5481,7 +5491,8 @@ room_10_definition
 ; .***************************************
 room_11_definition
     !byte $57                                                         ; 25a0: 57          W              ; offset to start of doors
-    !byte   2,   2,   2,   2, $0a                                     ; 25a1: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 25a1: 02 02 02... ...            ; four enemy types
+    !byte $0a                                                         ; 25a5: 0a          .              ; max enemies to show is 10
     !byte $43                                                         ; 25a6: 43          C              ; set sprite 3, collision byte 128
     !byte $86,   1                                                    ; 25a7: 86 01       ..             ; set position to 1,6
     !byte $e3, $27                                                    ; 25a9: e3 27       .'             ; draw rect from 1,6 with size 39x3
@@ -5582,7 +5593,8 @@ room_11_definition
 ; ****************************************
 room_12_definition
     !byte $79                                                         ; 2619: 79          y              ; offset to start of doors
-    !byte 1, 1, 1, 1, 5                                               ; 261a: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 261a: 01 01 01... ...            ; four enemy types
+    !byte 5                                                           ; 261e: 05          .              ; max enemies to show is 5
     !byte $43                                                         ; 261f: 43          C              ; set sprite 3, collision byte 128
     !byte $e3,   5                                                    ; 2620: e3 05       ..             ; draw rect from 0,6 with size 5x3
     !byte $86,   9                                                    ; 2622: 86 09       ..             ; set position to 9,6
@@ -5703,7 +5715,8 @@ room_12_definition
 ; ****************************************
 room_13_definition
     !byte $47                                                         ; 26b0: 47          G              ; offset to start of doors
-    !byte 2, 3, 2, 3, 5                                               ; 26b1: 02 03 02... ...            ; room header
+    !byte 2, 3, 2, 3                                                  ; 26b1: 02 03 02... ...            ; four enemy types
+    !byte 5                                                           ; 26b5: 05          .              ; max enemies to show is 5
     !byte $43                                                         ; 26b6: 43          C              ; set sprite 3, collision byte 128
     !byte $28                                                         ; 26b7: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 26b8: 71          q              ; set delta to 0,1
@@ -5796,7 +5809,8 @@ room_13_definition
 ; ****************************************
 room_14_definition
     !byte $32                                                         ; 2728: 32          2              ; offset to start of doors
-    !byte 3, 4, 3, 4, 5                                               ; 2729: 03 04 03... ...            ; room header
+    !byte 3, 4, 3, 4                                                  ; 2729: 03 04 03... ...            ; four enemy types
+    !byte 5                                                           ; 272d: 05          .              ; max enemies to show is 5
     !byte $43                                                         ; 272e: 43          C              ; set sprite 3, collision byte 128
     !byte $28                                                         ; 272f: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2730: 71          q              ; set delta to 0,1
@@ -5872,7 +5886,8 @@ room_14_definition
 ; ******....******************************
 room_15_definition
     !byte $47                                                         ; 278e: 47          G              ; offset to start of doors
-    !byte 0, 3, 0, 3, 5                                               ; 278f: 00 03 00... ...            ; room header
+    !byte 0, 3, 0, 3                                                  ; 278f: 00 03 00... ...            ; four enemy types
+    !byte 5                                                           ; 2793: 05          .              ; max enemies to show is 5
     !byte $43                                                         ; 2794: 43          C              ; set sprite 3, collision byte 128
     !byte $e6,   6                                                    ; 2795: e6 06       ..             ; draw rect from 0,6 with size 6x6
     !byte $e4,   2                                                    ; 2797: e4 02       ..             ; draw rect from 0,12 with size 2x4
@@ -5955,7 +5970,8 @@ room_15_definition
 ; *****1DDDD1*****************************
 room_16_definition
     !byte $3f                                                         ; 280c: 3f          ?              ; offset to start of doors
-    !byte 2, 3, 2, 3, 5                                               ; 280d: 02 03 02... ...            ; room header
+    !byte 2, 3, 2, 3                                                  ; 280d: 02 03 02... ...            ; four enemy types
+    !byte 5                                                           ; 2811: 05          .              ; max enemies to show is 5
     !byte $43                                                         ; 2812: 43          C              ; set sprite 3, collision byte 128
     !byte $fa,   6                                                    ; 2813: fa 06       ..             ; draw rect from 0,6 with size 6x26
     !byte $86, $0a                                                    ; 2815: 86 0a       ..             ; set position to 10,6
@@ -6029,7 +6045,8 @@ room_16_definition
 ; ******....******************************
 room_17_definition
     !byte $47                                                         ; 2869: 47          G              ; offset to start of doors
-    !byte 0, 1, 0, 1, 6                                               ; 286a: 00 01 00... ...            ; room header
+    !byte 0, 1, 0, 1                                                  ; 286a: 00 01 00... ...            ; four enemy types
+    !byte 6                                                           ; 286e: 06          .              ; max enemies to show is 6
     !byte $42                                                         ; 286f: 42          B              ; set sprite 2, collision byte 128
     !byte $28                                                         ; 2870: 28          (              ; plot strip at 0,6 of length 40
     !byte $8d,   0                                                    ; 2871: 8d 00       ..             ; set position to 0,13
@@ -6119,7 +6136,8 @@ room_17_definition
 ; ****************************************
 room_18_definition
     !byte $4d                                                         ; 28fb: 4d          M              ; offset to start of doors
-    !byte 2, 2, 2, 2, 5                                               ; 28fc: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 28fc: 02 02 02... ...            ; four enemy types
+    !byte 5                                                           ; 2900: 05          .              ; max enemies to show is 5
     !byte $52                                                         ; 2901: 52          R              ; set sprite 18, collision byte 128
     !byte $e1, $12                                                    ; 2902: e1 12       ..             ; draw rect from 0,6 with size 18x1
     !byte 2                                                           ; 2904: 02          .              ; plot strip at 0,7 of length 2
@@ -6213,7 +6231,8 @@ room_18_definition
 ; ****************************************
 room_19_definition
     !byte $3d                                                         ; 2983: 3d          =              ; offset to start of doors
-    !byte 3, 1, 1, 3, 8                                               ; 2984: 03 01 01... ...            ; room header
+    !byte 3, 1, 1, 3                                                  ; 2984: 03 01 01... ...            ; four enemy types
+    !byte 8                                                           ; 2988: 08          .              ; max enemies to show is 8
     !byte $42                                                         ; 2989: 42          B              ; set sprite 2, collision byte 128
     !byte $28                                                         ; 298a: 28          (              ; plot strip at 0,6 of length 40
     !byte $8d,   0                                                    ; 298b: 8d 00       ..             ; set position to 0,13
@@ -6289,7 +6308,8 @@ room_19_definition
 ; ****************************************
 room_20_definition
     !byte $34                                                         ; 29f3: 34          4              ; offset to start of doors
-    !byte   0,   0,   0,   0, $14                                     ; 29f4: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 29f4: 00 00 00... ...            ; four enemy types
+    !byte $14                                                         ; 29f8: 14          .              ; max enemies to show is 20
     !byte $42                                                         ; 29f9: 42          B              ; set sprite 2, collision byte 128
     !byte 1                                                           ; 29fa: 01          .              ; plot strip at 0,6 of length 1
     !byte $a6                                                         ; 29fb: a6          .              ; move by 6*delta to 6,6
@@ -6376,7 +6396,8 @@ room_20_definition
 ; ****************************************
 room_21_definition
     !byte $2a                                                         ; 2a6d: 2a          *              ; offset to start of doors
-    !byte   0,   0,   0,   0, $14                                     ; 2a6e: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 2a6e: 00 00 00... ...            ; four enemy types
+    !byte $14                                                         ; 2a72: 14          .              ; max enemies to show is 20
     !byte $42                                                         ; 2a73: 42          B              ; set sprite 2, collision byte 128
     !byte $28                                                         ; 2a74: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2a75: 71          q              ; set delta to 0,1
@@ -6446,7 +6467,8 @@ room_21_definition
 ; ****************************************
 room_22_definition
     !byte $4c                                                         ; 2ac6: 4c          L              ; offset to start of doors
-    !byte   0,   0,   0,   0, $14                                     ; 2ac7: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 2ac7: 00 00 00... ...            ; four enemy types
+    !byte $14                                                         ; 2acb: 14          .              ; max enemies to show is 20
     !byte $42                                                         ; 2acc: 42          B              ; set sprite 2, collision byte 128
     !byte $28                                                         ; 2acd: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2ace: 71          q              ; set delta to 0,1
@@ -6532,7 +6554,8 @@ room_22_definition
 ; **....**************************....****
 room_23_definition
     !byte $4c                                                         ; 2b3a: 4c          L              ; offset to start of doors
-    !byte 0, 3, 0, 3, 6                                               ; 2b3b: 00 03 00... ...            ; room header
+    !byte 0, 3, 0, 3                                                  ; 2b3b: 00 03 00... ...            ; four enemy types
+    !byte 6                                                           ; 2b3f: 06          .              ; max enemies to show is 6
     !byte $42                                                         ; 2b40: 42          B              ; set sprite 2, collision byte 128
     !byte $0c                                                         ; 2b41: 0c          .              ; plot strip at 0,6 of length 12
     !byte $a4                                                         ; 2b42: a4          .              ; move by 4*delta to 15,6
@@ -6629,7 +6652,8 @@ room_23_definition
 ; ************....************************
 room_24_definition
     !byte $56                                                         ; 2bb5: 56          V              ; offset to start of doors
-    !byte 2, 2, 2, 2, 5                                               ; 2bb6: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 2bb6: 02 02 02... ...            ; four enemy types
+    !byte 5                                                           ; 2bba: 05          .              ; max enemies to show is 5
     !byte $44                                                         ; 2bbb: 44          D              ; set sprite 4, collision byte 128
     !byte $e9,   3                                                    ; 2bbc: e9 03       ..             ; draw rect from 0,6 with size 3x9
     !byte $86,   5                                                    ; 2bbe: 86 05       ..             ; set position to 5,6
@@ -6725,7 +6749,8 @@ room_24_definition
 ; ****************************************
 room_25_definition
     !byte $2b                                                         ; 2c33: 2b          +              ; offset to start of doors
-    !byte 3, 2, 1, 0, 6                                               ; 2c34: 03 02 01... ...            ; room header
+    !byte 3, 2, 1, 0                                                  ; 2c34: 03 02 01... ...            ; four enemy types
+    !byte 6                                                           ; 2c38: 06          .              ; max enemies to show is 6
     !byte $e2, $28                                                    ; 2c39: e2 28       .(             ; draw rect from 0,6 with size 40x2
     !byte $e6,   3                                                    ; 2c3b: e6 03       ..             ; draw rect from 0,8 with size 3x6
     !byte $0d                                                         ; 2c3d: 0d          .              ; plot strip at 0,14 of length 13
@@ -6795,7 +6820,8 @@ room_25_definition
 ; ***==***********==....==***********==***
 room_26_definition
     !byte $3e                                                         ; 2c93: 3e          >              ; offset to start of doors
-    !byte   1,   1,   1,   1, $0a                                     ; 2c94: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 2c94: 01 01 01... ...            ; four enemy types
+    !byte $0a                                                         ; 2c98: 0a          .              ; max enemies to show is 10
     !byte $44                                                         ; 2c99: 44          D              ; set sprite 4, collision byte 128
     !byte $f5,   3                                                    ; 2c9a: f5 03       ..             ; draw rect from 0,6 with size 3x21
     !byte $9f,   0                                                    ; 2c9c: 9f 00       ..             ; set position to 0,31
@@ -6878,7 +6904,8 @@ room_26_definition
 ; ****************************************
 room_27_definition
     !byte $53                                                         ; 2cf3: 53          S              ; offset to start of doors
-    !byte 0, 1, 2, 0, 6                                               ; 2cf4: 00 01 02... ...            ; room header
+    !byte 0, 1, 2, 0                                                  ; 2cf4: 00 01 02... ...            ; four enemy types
+    !byte 6                                                           ; 2cf8: 06          .              ; max enemies to show is 6
     !byte $e3, $28                                                    ; 2cf9: e3 28       .(             ; draw rect from 0,6 with size 40x3
     !byte $71                                                         ; 2cfb: 71          q              ; set delta to 0,1
     !byte $15                                                         ; 2cfc: 15          .              ; plot strip at 0,9 of length 21
@@ -6988,7 +7015,8 @@ room_27_definition
 ; ****************************************
 room_28_definition
     !byte $5f                                                         ; 2d87: 5f          _              ; offset to start of doors
-    !byte 1, 1, 1, 2, 8                                               ; 2d88: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 2                                                  ; 2d88: 01 01 01... ...            ; four enemy types
+    !byte 8                                                           ; 2d8c: 08          .              ; max enemies to show is 8
     !byte $42                                                         ; 2d8d: 42          B              ; set sprite 2, collision byte 128
     !byte $e5,   4                                                    ; 2d8e: e5 04       ..             ; draw rect from 0,6 with size 4x5
     !byte $71                                                         ; 2d90: 71          q              ; set delta to 0,1
@@ -7104,7 +7132,8 @@ room_28_definition
 ; ****************************************
 room_29_definition
     !byte $57                                                         ; 2e1b: 57          W              ; offset to start of doors
-    !byte 2, 2, 2, 2, 3                                               ; 2e1c: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 2e1c: 02 02 02... ...            ; four enemy types
+    !byte 3                                                           ; 2e20: 03          .              ; max enemies to show is 3
     !byte $28                                                         ; 2e21: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2e22: 71          q              ; set delta to 0,1
     !byte $19                                                         ; 2e23: 19          .              ; plot strip at 39,6 of length 25
@@ -7213,7 +7242,8 @@ room_29_definition
 ; *......*********************************
 room_30_definition
     !byte $3b                                                         ; 2ea8: 3b          ;              ; offset to start of doors
-    !byte 3, 2, 3, 2, 6                                               ; 2ea9: 03 02 03... ...            ; room header
+    !byte 3, 2, 3, 2                                                  ; 2ea9: 03 02 03... ...            ; four enemy types
+    !byte 6                                                           ; 2ead: 06          .              ; max enemies to show is 6
     !byte $71                                                         ; 2eae: 71          q              ; set delta to 0,1
     !byte $1a                                                         ; 2eaf: 1a          .              ; plot strip at 0,6 of length 26
     !byte $97,   7                                                    ; 2eb0: 97 07       ..             ; set position to 7,23
@@ -7300,7 +7330,8 @@ room_30_definition
 ; *......*********************************
 room_31_definition
     !byte $35                                                         ; 2f08: 35          5              ; offset to start of doors
-    !byte 3, 1, 1, 3, 6                                               ; 2f09: 03 01 01... ...            ; room header
+    !byte 3, 1, 1, 3                                                  ; 2f09: 03 01 01... ...            ; four enemy types
+    !byte 6                                                           ; 2f0d: 06          .              ; max enemies to show is 6
     !byte $28                                                         ; 2f0e: 28          (              ; plot strip at 0,6 of length 40
     !byte $8d, $1d                                                    ; 2f0f: 8d 1d       ..             ; set position to 29,13
     !byte $0b                                                         ; 2f11: 0b          .              ; plot strip at 29,13 of length 11
@@ -7384,7 +7415,8 @@ room_31_definition
 ; **********************....*************1
 room_32_definition
     !byte $4c                                                         ; 2f6c: 4c          L              ; offset to start of doors
-    !byte 0, 0, 1, 1, 8                                               ; 2f6d: 00 00 01... ...            ; room header
+    !byte 0, 0, 1, 1                                                  ; 2f6d: 00 00 01... ...            ; four enemy types
+    !byte 8                                                           ; 2f71: 08          .              ; max enemies to show is 8
     !byte $28                                                         ; 2f72: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 2f73: 71          q              ; set delta to 0,1
     !byte $19                                                         ; 2f74: 19          .              ; plot strip at 39,6 of length 25
@@ -7492,7 +7524,8 @@ room_32_definition
 ; ****************************************
 room_33_definition
     !byte $44                                                         ; 2ff3: 44          D              ; offset to start of doors
-    !byte 0, 2, 0, 2, 5                                               ; 2ff4: 00 02 00... ...            ; room header
+    !byte 0, 2, 0, 2                                                  ; 2ff4: 00 02 00... ...            ; four enemy types
+    !byte 5                                                           ; 2ff8: 05          .              ; max enemies to show is 5
     !byte $e3, $16                                                    ; 2ff9: e3 16       ..             ; draw rect from 0,6 with size 22x3
     !byte $71                                                         ; 2ffb: 71          q              ; set delta to 0,1
     !byte $0d                                                         ; 2ffc: 0d          .              ; plot strip at 0,9 of length 13
@@ -7577,7 +7610,8 @@ room_33_definition
 ; ****************************************
 room_34_definition
     !byte $35                                                         ; 3059: 35          5              ; offset to start of doors
-    !byte 3, 4, 3, 4, 5                                               ; 305a: 03 04 03... ...            ; room header
+    !byte 3, 4, 3, 4                                                  ; 305a: 03 04 03... ...            ; four enemy types
+    !byte 5                                                           ; 305e: 05          .              ; max enemies to show is 5
     !byte 2                                                           ; 305f: 02          .              ; plot strip at 0,6 of length 2
     !byte $a6                                                         ; 3060: a6          .              ; move by 6*delta to 7,6
     !byte 3                                                           ; 3061: 03          .              ; plot strip at 7,6 of length 3
@@ -7662,7 +7696,8 @@ room_34_definition
 ; **......***......1DDDD1......***......**
 room_35_definition
     !byte $4e                                                         ; 30b7: 4e          N              ; offset to start of doors
-    !byte 3, 4, 3, 4, 6                                               ; 30b8: 03 04 03... ...            ; room header
+    !byte 3, 4, 3, 4                                                  ; 30b8: 03 04 03... ...            ; four enemy types
+    !byte 6                                                           ; 30bc: 06          .              ; max enemies to show is 6
     !byte $28                                                         ; 30bd: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 30be: 71          q              ; set delta to 0,1
     !byte $19                                                         ; 30bf: 19          .              ; plot strip at 39,6 of length 25
@@ -7777,7 +7812,8 @@ room_35_definition
 ; .......................................*
 room_36_definition
     !byte $85                                                         ; 315b: 85          .              ; offset to start of doors
-    !byte 2, 2, 2, 2, 1                                               ; 315c: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 315c: 02 02 02... ...            ; four enemy types
+    !byte 1                                                           ; 3160: 01          .              ; max enemies to show is 1
     !byte $86, $27                                                    ; 3161: 86 27       .'             ; set position to 39,6
     !byte $71                                                         ; 3163: 71          q              ; set delta to 0,1
     !byte $1a                                                         ; 3164: 1a          .              ; plot strip at 39,6 of length 26
@@ -7920,7 +7956,8 @@ room_36_definition
 ; ****************************************
 room_37_definition
     !byte $48                                                         ; 31fe: 48          H              ; offset to start of doors
-    !byte 2, 2, 2, 2, 5                                               ; 31ff: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 31ff: 02 02 02... ...            ; four enemy types
+    !byte 5                                                           ; 3203: 05          .              ; max enemies to show is 5
     !byte $42                                                         ; 3204: 42          B              ; set sprite 2, collision byte 128
     !byte $e1, $28                                                    ; 3205: e1 28       .(             ; draw rect from 0,6 with size 40x1
     !byte $e1, $0c                                                    ; 3207: e1 0c       ..             ; draw rect from 0,7 with size 12x1
@@ -8003,7 +8040,8 @@ room_37_definition
 ; ****************************************
 room_38_definition
     !byte $57                                                         ; 3285: 57          W              ; offset to start of doors
-    !byte 0, 2, 0, 2, 5                                               ; 3286: 00 02 00... ...            ; room header
+    !byte 0, 2, 0, 2                                                  ; 3286: 00 02 00... ...            ; four enemy types
+    !byte 5                                                           ; 328a: 05          .              ; max enemies to show is 5
     !byte $52                                                         ; 328b: 52          R              ; set sprite 18, collision byte 128
     !byte $71                                                         ; 328c: 71          q              ; set delta to 0,1
     !byte 7                                                           ; 328d: 07          .              ; plot strip at 0,6 of length 7
@@ -8105,7 +8143,8 @@ room_38_definition
 ; **..............****....********......**
 room_39_definition
     !byte $71                                                         ; 3304: 71          q              ; offset to start of doors
-    !byte 0, 2, 0, 2, 5                                               ; 3305: 00 02 00... ...            ; room header
+    !byte 0, 2, 0, 2                                                  ; 3305: 00 02 00... ...            ; four enemy types
+    !byte 5                                                           ; 3309: 05          .              ; max enemies to show is 5
     !byte $52                                                         ; 330a: 52          R              ; set sprite 18, collision byte 128
     !byte $71                                                         ; 330b: 71          q              ; set delta to 0,1
     !byte $1a                                                         ; 330c: 1a          .              ; plot strip at 0,6 of length 26
@@ -8233,7 +8272,8 @@ room_39_definition
 ; ****************************************
 room_40_definition
     !byte $73                                                         ; 33b6: 73          s              ; offset to start of doors
-    !byte   2,   2,   2,   0, $0a                                     ; 33b7: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 0                                                  ; 33b7: 02 02 02... ...            ; four enemy types
+    !byte $0a                                                         ; 33bb: 0a          .              ; max enemies to show is 10
     !byte $52                                                         ; 33bc: 52          R              ; set sprite 18, collision byte 128
     !byte $71                                                         ; 33bd: 71          q              ; set delta to 0,1
     !byte $0a                                                         ; 33be: 0a          .              ; plot strip at 0,6 of length 10
@@ -8363,7 +8403,8 @@ room_40_definition
 ; ***.....**....*********************....*
 room_41_definition
     !byte $62                                                         ; 3450: 62          b              ; offset to start of doors
-    !byte 1, 1, 1, 1, 8                                               ; 3451: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 3451: 01 01 01... ...            ; four enemy types
+    !byte 8                                                           ; 3455: 08          .              ; max enemies to show is 8
     !byte $52                                                         ; 3456: 52          R              ; set sprite 18, collision byte 128
     !byte $e9, $12                                                    ; 3457: e9 12       ..             ; draw rect from 0,6 with size 18x9
     !byte $71                                                         ; 3459: 71          q              ; set delta to 0,1
@@ -8479,7 +8520,8 @@ room_41_definition
 ; ***..................................***
 room_42_definition
     !byte $77                                                         ; 34e4: 77          w              ; offset to start of doors
-    !byte 1, 1, 1, 1, 7                                               ; 34e5: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 34e5: 01 01 01... ...            ; four enemy types
+    !byte 7                                                           ; 34e9: 07          .              ; max enemies to show is 7
     !byte $52                                                         ; 34ea: 52          R              ; set sprite 18, collision byte 128
     !byte $12                                                         ; 34eb: 12          .              ; plot strip at 0,6 of length 18
     !byte $a6                                                         ; 34ec: a6          .              ; move by 6*delta to 23,6
@@ -8601,7 +8643,8 @@ room_42_definition
 ; ******************......****************
 room_43_definition
     !byte $64                                                         ; 3592: 64          d              ; offset to start of doors
-    !byte 1, 1, 1, 1, 5                                               ; 3593: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 3593: 01 01 01... ...            ; four enemy types
+    !byte 5                                                           ; 3597: 05          .              ; max enemies to show is 5
     !byte $52                                                         ; 3598: 52          R              ; set sprite 18, collision byte 128
     !byte $e4, $28                                                    ; 3599: e4 28       .(             ; draw rect from 0,6 with size 40x4
     !byte $71                                                         ; 359b: 71          q              ; set delta to 0,1
@@ -8703,7 +8746,8 @@ room_43_definition
 ; ****************************************
 room_44_definition
     !byte $55                                                         ; 360b: 55          U              ; offset to start of doors
-    !byte   3,   1,   3,   1, $0a                                     ; 360c: 03 01 03... ...            ; room header
+    !byte 3, 1, 3, 1                                                  ; 360c: 03 01 03... ...            ; four enemy types
+    !byte $0a                                                         ; 3610: 0a          .              ; max enemies to show is 10
     !byte $52                                                         ; 3611: 52          R              ; set sprite 18, collision byte 128
     !byte $71                                                         ; 3612: 71          q              ; set delta to 0,1
     !byte $0a                                                         ; 3613: 0a          .              ; plot strip at 0,6 of length 10
@@ -8805,7 +8849,8 @@ room_44_definition
 ; ****************************************
 room_45_definition
     !byte $20                                                         ; 368a: 20                         ; offset to start of doors
-    !byte   3,   2,   3,   2, $0a                                     ; 368b: 03 02 03... ...            ; room header
+    !byte 3, 2, 3, 2                                                  ; 368b: 03 02 03... ...            ; four enemy types
+    !byte $0a                                                         ; 368f: 0a          .              ; max enemies to show is 10
     !byte $55                                                         ; 3690: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 3691: 28          (              ; plot strip at 0,6 of length 40
     !byte $5e                                                         ; 3692: 5e          ^              ; set sprite 30, collision byte 128
@@ -8866,7 +8911,8 @@ room_45_definition
 ; ****************************************
 room_46_definition
     !byte $58                                                         ; 36d7: 58          X              ; offset to start of doors
-    !byte   1,   2,   1,   2, $0a                                     ; 36d8: 01 02 01... ...            ; room header
+    !byte 1, 2, 1, 2                                                  ; 36d8: 01 02 01... ...            ; four enemy types
+    !byte $0a                                                         ; 36dc: 0a          .              ; max enemies to show is 10
     !byte $55                                                         ; 36dd: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 36de: 28          (              ; plot strip at 0,6 of length 40
     !byte $5e                                                         ; 36df: 5e          ^              ; set sprite 30, collision byte 128
@@ -8976,7 +9022,8 @@ room_46_definition
 ; ****************************************
 room_47_definition
     !byte $20                                                         ; 3786: 20                         ; offset to start of doors
-    !byte   0,   2,   0,   2, $0a                                     ; 3787: 00 02 00... ...            ; room header
+    !byte 0, 2, 0, 2                                                  ; 3787: 00 02 00... ...            ; four enemy types
+    !byte $0a                                                         ; 378b: 0a          .              ; max enemies to show is 10
     !byte $55                                                         ; 378c: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 378d: 28          (              ; plot strip at 0,6 of length 40
     !byte $5e                                                         ; 378e: 5e          ^              ; set sprite 30, collision byte 128
@@ -9037,7 +9084,8 @@ room_47_definition
 ; ****************************************
 room_48_definition
     !byte $61                                                         ; 37d3: 61          a              ; offset to start of doors
-    !byte   0,   1,   1,   0, $0a                                     ; 37d4: 00 01 01... ...            ; room header
+    !byte 0, 1, 1, 0                                                  ; 37d4: 00 01 01... ...            ; four enemy types
+    !byte $0a                                                         ; 37d8: 0a          .              ; max enemies to show is 10
     !byte $55                                                         ; 37d9: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 37da: 28          (              ; plot strip at 0,6 of length 40
     !byte $90,   6                                                    ; 37db: 90 06       ..             ; set position to 6,16
@@ -9147,7 +9195,8 @@ room_48_definition
 ; ***********************************==***
 room_49_definition
     !byte $29                                                         ; 386d: 29          )              ; offset to start of doors
-    !byte 3, 2, 3, 2, 6                                               ; 386e: 03 02 03... ...            ; room header
+    !byte 3, 2, 3, 2                                                  ; 386e: 03 02 03... ...            ; four enemy types
+    !byte 6                                                           ; 3872: 06          .              ; max enemies to show is 6
     !byte $55                                                         ; 3873: 55          U              ; set sprite 21, collision byte 128
     !byte $1b                                                         ; 3874: 1b          .              ; plot strip at 0,6 of length 27
     !byte $71                                                         ; 3875: 71          q              ; set delta to 0,1
@@ -9220,7 +9269,8 @@ room_49_definition
 ; ***==***********==....==***********==***
 room_50_definition
     !byte $3f                                                         ; 38e8: 3f          ?              ; offset to start of doors
-    !byte 1, 1, 1, 1, 6                                               ; 38e9: 01 01 01... ...            ; room header
+    !byte 1, 1, 1, 1                                                  ; 38e9: 01 01 01... ...            ; four enemy types
+    !byte 6                                                           ; 38ed: 06          .              ; max enemies to show is 6
     !byte $44                                                         ; 38ee: 44          D              ; set sprite 4, collision byte 128
     !byte $e4,   3                                                    ; 38ef: e4 03       ..             ; draw rect from 0,6 with size 3x4
     !byte $71                                                         ; 38f1: 71          q              ; set delta to 0,1
@@ -9410,7 +9460,8 @@ room_definition_high
 ; ***==***********=1DDDD1=***********==***
 room_51_definition
     !byte $44                                                         ; 39b9: 44          D              ; offset to start of doors
-    !byte 2, 2, 2, 3, 7                                               ; 39ba: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 3                                                  ; 39ba: 02 02 02... ...            ; four enemy types
+    !byte 7                                                           ; 39be: 07          .              ; max enemies to show is 7
     !byte $55                                                         ; 39bf: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 39c0: 28          (              ; plot strip at 0,6 of length 40
     !byte $44                                                         ; 39c1: 44          D              ; set sprite 4, collision byte 128
@@ -9499,7 +9550,8 @@ room_51_definition
 ; ***==*************....*****************.
 room_52_definition
     !byte $53                                                         ; 3a2c: 53          S              ; offset to start of doors
-    !byte 1, 2, 1, 2, 8                                               ; 3a2d: 01 02 01... ...            ; room header
+    !byte 1, 2, 1, 2                                                  ; 3a2d: 01 02 01... ...            ; four enemy types
+    !byte 8                                                           ; 3a31: 08          .              ; max enemies to show is 8
     !byte $44                                                         ; 3a32: 44          D              ; set sprite 4, collision byte 128
     !byte $fa,   7                                                    ; 3a33: fa 07       ..             ; draw rect from 0,6 with size 7x26
     !byte $55                                                         ; 3a35: 55          U              ; set sprite 21, collision byte 128
@@ -9598,7 +9650,8 @@ room_52_definition
 ; .................................**==***
 room_53_definition
     !byte $16                                                         ; 3ac8: 16          .              ; offset to start of doors
-    !byte   2,   2,   2,   2, $0a                                     ; 3ac9: 02 02 02... ...            ; room header
+    !byte 2, 2, 2, 2                                                  ; 3ac9: 02 02 02... ...            ; four enemy types
+    !byte $0a                                                         ; 3acd: 0a          .              ; max enemies to show is 10
     !byte $55                                                         ; 3ace: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 3acf: 28          (              ; plot strip at 0,6 of length 40
     !byte $87,   0                                                    ; 3ad0: 87 00       ..             ; set position to 0,7
@@ -9655,7 +9708,8 @@ room_53_definition
 ; ***==**.................................
 room_54_definition
     !byte $14                                                         ; 3b20: 14          .              ; offset to start of doors
-    !byte   0,   0,   0,   0, $0a                                     ; 3b21: 00 00 00... ...            ; room header
+    !byte 0, 0, 0, 0                                                  ; 3b21: 00 00 00... ...            ; four enemy types
+    !byte $0a                                                         ; 3b25: 0a          .              ; max enemies to show is 10
     !byte $55                                                         ; 3b26: 55          U              ; set sprite 21, collision byte 128
     !byte $28                                                         ; 3b27: 28          (              ; plot strip at 0,6 of length 40
     !byte $71                                                         ; 3b28: 71          q              ; set delta to 0,1
@@ -9699,7 +9753,12 @@ skip_reset_rnd_addr
     rts                                                               ; 3b8e: 60          `
 
 ; Each enemy state has 6 bytes:
-;     byte 0 = zero means not used, bits 0-4 = countdown to changing direction, bit 5 = alive?, bit 6 = ?
+;     byte 0 = zero means not used, otherwise:
+;         bits 0-1: dissolve animation step
+;         bits 2-4: countdown to changing direction
+;         bit 5   : alive?
+;         bit 6   : ?
+;         bit 7   : currently dissolving flag
 ;     byte 1 = x cell position
 ;     byte 2 = y cell position
 ;     byte 3 = delta X
@@ -9712,10 +9771,10 @@ update_enemies_appearing
     ldy #0                                                            ; 3b95: a0 00       ..
 update_enemies_appearing_loop
     lda enemies_state,y                                               ; 3b97: b9 00 0c    ...
-    beq next_enemy                                                    ; 3b9a: f0 30       .0
-    bpl draw_enemy_and_update_animation                               ; 3b9c: 10 60       .`
+    beq next_enemy                                                    ; 3b9a: f0 30       .0             ; if not used, then branch
+    bpl draw_enemy_and_update_animation                               ; 3b9c: 10 60       .`             ; if not dissolving, then branch
     and #3                                                            ; 3b9e: 29 03       ).
-    beq clear_direction_draw_enemy_and_update_animation               ; 3ba0: f0 4d       .M
+    beq clear_direction_draw_enemy_and_update_animation               ; 3ba0: f0 4d       .M             ; if finished dissolving, branch
     clc                                                               ; 3ba2: 18          .
     adc #$34                                                          ; 3ba3: 69 34       i4             ; choose which dissolving sprite to plot
     sta sprite_mask                                                   ; 3ba5: 85 3d       .=
@@ -9747,18 +9806,18 @@ next_enemy
 return1
     rts                                                               ; 3bd3: 60          `
 
-c3bd4
-    jsr sub_c3d28                                                     ; 3bd4: 20 28 3d     (=
-    bcs c3be0                                                         ; 3bd7: b0 07       ..
+update_enemy_spawning
+    jsr check_enemy_spawn_position_clear                              ; 3bd4: 20 28 3d     (=
+    bcs no_spawn                                                      ; 3bd7: b0 07       ..
     lda #$20                                                          ; 3bd9: a9 20       .
     sta enemies_state,y                                               ; 3bdb: 99 00 0c    ...
-    bne c3c4c                                                         ; 3bde: d0 6c       .l
-c3be0
+    bne spawn                                                         ; 3bde: d0 6c       .l             ; ALWAYS branch
+no_spawn
     ldx delta_y                                                       ; 3be0: a6 06       ..
     dec enemies_state,x                                               ; 3be2: de 00 0c    ...
     lda enemies_state,y                                               ; 3be5: b9 00 0c    ...
     and #3                                                            ; 3be8: 29 03       ).
-    bne c3c0f                                                         ; 3bea: d0 23       .#
+    bne draw_enemy_and_update_animation_2                             ; 3bea: d0 23       .#
     jmp enemy_dies                                                    ; 3bec: 4c d0 3c    L.<
 
 clear_direction_draw_enemy_and_update_animation
@@ -9767,17 +9826,18 @@ clear_direction_draw_enemy_and_update_animation
     lda #0                                                            ; 3bf4: a9 00       ..
     sta enemies_state + 3,y                                           ; 3bf6: 99 03 0c    ...            ; set enemy delta X
     sta enemies_state + 4,y                                           ; 3bf9: 99 04 0c    ...            ; set enemy delta Y
-    beq c3c0f                                                         ; 3bfc: f0 11       ..             ; ALWAYS branch
+    beq draw_enemy_and_update_animation_2                             ; 3bfc: f0 11       ..             ; ALWAYS branch
 
 draw_enemy_and_update_animation
     lda enemies_state,y                                               ; 3bfe: b9 00 0c    ...
     and #$40                                                          ; 3c01: 29 40       )@
-    bne c3bd4                                                         ; 3c03: d0 cf       ..
-    jsr sub_c3d28                                                     ; 3c05: 20 28 3d     (=
-    bcc c3c4c                                                         ; 3c08: 90 42       .B
+    bne update_enemy_spawning                                         ; 3c03: d0 cf       ..
+    jsr check_enemy_spawn_position_clear                              ; 3c05: 20 28 3d     (=
+    bcc spawn                                                         ; 3c08: 90 42       .B
     lda #$63                                                          ; 3c0a: a9 63       .c
     sta enemies_state,y                                               ; 3c0c: 99 00 0c    ...
-c3c0f
+; fall through...
+draw_enemy_and_update_animation_2
     lda enemies_state + 5,y                                           ; 3c0f: b9 05 0c    ...            ; enemy sprite number
     pha                                                               ; 3c12: 48          H
     sty delta_y                                                       ; 3c13: 84 06       ..
@@ -9796,19 +9856,19 @@ c3c0f
     sec                                                               ; 3c2f: 38          8
     sbc #$45                                                          ; 3c30: e9 45       .E
     and #3                                                            ; 3c32: 29 03       ).
-    bne c3c3f                                                         ; 3c34: d0 09       ..
+    bne done_animation                                                ; 3c34: d0 09       ..
     lda enemies_state + 5,y                                           ; 3c36: b9 05 0c    ...            ; get enemy sprite number
     sec                                                               ; 3c39: 38          8
     sbc #4                                                            ; 3c3a: e9 04       ..
     sta enemies_state + 5,y                                           ; 3c3c: 99 05 0c    ...            ; get enemy sprite number
-c3c3f
-    jsr sub_c3d28                                                     ; 3c3f: 20 28 3d     (=
+done_animation
+    jsr check_enemy_spawn_position_clear                              ; 3c3f: 20 28 3d     (=
     bcc decrement_loop_counter                                        ; 3c42: 90 84       ..
     jsr decrement_energy_bar                                          ; 3c44: 20 6f 3f     o?
     ldy delta_y                                                       ; 3c47: a4 06       ..
     jmp decrement_loop_counter                                        ; 3c49: 4c c8 3b    L.;
 
-c3c4c
+spawn
     lda enemies_state + 5,y                                           ; 3c4c: b9 05 0c    ...            ; get enemy sprite number
     ldx enemies_state + 1,y                                           ; 3c4f: be 01 0c    ...            ; get enemy X position
     pha                                                               ; 3c52: 48          H
@@ -9853,7 +9913,7 @@ move_enemy_if_possible
     ldx delta_y                                                       ; 3ca1: a6 06       ..
     dec enemies_state,x                                               ; 3ca3: de 00 0c    ...
 loop_c3ca6
-    jmp c3c0f                                                         ; 3ca6: 4c 0f 3c    L.<
+    jmp draw_enemy_and_update_animation_2                             ; 3ca6: 4c 0f 3c    L.<
 
 not_suitable_for_moving_enemy
     lda #$20                                                          ; 3ca9: a9 20       .
@@ -9892,7 +9952,7 @@ enemy_dies
     ldy delta_y                                                       ; 3cef: a4 06       ..
     jmp decrement_loop_counter                                        ; 3cf1: 4c c8 3b    L.;
 
-; carry set if the collision map is not empty at (cell_x,cell_y) with
+; carry clear if the collision map is empty at (cell_x,cell_y) with
 ; size delta_x square
 is_collision_map_empty_here
     ldx cell_y                                                        ; 3cf4: a6 01       ..
@@ -9912,7 +9972,7 @@ collision_map_check_rows_loop
     ldx delta_x                                                       ; 3d0d: a6 05       ..
 collision_map_check_columns_loop
     lda (temp_addr_low),y                                             ; 3d0f: b1 1d       ..
-    bne c3d23                                                         ; 3d11: d0 10       ..
+    bne collision_map_not_empty                                       ; 3d11: d0 10       ..
     iny                                                               ; 3d13: c8          .
     dex                                                               ; 3d14: ca          .
     bne collision_map_check_columns_loop                              ; 3d15: d0 f8       ..
@@ -9923,15 +9983,16 @@ collision_map_check_columns_loop
     dec temp_byte                                                     ; 3d1c: c6 0b       ..
     bne collision_map_check_rows_loop                                 ; 3d1e: d0 eb       ..
     clc                                                               ; 3d20: 18          .
-    bcc c3d25                                                         ; 3d21: 90 02       ..
-c3d23
+    bcc done                                                          ; 3d21: 90 02       ..             ; ALWAYS branch
+collision_map_not_empty
     pla                                                               ; 3d23: 68          h
     sec                                                               ; 3d24: 38          8
-c3d25
+done
     ldy delta_y                                                       ; 3d25: a4 06       ..
     rts                                                               ; 3d27: 60          `
 
-sub_c3d28
+; return with carry clear if the requested spawn position is available
+check_enemy_spawn_position_clear
     ldx enemies_state + 5,y                                           ; 3d28: be 05 0c    ...            ; enemy sprite number
     lda sprite_height_table,x                                         ; 3d2b: bd 3d 20    .=
     sta delta_x                                                       ; 3d2e: 85 05       ..
@@ -9948,54 +10009,54 @@ sub_c3d28
     sta temp_addr_high                                                ; 3d46: 85 1e       ..
     ldy #0                                                            ; 3d48: a0 00       ..
     ldx delta_x                                                       ; 3d4a: a6 05       ..
-loop_c3d4c
+check_collision_map_column_available
     lda (temp_addr_low),y                                             ; 3d4c: b1 1d       ..
     and #$40                                                          ; 3d4e: 29 40       )@
-    bne c3d86                                                         ; 3d50: d0 34       .4
+    bne no_spawn_position_found                                       ; 3d50: d0 34       .4
     iny                                                               ; 3d52: c8          .
     dex                                                               ; 3d53: ca          .
-    bne loop_c3d4c                                                    ; 3d54: d0 f6       ..
+    bne check_collision_map_column_available                          ; 3d54: d0 f6       ..
     ldy #$27                                                          ; 3d56: a0 27       .'
     ldx delta_x                                                       ; 3d58: a6 05       ..
-loop_c3d5a
+collision_map_check_rows_available_loop
     tya                                                               ; 3d5a: 98          .
     pha                                                               ; 3d5b: 48          H
     lda (temp_addr_low),y                                             ; 3d5c: b1 1d       ..
     and #$40                                                          ; 3d5e: 29 40       )@
-    bne c3d85                                                         ; 3d60: d0 23       .#
+    bne not_found                                                     ; 3d60: d0 23       .#
     tya                                                               ; 3d62: 98          .
     sec                                                               ; 3d63: 38          8
     adc delta_x                                                       ; 3d64: 65 05       e.
     tay                                                               ; 3d66: a8          .
     lda (temp_addr_low),y                                             ; 3d67: b1 1d       ..
     and #$40                                                          ; 3d69: 29 40       )@
-    bne c3d85                                                         ; 3d6b: d0 18       ..
+    bne not_found                                                     ; 3d6b: d0 18       ..
     pla                                                               ; 3d6d: 68          h
     clc                                                               ; 3d6e: 18          .
     adc #$28                                                          ; 3d6f: 69 28       i(
     tay                                                               ; 3d71: a8          .
     dex                                                               ; 3d72: ca          .
-    bne loop_c3d5a                                                    ; 3d73: d0 e5       ..
+    bne collision_map_check_rows_available_loop                       ; 3d73: d0 e5       ..
     iny                                                               ; 3d75: c8          .
     ldx delta_x                                                       ; 3d76: a6 05       ..
-loop_c3d78
+check_row_available_loop
     lda (temp_addr_low),y                                             ; 3d78: b1 1d       ..
     and #$40                                                          ; 3d7a: 29 40       )@
-    bne c3d86                                                         ; 3d7c: d0 08       ..
+    bne no_spawn_position_found                                       ; 3d7c: d0 08       ..
     iny                                                               ; 3d7e: c8          .
     dex                                                               ; 3d7f: ca          .
-    bne loop_c3d78                                                    ; 3d80: d0 f6       ..
-    clc                                                               ; 3d82: 18          .
-    bcc c3d87                                                         ; 3d83: 90 02       ..
-c3d85
+    bne check_row_available_loop                                      ; 3d80: d0 f6       ..
+    clc                                                               ; 3d82: 18          .              ; collision map is clear so spawn point is valid
+    bcc spawn_position_found                                          ; 3d83: 90 02       ..             ; ALWAYS branch
+not_found
     pla                                                               ; 3d85: 68          h
-c3d86
+no_spawn_position_found
     sec                                                               ; 3d86: 38          8
-c3d87
+spawn_position_found
     ldy delta_y                                                       ; 3d87: a4 06       ..
     rts                                                               ; 3d89: 60          `
 
-c3d8a
+pull_a_and_return
     pla                                                               ; 3d8a: 68          h
 return2
     rts                                                               ; 3d8b: 60          `
@@ -10003,7 +10064,7 @@ return2
 update_enemies
     ldy #0                                                            ; 3d8c: a0 00       ..
     ldx number_of_enemies                                             ; 3d8e: a6 37       .7
-    cpx l0405                                                         ; 3d90: ec 05 04    ...
+    cpx current_room_cache + 5                                        ; 3d90: ec 05 04    ...
     beq return2                                                       ; 3d93: f0 f6       ..
 update_enemies_loop
     lda enemies_state,y                                               ; 3d95: b9 00 0c    ...
@@ -10020,7 +10081,7 @@ update_enemy
     jsr get_random_byte                                               ; 3da9: 20 76 3b     v;
     and #$1f                                                          ; 3dac: 29 1f       ).
     sta enemies_state + 2,y                                           ; 3dae: 99 02 0c    ...            ; get enemy Y position
-    lda l0034                                                         ; 3db1: a5 34       .4
+    lda temp_enemy_count                                              ; 3db1: a5 34       .4
     and #3                                                            ; 3db3: 29 03       ).
     tax                                                               ; 3db5: aa          .
     lda current_room_cache + 1,x                                      ; 3db6: bd 01 04    ...
@@ -10057,26 +10118,26 @@ update_enemy
     ldy #0                                                            ; 3df5: a0 00       ..
     lda delta_x                                                       ; 3df7: a5 05       ..
     sta temp_byte                                                     ; 3df9: 85 0b       ..
-loop_c3dfb
+check_clear_loop
     ldx delta_x                                                       ; 3dfb: a6 05       ..
     tya                                                               ; 3dfd: 98          .
     pha                                                               ; 3dfe: 48          H
-loop_c3dff
+check_row_clear_loop
     lda (temp_addr_low),y                                             ; 3dff: b1 1d       ..
-    bne c3d8a                                                         ; 3e01: d0 87       ..
+    bne pull_a_and_return                                             ; 3e01: d0 87       ..
     iny                                                               ; 3e03: c8          .
     dex                                                               ; 3e04: ca          .
-    bne loop_c3dff                                                    ; 3e05: d0 f8       ..
+    bne check_row_clear_loop                                          ; 3e05: d0 f8       ..
     pla                                                               ; 3e07: 68          h
     dec temp_byte                                                     ; 3e08: c6 0b       ..
-    beq c3e12                                                         ; 3e0a: f0 06       ..
+    beq done_checking_clear                                           ; 3e0a: f0 06       ..
     clc                                                               ; 3e0c: 18          .
     adc #$28                                                          ; 3e0d: 69 28       i(
     tay                                                               ; 3e0f: a8          .
-    bne loop_c3dfb                                                    ; 3e10: d0 e9       ..
-c3e12
+    bne check_clear_loop                                              ; 3e10: d0 e9       ..
+done_checking_clear
     ldy delta_y                                                       ; 3e12: a4 06       ..
-    inc l0034                                                         ; 3e14: e6 34       .4
+    inc temp_enemy_count                                              ; 3e14: e6 34       .4
     inc number_of_enemies                                             ; 3e16: e6 37       .7
     lda #$a3                                                          ; 3e18: a9 a3       ..
     sta enemies_state,y                                               ; 3e1a: 99 00 0c    ...
@@ -10153,10 +10214,10 @@ divide_loop
     asl temp_counter                                                  ; 3e91: 06 3a       .:
     rol                                                               ; 3e93: 2a          *
     cmp temp_slash_divisor                                            ; 3e94: c5 31       .1
-    bcc c3e9c                                                         ; 3e96: 90 04       ..
+    bcc divide_next_bit                                               ; 3e96: 90 04       ..
     sbc temp_slash_divisor                                            ; 3e98: e5 31       .1
     inc temp_counter                                                  ; 3e9a: e6 3a       .:
-c3e9c
+divide_next_bit
     dey                                                               ; 3e9c: 88          .
     bne divide_loop                                                   ; 3e9d: d0 f2       ..
     rts                                                               ; 3e9f: 60          `
@@ -10236,11 +10297,11 @@ draw_bar
     lda bar_pixels_set_table + 1,x                                    ; 3f4e: bd 5c 3f    .\?
     ldx #6                                                            ; 3f51: a2 06       ..
     iny                                                               ; 3f53: c8          .
-loop_c3f54
+draw_bar_loop
     sta (print_addr_low),y                                            ; 3f54: 91 2f       ./
     iny                                                               ; 3f56: c8          .
     dex                                                               ; 3f57: ca          .
-    bne loop_c3f54                                                    ; 3f58: d0 fa       ..
+    bne draw_bar_loop                                                 ; 3f58: d0 fa       ..
 return5
     rts                                                               ; 3f5a: 60          `
 
@@ -10282,15 +10343,15 @@ print_decremented_bar
     lda bar_pixels_set_table,x                                        ; 3f97: bd 5b 3f    .[?
     ldx #6                                                            ; 3f9a: a2 06       ..
     iny                                                               ; 3f9c: c8          .
-draw_bar_loop
+draw_bar_loop2
     sta (print_addr_low),y                                            ; 3f9d: 91 2f       ./
     iny                                                               ; 3f9f: c8          .
     dex                                                               ; 3fa0: ca          .
-    bne draw_bar_loop                                                 ; 3fa1: d0 fa       ..
+    bne draw_bar_loop2                                                ; 3fa1: d0 fa       ..
 check_energy
     lda energy_bar_level                                              ; 3fa3: a5 32       .2
     bne return6                                                       ; 3fa5: d0 05       ..
-; out_of_energy
+; out of energy
     ldx stack_ptr                                                     ; 3fa7: a6 36       .6
     txs                                                               ; 3fa9: 9a          .
     lda #0                                                            ; 3faa: a9 00       ..
@@ -10502,7 +10563,7 @@ decode_room_commands
     sty delta_y                                                       ; 415a: 84 06       ..
     sty number_of_enemies                                             ; 415c: 84 37       .7
     sty number_of_arrows_in_flight                                    ; 415e: 84 1f       ..
-    sty l0019                                                         ; 4160: 84 19       ..
+    sty number_of_dying_items                                         ; 4160: 84 19       ..
     sty cell_x                                                        ; 4162: 84 00       ..
     sty temp_byte                                                     ; 4164: 84 0b       ..
 copy_current_room_data_to_cache_loop
@@ -11135,7 +11196,7 @@ plot_sprite_xy_and
     stx source2_sprite_addr_high                                      ; 44fd: 8e 06 45    ..E
     ldx #0                                                            ; 4500: a2 00       ..
 plot_loop_and
-    ldy l0017                                                         ; 4502: a4 17       ..
+    ldy sprite_width_minus_one                                        ; 4502: a4 17       ..
 opcode3
 source2_sprite_addr_low = opcode3+1
 source2_sprite_addr_high = opcode3+2
@@ -11151,7 +11212,7 @@ dest2_screen_addr_high = opcode5+2
     inx                                                               ; 450d: e8          .
     dey                                                               ; 450e: 88          .
     bpl opcode3                                                       ; 450f: 10 f3       ..
-    dec l0018                                                         ; 4511: c6 18       ..
+    dec sprite_height                                                 ; 4511: c6 18       ..
     beq return12                                                      ; 4513: f0 18       ..
     lda mask2_sprite_addr_low                                         ; 4515: ad 08 45    ..E
     adc #$40                                                          ; 4518: 69 40       i@
@@ -11294,7 +11355,7 @@ update_doors
 update_doors_loop
     lda current_room_cache,y                                          ; 4603: b9 00 04    ...
     beq return16                                                      ; 4606: f0 47       .G
-    bpl c4635                                                         ; 4608: 10 2b       .+
+    bpl next_door1                                                    ; 4608: 10 2b       .+
     sta temp_door_byte                                                ; 460a: 85 15       ..
     and #7                                                            ; 460c: 29 07       ).
     sta temp_sprite                                                   ; 460e: 85 14       ..
@@ -11302,11 +11363,11 @@ update_doors_loop
     lda #$30                                                          ; 4613: a9 30       .0
     inx                                                               ; 4615: e8          .
     bit temp_door_byte                                                ; 4616: 24 15       $.
-    bvc c461e                                                         ; 4618: 50 04       P.
+    bvc horizontal_door                                               ; 4618: 50 04       P.
     lda #$2b                                                          ; 461a: a9 2b       .+
     iny                                                               ; 461c: c8          .
     dex                                                               ; 461d: ca          .
-c461e
+horizontal_door
     clc                                                               ; 461e: 18          .
     adc temp_sprite                                                   ; 461f: 65 14       e.
     pha                                                               ; 4621: 48          H
@@ -11314,19 +11375,19 @@ c461e
     lda temp_door_byte                                                ; 4625: a5 15       ..
     and #7                                                            ; 4627: 29 07       ).
     cmp #4                                                            ; 4629: c9 04       ..
-    beq c463c                                                         ; 462b: f0 0f       ..
+    beq door_finished_opening                                         ; 462b: f0 0f       ..
     pla                                                               ; 462d: 68          h
     ldx delta_y                                                       ; 462e: a6 06       ..
     inc current_room_cache,x                                          ; 4630: fe 00 04    ...
     ldy delta_y                                                       ; 4633: a4 06       ..
-c4635
+next_door1
     iny                                                               ; 4635: c8          .
     iny                                                               ; 4636: c8          .
     iny                                                               ; 4637: c8          .
     iny                                                               ; 4638: c8          .
     iny                                                               ; 4639: c8          .
     bne update_doors_loop                                             ; 463a: d0 c7       ..
-c463c
+door_finished_opening
     lda temp_door_byte                                                ; 463c: a5 15       ..
     and #$7f                                                          ; 463e: 29 7f       ).
     ldy delta_y                                                       ; 4640: a4 06       ..
@@ -11335,7 +11396,7 @@ c463c
     sta collision_map_byte_to_write                                   ; 4647: 85 0c       ..
     pla                                                               ; 4649: 68          h
     jsr plot_room_sprite_a_to_collision_map                           ; 464a: 20 a7 43     .C
-    bne c4635                                                         ; 464d: d0 e6       ..
+    bne next_door1                                                    ; 464d: d0 e6       ..
 return16
     rts                                                               ; 464f: 60          `
 
@@ -11368,7 +11429,7 @@ found_dying_item_free_slot
     sta dying_items + 2,y                                             ; 4675: 99 02 05    ...
     lda cell_y                                                        ; 4678: a5 01       ..
     sta dying_items + 3,y                                             ; 467a: 99 03 05    ...
-    inc l0019                                                         ; 467d: e6 19       ..
+    inc number_of_dying_items                                         ; 467d: e6 19       ..
     lda #$84                                                          ; 467f: a9 84       ..
     sta collision_map_byte_to_write                                   ; 4681: 85 0c       ..
     pla                                                               ; 4683: 68          h
@@ -11376,7 +11437,7 @@ found_dying_item_free_slot
     jmp plot_room_sprite_a_to_collision_map                           ; 4687: 4c a7 43    L.C
 
 update_dying_items
-    lda l0019                                                         ; 468a: a5 19       ..
+    lda number_of_dying_items                                         ; 468a: a5 19       ..
     sta delta_x                                                       ; 468c: 85 05       ..
     beq return17                                                      ; 468e: f0 3c       .<
     ldx #0                                                            ; 4690: a2 00       ..
@@ -11387,9 +11448,9 @@ update_dying_items_loop
     lda sprite_width_table,y                                          ; 4699: b9 e8 1f    ...
     sec                                                               ; 469c: 38          8
     sbc #1                                                            ; 469d: e9 01       ..
-    sta l0017                                                         ; 469f: 85 17       ..
+    sta sprite_width_minus_one                                        ; 469f: 85 17       ..
     lda sprite_height_table,y                                         ; 46a1: b9 3d 20    .=
-    sta l0018                                                         ; 46a4: 85 18       ..
+    sta sprite_height                                                 ; 46a4: 85 18       ..
     lda dying_items + 1,x                                             ; 46a6: bd 01 05    ...
     stx delta_y                                                       ; 46a9: 86 06       ..
     pha                                                               ; 46ab: 48          H
@@ -11426,7 +11487,7 @@ remove_fully_dissolved_object
     ldx delta_y                                                       ; 46db: a6 06       ..
     lda #0                                                            ; 46dd: a9 00       ..
     sta dying_items,x                                                 ; 46df: 9d 00 05    ...
-    dec l0019                                                         ; 46e2: c6 19       ..
+    dec number_of_dying_items                                         ; 46e2: c6 19       ..
     jmp check_if_done                                                 ; 46e4: 4c c2 46    L.F
 
 update_player
@@ -11480,13 +11541,13 @@ check_for_collision_horizontal_loop
     dex                                                               ; 473f: ca          .
     bne check_for_collision_horizontal_loop                           ; 4740: d0 f6       ..
     dec sprite_cell_height                                            ; 4742: c6 03       ..
-    beq c474d                                                         ; 4744: f0 07       ..
+    beq finished_collision_check                                      ; 4744: f0 07       ..
     tya                                                               ; 4746: 98          .
     clc                                                               ; 4747: 18          .
     adc #$25                                                          ; 4748: 69 25       i%
     tay                                                               ; 474a: a8          .
     bne check_for_collision_vertical_loop                             ; 474b: d0 e9       ..
-c474d
+finished_collision_check
     jmp check_fire_key_local                                          ; 474d: 4c 36 48    L6H
 
 check_for_collisions
@@ -11502,10 +11563,10 @@ check_collectibles_collision_loop
     sec                                                               ; 4763: 38          8
     sbc player_x                                                      ; 4764: e5 1a       ..
     cmp #3                                                            ; 4766: c9 03       ..
-    bcc c476e                                                         ; 4768: 90 04       ..
+    bcc overlaps_in_x                                                 ; 4768: 90 04       ..
     cmp #$ff                                                          ; 476a: c9 ff       ..
     bne check_next_collectible                                        ; 476c: d0 4f       .O
-c476e
+overlaps_in_x
     lda current_room_cache + 2,y                                      ; 476e: b9 02 04    ...
     sec                                                               ; 4771: 38          8
     sbc player_y                                                      ; 4772: e5 1b       ..
@@ -11864,9 +11925,9 @@ update_arrow
     ldx arrow_slots + 2,y                                             ; 49bb: be 82 05    ...
     lda arrow_slots + 1,y                                             ; 49be: b9 81 05    ...
     cmp #$ff                                                          ; 49c1: c9 ff       ..
-    beq c49f7                                                         ; 49c3: f0 32       .2
+    beq arrow_finished                                                ; 49c3: f0 32       .2
     cmp #$28                                                          ; 49c5: c9 28       .(
-    beq c49f7                                                         ; 49c7: f0 2e       ..
+    beq arrow_finished                                                ; 49c7: f0 2e       ..
     clc                                                               ; 49c9: 18          .
     adc collision_map_addr_low - 5,x                                  ; 49ca: 7d dd 40    }.@
     sta temp_addr_low                                                 ; 49cd: 85 1d       ..
@@ -11876,30 +11937,30 @@ update_arrow
     ldx #0                                                            ; 49d6: a2 00       ..
     lda (temp_addr_low,x)                                             ; 49d8: a1 1d       ..
     and #4                                                            ; 49da: 29 04       ).
-    bne c49e2                                                         ; 49dc: d0 04       ..
+    bne draw_arrow                                                    ; 49dc: d0 04       ..
     lda (temp_addr_low,x)                                             ; 49de: a1 1d       ..
-    bne c49ff                                                         ; 49e0: d0 1d       ..
-c49e2
-    ldx #$29                                                          ; 49e2: a2 29       .)
+    bne update_collectibles                                           ; 49e0: d0 1d       ..
+draw_arrow
+    ldx #$29                                                          ; 49e2: a2 29       .)             ; X = left facing arrow sprite
     lda arrow_slots,y                                                 ; 49e4: b9 80 05    ...
-    bpl c49ea                                                         ; 49e7: 10 01       ..
-    inx                                                               ; 49e9: e8          .
-c49ea
+    bpl draw_arrow_sprite_x                                           ; 49e7: 10 01       ..             ; if arrow points left, branch (draw left facing arrow)
+    inx                                                               ; 49e9: e8          .              ; X = right facing arrow sprite
+draw_arrow_sprite_x
     txa                                                               ; 49ea: 8a          .
     pha                                                               ; 49eb: 48          H
-    ldx arrow_slots + 1,y                                             ; 49ec: be 81 05    ...
+    ldx arrow_slots + 1,y                                             ; 49ec: be 81 05    ...            ; get x,y coordinates of arrow
     lda arrow_slots + 2,y                                             ; 49ef: b9 82 05    ...
     tay                                                               ; 49f2: a8          .
     pla                                                               ; 49f3: 68          h
     jmp plot_sprite_xy_eor                                            ; 49f4: 4c 65 45    LeE
 
-c49f7
+arrow_finished
     lda #0                                                            ; 49f7: a9 00       ..
     sta arrow_slots,y                                                 ; 49f9: 99 80 05    ...
     dec number_of_arrows_in_flight                                    ; 49fc: c6 1f       ..
     rts                                                               ; 49fe: 60          `
 
-c49ff
+update_collectibles
     ldx arrow_slots + 1,y                                             ; 49ff: be 81 05    ...
     stx temp_addr_low                                                 ; 4a02: 86 1d       ..
     ldx arrow_slots + 2,y                                             ; 4a04: be 82 05    ...
@@ -11910,7 +11971,7 @@ c49ff
     pla                                                               ; 4a0f: 68          h
     dec number_of_arrows_in_flight                                    ; 4a10: c6 1f       ..
     ror                                                               ; 4a12: 6a          j
-    bcc c4a49                                                         ; 4a13: 90 34       .4
+    bcc update_computers                                              ; 4a13: 90 34       .4
     ldy offset_to_start_of_collectibles                               ; 4a15: a4 0f       ..
 collectible_loop
     lda current_room_cache,y                                          ; 4a17: b9 00 04    ...
@@ -11939,11 +12000,11 @@ next_collectible2
     iny                                                               ; 4a45: c8          .
     iny                                                               ; 4a46: c8          .
     bne collectible_loop                                              ; 4a47: d0 ce       ..
-c4a49
+update_computers
     ror                                                               ; 4a49: 6a          j
     ror                                                               ; 4a4a: 6a          j
     ror                                                               ; 4a4b: 6a          j
-    bcc c4a8c                                                         ; 4a4c: 90 3e       .>
+    bcc done_updating_computers                                       ; 4a4c: 90 3e       .>
     ldy offset_to_start_of_computers                                  ; 4a4e: a4 0e       ..
 computer_loop
     lda current_room_cache,y                                          ; 4a50: b9 00 04    ...
@@ -11977,23 +12038,23 @@ next_computer2
     iny                                                               ; 4a88: c8          .
     iny                                                               ; 4a89: c8          .
     bne computer_loop                                                 ; 4a8a: d0 c4       ..
-c4a8c
+done_updating_computers
     ror                                                               ; 4a8c: 6a          j
-    bcc c4a9b                                                         ; 4a8d: 90 0c       ..
+    bcc update_enemies_state                                          ; 4a8d: 90 0c       ..
     ldx temp_addr_low                                                 ; 4a8f: a6 1d       ..
     ldy temp_addr_high                                                ; 4a91: a4 1e       ..
     lda #1                                                            ; 4a93: a9 01       ..
     jsr add_dying_item                                                ; 4a95: 20 5c 46     \F
     jmp increment_score                                               ; 4a98: 4c c8 3f    L.?
 
-c4a9b
+update_enemies_state
     ror                                                               ; 4a9b: 6a          j
-    bcc c4afa                                                         ; 4a9c: 90 5c       .\
+    bcc finished_updating                                             ; 4a9c: 90 5c       .\
     ldy #0                                                            ; 4a9e: a0 00       ..
-c4aa0
+update_enemies_state_loop
     lda enemies_state,y                                               ; 4aa0: b9 00 0c    ...
-    beq c4af3                                                         ; 4aa3: f0 4e       .N
-    bmi c4af3                                                         ; 4aa5: 30 4c       0L
+    beq update_next_enemy_state                                       ; 4aa3: f0 4e       .N
+    bmi update_next_enemy_state                                       ; 4aa5: 30 4c       0L
     ldx enemies_state + 5,y                                           ; 4aa7: be 05 0c    ...            ; enemy sprite number
     lda sprite_height_table,x                                         ; 4aaa: bd 3d 20    .=
     sta delta_x                                                       ; 4aad: 85 05       ..
@@ -12001,12 +12062,12 @@ c4aa0
     sec                                                               ; 4ab1: 38          8
     sbc enemies_state + 1,y                                           ; 4ab2: f9 01 0c    ...
     cmp delta_x                                                       ; 4ab5: c5 05       ..
-    bcs c4af3                                                         ; 4ab7: b0 3a       .:
+    bcs update_next_enemy_state                                       ; 4ab7: b0 3a       .:
     lda temp_addr_high                                                ; 4ab9: a5 1e       ..
     sec                                                               ; 4abb: 38          8
     sbc enemies_state + 2,y                                           ; 4abc: f9 02 0c    ...
     cmp delta_x                                                       ; 4abf: c5 05       ..
-    bcs c4af3                                                         ; 4ac1: b0 30       .0
+    bcs update_next_enemy_state                                       ; 4ac1: b0 30       .0
     lda #0                                                            ; 4ac3: a9 00       ..
     sta enemies_state,y                                               ; 4ac5: 99 00 0c    ...
     dec number_of_enemies                                             ; 4ac8: c6 37       .7
@@ -12033,13 +12094,13 @@ c4aa0
     lda #2                                                            ; 4aee: a9 02       ..
     jmp check_play_sound_a                                            ; 4af0: 4c 65 40    Le@
 
-c4af3
+update_next_enemy_state
     tya                                                               ; 4af3: 98          .
     clc                                                               ; 4af4: 18          .
     adc #6                                                            ; 4af5: 69 06       i.
     tay                                                               ; 4af7: a8          .
-    bne c4aa0                                                         ; 4af8: d0 a6       ..
-c4afa
+    bne update_enemies_state_loop                                     ; 4af8: d0 a6       ..
+finished_updating
     lda #$ff                                                          ; 4afa: a9 ff       ..
     sta temp_counter                                                  ; 4afc: 85 3a       .:
 return25
@@ -12113,12 +12174,12 @@ copy_cache_back_to_room_definition
     lda (temp_addr_low),y                                             ; 4b71: b1 1d       ..
     and #7                                                            ; 4b73: 29 07       ).
     cmp #4                                                            ; 4b75: c9 04       ..
-    beq c4b81                                                         ; 4b77: f0 08       ..
+    beq skip_reset_door_animation                                     ; 4b77: f0 08       ..
     lda (temp_addr_low),y                                             ; 4b79: b1 1d       ..
     ora #$80                                                          ; 4b7b: 09 80       ..
     and #$f8                                                          ; 4b7d: 29 f8       ).
     sta (temp_addr_low),y                                             ; 4b7f: 91 1d       ..
-c4b81
+skip_reset_door_animation
     ldy #0                                                            ; 4b81: a0 00       ..
 copy_room_definition_to_cache_loop
     lda (current_room_low),y                                          ; 4b83: b1 08       ..
@@ -12186,10 +12247,10 @@ copy_current_room_cache_back_to_definition_loop
 find_new_room_loop
     lda current_room_cache,y                                          ; 4bfe: b9 00 04    ...
     and #4                                                            ; 4c01: 29 04       ).
-    beq c4c0a                                                         ; 4c03: f0 05       ..
+    beq next_room                                                     ; 4c03: f0 05       ..
     jsr is_closed_door_near_player                                    ; 4c05: 20 5c 4c     \L
     bcc found_closed_door                                             ; 4c08: 90 07       ..
-c4c0a
+next_room
     iny                                                               ; 4c0a: c8          .
     iny                                                               ; 4c0b: c8          .
     iny                                                               ; 4c0c: c8          .
@@ -12222,7 +12283,7 @@ skip1
     clc                                                               ; 4c39: 18          .
     adc #2                                                            ; 4c3a: 69 02       i.
     sta player_y                                                      ; 4c3c: 85 1b       ..
-    bne c4c59                                                         ; 4c3e: d0 19       ..
+    bne room_ready                                                    ; 4c3e: d0 19       ..
 skip2
     iny                                                               ; 4c40: c8          .
     lda #0                                                            ; 4c41: a9 00       ..
@@ -12236,9 +12297,9 @@ skip2
     stx player_y                                                      ; 4c4f: 86 1b       ..
     lda (temp_addr_low),y                                             ; 4c51: b1 1d       ..
     cmp #$1f                                                          ; 4c53: c9 1f       ..
-    beq c4c59                                                         ; 4c55: f0 02       ..
+    beq room_ready                                                    ; 4c55: f0 02       ..
     sta player_y                                                      ; 4c57: 85 1b       ..
-c4c59
+room_ready
     jmp start_new_room                                                ; 4c59: 4c 93 4b    L.K
 
 ; returns with carry clear if a closed door is near the player
@@ -12292,13 +12353,13 @@ get_teleport_destination
     ldy #0                                                            ; 4ca3: a0 00       ..
     lda (temp_addr_low),y                                             ; 4ca5: b1 1d       ..
     cpx #0                                                            ; 4ca7: e0 00       ..
-    beq c4cb1                                                         ; 4ca9: f0 06       ..
+    beq teleport_info_found                                           ; 4ca9: f0 06       ..
     clc                                                               ; 4cab: 18          .
 loop_c4cac
     adc #5                                                            ; 4cac: 69 05       i.
     dex                                                               ; 4cae: ca          .
     bne loop_c4cac                                                    ; 4caf: d0 fb       ..
-c4cb1
+teleport_info_found
     tay                                                               ; 4cb1: a8          .
     rts                                                               ; 4cb2: 60          `
 
@@ -12461,7 +12522,7 @@ show_title_and_play_game
     sta sound_duration                                                ; 4ee7: 85 35       .5
 end_of_game
     jsr update_all_arrows                                             ; 4ee9: 20 8b 49     .I
-    jsr sub_c500b                                                     ; 4eec: 20 0b 50     .P
+    jsr update_notes                                                  ; 4eec: 20 0b 50     .P
     jsr wait                                                          ; 4eef: 20 fe 3f     .?
     jsr draw_arrows                                                   ; 4ef2: 20 5b 49     [I
     jsr update_dying_items                                            ; 4ef5: 20 8a 46     .F
@@ -12514,17 +12575,17 @@ destroyed_computer
     ldy #3                                                            ; 5006: a0 03       ..
     jmp add_to_score_loop                                             ; 5008: 4c cc 3f    L.?
 
-sub_c500b
+update_notes
     jsr get_channel_1_bytes_free                                      ; 500b: 20 32 50     2P
     cpx #0                                                            ; 500e: e0 00       ..
     beq return28                                                      ; 5010: f0 1f       ..
     lda sound_duration                                                ; 5012: a5 35       .5
-    bpl c5020                                                         ; 5014: 10 0a       ..
+    bpl play_next_note                                                ; 5014: 10 0a       ..
     and #$7f                                                          ; 5016: 29 7f       ).
     sta sound5_duration                                               ; 5018: 8d c8 40    ..@
     lda #1                                                            ; 501b: a9 01       ..
     sta sound5                                                        ; 501d: 8d c2 40    ..@
-c5020
+play_next_note
     lda #5                                                            ; 5020: a9 05       ..
     jsr play_sound_a                                                  ; 5022: 20 6d 40     m@
     dec sound_duration                                                ; 5025: c6 35       .5
@@ -12707,7 +12768,7 @@ no_highscore
     !text 8, "it into the top ten score", $80+'s'                     ; 5256: 08 69 74... .it
     jmp wait_for_key                                                  ; 5271: 4c 55 4e    LUN
 
-c5274
+no_highscore_local
     jmp no_highscore                                                  ; 5274: 4c 2a 52    L*R
 
 update_highscores
@@ -12719,9 +12780,9 @@ update_highscores
     sty cell_y                                                        ; 5281: 84 01       ..
 make_room_for_new_highscore
     jsr compare_scores                                                ; 5283: 20 a0 53     .S
-    bcs c52c9                                                         ; 5286: b0 41       .A
+    bcs made_space_in_highscore_table                                 ; 5286: b0 41       .A
     ldy delta_x                                                       ; 5288: a4 05       ..
-    beq c52b2                                                         ; 528a: f0 26       .&
+    beq next_highscore                                                ; 528a: f0 26       .&
     ldx #$19                                                          ; 528c: a2 19       ..
     ldy cell_x                                                        ; 528e: a4 00       ..
 copy_highscore_name_loop
@@ -12742,7 +12803,7 @@ copy_score_loop
     dey                                                               ; 52ae: 88          .
     dex                                                               ; 52af: ca          .
     bne copy_score_loop                                               ; 52b0: d0 f1       ..
-c52b2
+next_highscore
     lda cell_y                                                        ; 52b2: a5 01       ..
     adc #7                                                            ; 52b4: 69 07       i.
     sta cell_y                                                        ; 52b6: 85 01       ..
@@ -12755,10 +12816,10 @@ c52b2
     lda delta_x                                                       ; 52c3: a5 05       ..
     cmp #$0a                                                          ; 52c5: c9 0a       ..
     bne make_room_for_new_highscore                                   ; 52c7: d0 ba       ..
-c52c9
+made_space_in_highscore_table
     jsr show_highscore_table                                          ; 52c9: 20 b2 53     .S
     lda delta_x                                                       ; 52cc: a5 05       ..
-    beq c5274                                                         ; 52ce: f0 a4       ..
+    beq no_highscore_local                                            ; 52ce: f0 a4       ..
     jsr print_following_string                                        ; 52d0: 20 4e 3e     N>
     !text $1f, 2, 6, "Your score is good enough to go into", $1f, 2   ; 52d3: 1f 02 06... ...
     !text 8, "the top ten, please enter your name", $80+':'           ; 52fc: 08 74 68... .th
@@ -12917,22 +12978,9 @@ pydis_end
 
 ; Automatically generated labels:
 ;     c3bd3
-;     c3bd4
-;     c3be0
-;     c3c0f
-;     c3c3f
-;     c3c4c
-;     c3d23
-;     c3d25
-;     c3d85
-;     c3d86
-;     c3d87
-;     c3d8a
 ;     c3d8b
-;     c3e12
 ;     c3e70
 ;     c3e8c
-;     c3e9c
 ;     c3f5a
 ;     c3fac
 ;     c4033
@@ -12944,13 +12992,8 @@ pydis_end
 ;     c4564
 ;     c45ae
 ;     c45ff
-;     c461e
-;     c4635
-;     c463c
 ;     c464f
 ;     c46cc
-;     c474d
-;     c476e
 ;     c48b3
 ;     c48db
 ;     c4908
@@ -12958,50 +13001,19 @@ pydis_end
 ;     c4940
 ;     c498a
 ;     c49b8
-;     c49e2
-;     c49ea
-;     c49f7
-;     c49ff
-;     c4a49
-;     c4a8c
-;     c4a9b
-;     c4aa0
-;     c4af3
-;     c4afa
 ;     c4afe
-;     c4b81
-;     c4c0a
-;     c4c59
 ;     c4c95
-;     c4cb1
 ;     c4e4d
-;     c5020
 ;     c5031
 ;     c5083
 ;     c51c7
-;     c5274
-;     c52b2
-;     c52c9
 ;     c53b1
-;     l0017
-;     l0018
-;     l0019
-;     l0034
-;     l0405
 ;     l0f00
 ;     l1000
 ;     l1100
 ;     l110c
 ;     loop_c3ca6
-;     loop_c3d4c
-;     loop_c3d5a
-;     loop_c3d78
-;     loop_c3dfb
-;     loop_c3dff
-;     loop_c3f54
 ;     loop_c4cac
-;     sub_c3d28
-;     sub_c500b
 !if ($80+$00) != $80 {
     !error "Assertion failed: $80+$00 == $80"
 }
@@ -13790,6 +13802,9 @@ pydis_end
 }
 !if (current_room_cache + 4) != $0404 {
     !error "Assertion failed: current_room_cache + 4 == $0404"
+}
+!if (current_room_cache + 5) != $0405 {
+    !error "Assertion failed: current_room_cache + 5 == $0405"
 }
 !if (current_room_cache - 1) != $03ff {
     !error "Assertion failed: current_room_cache - 1 == $03ff"
