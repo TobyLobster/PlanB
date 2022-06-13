@@ -218,7 +218,7 @@ label(0x0c05, "enemies_state + 5")
 label(0x0e00, "clock")
 
 # Memory locations
-comment(0x1210, "There are 85 sprites. Sprites are stored 8x8 character cells which are ordered upside down and from right to left.")
+comment(0x1210, "There are 85 sprites. Sprites are stored 8x8 character cells which are ordered upside down and from right to left. The first 32 sprites can be specified in the room definition.")
 
 def get_addr(addr, x, y, w, h):
     y = y ^ 7
@@ -343,15 +343,386 @@ label(0x6fa, "highscore_table_scores")
 label(0x394b, "room_definition_low")
 label(0x3982, "room_definition_high")
 
+room = [[]]
+
+def start_room():
+    global room
+    global deltax
+    global deltay
+    global cellx
+    global celly
+    global sprite
+    global skip_first_sprite_plot
+
+    rows, cols = (32, 40)
+    room = []
+    for i in range(rows):
+        col = []
+        for j in range(cols):
+            col.append(-1)
+        room.append(col)
+
+    cellx = 0
+    celly = 6
+    deltax = 1
+    deltay = 0
+    sprite = 1
+    skip_first_sprite_plot = False
+
+def end_room(addr, room_title):
+    global room
+
+    comment_str = "\n"
+    width = 0
+    for row in room:
+        for sprite in row:
+            if sprite == 20:
+                comment_str += "|"
+            elif sprite == 43:
+                comment_str += "D"
+            elif sprite == 48:
+                comment_str += "D"
+            elif sprite == 32:
+                comment_str += "1"
+            elif sprite == 33:
+                comment_str += "2"
+            elif sprite == 34:
+                comment_str += "3"
+            elif sprite == 35:
+                comment_str += "4"
+            elif sprite == 57:
+                comment_str += "C"
+            elif sprite == 58:
+                comment_str += "c"
+            elif sprite == 59:
+                comment_str += "X"
+            elif sprite == 60:
+                comment_str += "x"
+
+            elif sprite == 38:
+                comment_str += "O"
+            elif sprite == 39:
+                comment_str += "S"
+            elif sprite == 40:
+                comment_str += "A"
+            elif sprite == 26 or sprite == 27:
+                comment_str += "="
+            elif sprite == 256:
+                comment_str += "K"
+
+            elif sprite >= 0 and sprite != 21 and sprite != 47 and sprite != 52:
+                comment_str += "*"
+            else:
+                comment_str += "."
+        comment_str += "\n"
+    comment_str = comment_str.rstrip("\n")
+
+    # Strip off first six rows of top empty space
+    comment_str = comment_str.lstrip("........................................\n........................................\n........................................\n........................................\n........................................\n........................................\n")
+
+    # Add title, centred
+    blank(addr)
+    comment_str = " "*(19-len(room_title)//2) + room_title + "\n" + comment_str
+
+    # Add comment
+    formatted_comment(addr, comment_str)
+
+def plot_sprite(addr, sprite, x, y):
+    global room
+
+    if sprite == 256:
+        room[y][x] = sprite
+        return
+
+    for w in range(0, sprite_widths[sprite]):
+        for h in range(0, sprite_heights[sprite]):
+            room[y+h][x+w] = sprite
+
+def add_door(addr,doorx,doory,vertical,visible):
+
+    if not visible:
+        if vertical:
+            plot_sprite(addr, 47, doorx, doory + 1)
+        else:
+            plot_sprite(addr, 52, doorx + 1, doory)
+        return
+
+    plot_sprite(addr, 32, doorx, doory)
+    if vertical:
+        if visible:
+            plot_sprite(addr, 43, doorx, doory + 1)
+        plot_sprite(addr, 32, doorx, doory + 5)
+    else:
+        if visible:
+            plot_sprite(addr, 48, doorx + 1, doory)
+        if (doorx + 5) >= 40:
+            doorx -= 40
+            doory += 1
+        if doory < 32:
+            plot_sprite(addr, 32, doorx + 5, doory)
+
+def add_key(addr,keyx,keyy,key_index):
+    plot_sprite(addr, 256, keyx, keyy)
+    plot_sprite(addr, 32+key_index, keyx, keyy + 1)
+
+def add_computer(addr,x,y,index):
+    plot_sprite(addr, 0x39+index, x, y)
+
+def add_collectible(addr,x,y,index):
+    plot_sprite(addr, 0x25+index, x, y)
+
+def command_plot_strip(addr):
+    global cellx
+    global celly
+    global sprite
+    global skip_first_sprite_plot
+
+    length = get_u8(addr)
+    byte(addr, 1)
+    comment(addr, "plot strip at {x},{y} of length {l}".format(x=cellx, y=celly,l=length), inline=True)
+
+    if not skip_first_sprite_plot:
+        plot_sprite(addr, sprite, cellx, celly)
+        length -= 1
+
+    skip_first_sprite_plot = True
+
+    for i in range(0, length):
+        cellx += deltax
+        celly += deltay
+        plot_sprite(addr, sprite, cellx, celly)
+#    print("Done",addr,cellx,celly)
+    return 1
+
+def command_set_deltax_or_y(addr):
+    global deltax
+    global deltay
+
+    byt = get_u8(addr)
+    delta = byt & 7
+    if (byt & 8) != 0:
+        delta = -delta
+    if (byt & 16) == 0:
+        deltax = delta
+        deltay = 0
+        comment(addr, "set delta to {d},0".format(d=delta), inline=True)
+    else:
+        deltay = delta
+        deltax = 0
+        comment(addr, "set delta to 0,{d}".format(d=delta), inline=True)
+    byte(addr, 1)
+    return 1
+
+def command_set_cellxy(addr):
+    global cellx
+    global celly
+    global skip_first_sprite_plot
+
+    celly = get_u8(addr) & 0x1f
+    cellx = get_u8(addr + 1)
+    byte(addr, 2)
+    comment(addr, "set position to {x},{y}".format(x=cellx,y=celly), inline=True)
+    skip_first_sprite_plot = False
+    return 2
+
+def command_move_in_delta_direction(addr):
+    global cellx
+    global celly
+
+    size = get_u8(addr) & 0x1f
+    cellx += deltax * size
+    celly += deltay * size
+    comment(addr, "move by {s}*delta to {x},{y}".format(x=cellx,y=celly,s=size), inline=True)
+    return 1
+
+def command_set_sprite(addr):
+    global sprite
+
+    byt = get_u8(addr)
+    sprite = byt & 0x1f
+    if byt >= 128:
+        if sprite == 31:
+            collision_byte = 0
+        else:
+            collision_byte = 0x90
+    else:
+        collision_byte = 0x80
+    comment(addr, "set sprite {s}, collision byte {c}".format(s=sprite,c=collision_byte), inline=True)
+    return 1
+
+def command_move_draw_rect(addr):
+    global skip_first_sprite_plot
+    global celly
+
+    rect_height = get_u8(addr) & 0x1f
+    rect_width  = get_u8(addr + 1)
+    skip_first_sprite_plot = False
+    byte(addr, 2)
+    comment(addr, "draw rect from {x},{y} with size {w}x{h}".format(x=cellx,y=celly,w=rect_width,h=rect_height), inline=True)
+    for y in range(celly, celly + rect_height):
+        for x in range(cellx, cellx + rect_width):
+            plot_sprite(addr, sprite, x, y)
+    celly = y+1
+    return 2
+
+def execute_command(command, addr):
+    if command == 0:
+        return command_plot_strip(addr)
+    elif command == 1:
+        return command_plot_strip(addr)
+    elif command == 2:
+        return command_set_sprite(addr)
+    elif command == 3:
+        return command_set_deltax_or_y(addr)
+    elif command == 4:
+        return command_set_cellxy(addr)
+    elif command == 5:
+        return command_move_in_delta_direction(addr)
+    elif command == 6:
+        return command_set_sprite(addr)
+    elif command == 7:
+        return command_move_draw_rect(addr)
+
+    return 1
+
 addr_low = 0x394b
 addr_high = 0x3982
 for i in range(0,55):
-    lab = get_u8(addr_low) + 256 * get_u8(addr_high)
+    addr = get_u8(addr_low) + 256 * get_u8(addr_high)
     name = "room_" + str(i) + "_definition"
-    label(lab, name)
-    byte(lab, 6)
-    comment(lab, "room header", True)
-    comment(lab+6, "room commands", True)
+    label(addr, name)
+    byte(addr, 1)
+    comment(addr, "offset to start of doors", True)
+    byte(addr + 1, 5)
+    comment(addr + 1, "room header", True)
+
+    start_room()
+
+    # Decode room commands
+    start_addr = addr
+    addr = addr + 6
+
+    command_byte = get_u8(addr)
+    while True:
+        if command_byte == 0:
+            byte(addr, 1)
+            comment(addr, "terminator for commands", inline=True)
+            addr += 1
+            break
+        command = command_byte >> 5
+        addr += execute_command(command, addr)
+        command_byte = get_u8(addr)
+
+    # Decode doors
+    command_byte = get_u8(addr)
+    while True:
+        if command_byte == 0:
+            byte(addr, 1)
+            comment(addr, "terminator for doors", inline=True)
+            addr += 1
+            break
+
+        door_info = get_u8(addr)
+        doorx = get_u8(addr + 1)
+        doory = get_u8(addr + 2)
+        dest_door_index = get_u8(addr + 3)
+        dest_room_index = get_u8(addr + 4)
+
+        byte(addr, 5)
+        vis = (door_info & 32) != 0
+        if vis:
+            com = "visible "
+        else:
+            com = "invisible "
+        if ((door_info & 64) != 0):
+            add_door(addr, doorx, doory, vertical=True, visible=vis)
+            com += "vertical door at " + str(doorx) + "," + str(doory)
+        else:
+            add_door(addr, doorx, doory, vertical=False, visible=vis)
+            com += "horizontal door at " + str(doorx) + "," + str(doory)
+        if dest_room_index != 255:
+            com += " to door " + str(dest_door_index) + " in room " + str(dest_room_index)
+        comment(addr, com, inline=True)
+        addr += 5
+        command_byte = get_u8(addr)
+
+    # Decode keys
+    command_byte = get_u8(addr)
+    while True:
+        if command_byte == 0:
+            byte(addr, 1)
+            comment(addr, "terminator for keys", inline=True)
+            addr += 1
+            break
+        keyy = get_u8(addr + 2)
+        keyx = get_u8(addr + 1)
+        key_index = command_byte & 3
+
+        byte(addr, 3)
+        add_key(addr, keyx, keyy, key_index)
+        comment(addr, "key at " + str(keyx) + "," + str(keyy), inline=True)
+        addr += 3
+        command_byte = get_u8(addr)
+
+    # Decode computers
+    command_byte = get_u8(addr)
+    while True:
+        if command_byte == 0:
+            byte(addr, 1)
+            comment(addr, "terminator for computers", inline=True)
+            addr += 1
+            break
+        computery = get_u8(addr + 2)
+        computerx = get_u8(addr + 1)
+        computer_index = command_byte & 3
+
+        byte(addr, 3)
+        add_computer(addr, computerx, computery, computer_index)
+        comment(addr, "computer at " + str(computerx) + "," + str(computery), inline=True)
+        addr += 3
+        command_byte = get_u8(addr)
+
+    # Decode collectibles
+    command_byte = get_u8(addr)
+    while True:
+        if command_byte == 0:
+            byte(addr, 1)
+            comment(addr, "terminator for collectibles", inline=True)
+            addr += 1
+            break
+        collectibley = get_u8(addr + 2)
+        collectiblex = get_u8(addr + 1)
+        collectible_index = command_byte & 3
+
+        byte(addr, 3)
+        add_collectible(addr, collectiblex, collectibley, collectible_index)
+        comment(addr, "collectible at " + str(collectiblex) + "," + str(collectibley), inline=True)
+        addr += 3
+        command_byte = get_u8(addr)
+
+    # Decode title
+    command_byte = get_u8(addr)
+    title_addr = addr
+    room_title = ""
+    while True:
+        if command_byte == 0:
+            byte(addr, 1)
+            comment(addr, "terminator for title", inline=True)
+            addr += 1
+            break
+
+        if command_byte >= 128:
+            room_title += chr(command_byte & 0x7f)
+            break
+        else:
+            room_title += chr(command_byte)
+        addr += 1
+        command_byte = get_u8(addr)
+
+    if room_title != "":
+        comment(title_addr, "\"" + room_title + "\"", inline=True)
+    end_room(start_addr, room_title)
+
     expr(addr_low, "<" + name)
     expr(addr_high, ">" + name)
     byte(addr_low, 1)
@@ -575,7 +946,7 @@ expr(0x4127, ">room_decode_draw_rect")
 blank(0x4128)
 label(0x4128, "clear_memory")
 label(0x4130, "clear_memory_loop")
-label(0x414b, "decode_room_definition")
+label(0x414b, "decode_room_commands")
 label(0x4166, "copy_current_room_data_to_cache_loop")
 comment(0x416e, "handle all room commands")
 label(0x4170, "decode_room_commands_loop")
@@ -583,12 +954,19 @@ label(0x418b, "opcode1")
 label(0x418c, "routine_addr_low")
 label(0x418d, "routine_addr_high")
 label(0x4192, "prepare_room")
-label(0x419a, "prepare_room_loop")
+label(0x419a, "prepare_doors_loop")
 blank(0x419f)
-comment(0x419f, "copy five byte room header to zero page")
-label(0x41a1, "copy_room_header_loop")
+formatted_comment(0x419f, """copy five bytes of door information (reversing the order!) to zero page:
+    0x11: destination room index
+    0x12: destination door index
+    0x13: y cell position
+    0x14: x cell position
+    0x15: current_room_door_info""")
+
+label(0x41a1, "copy_door_info_loop")
 blank(0x41aa)
-formatted_comment(0x41aa, """current_room_door_info:
+formatted_comment(0x41aa, """Reset current door information, if needed.
+  current_room_door_info:
     bit 7    = door is open flag
     bit 6    = door is vertical flag
     bit 5    = door is present flag
@@ -648,10 +1026,11 @@ entry(0x42ff, "room_decode_set_sprite")
 comment(0x42ff, "redundant", True)
 entry(0x42c5, "room_decode_set_deltax_or_y")
 entry(0x42ef, "room_decode_set_cellxy")
-comment(0x4301, "collision map value", True)
-comment(0x4307, "collision map value", True)
-comment(0x430f, "collision map value", True)
-#label(0x4311, "room_decode_?")
+comment(0x4301, "use collision map value $80 if A>=0", True)
+comment(0x4307, "use collision map value $90 if A!=$95 ($95=128+sprite 21, the empty sprite)", True)
+comment(0x430f, "use collision map value $00 if A=$95 (the empty sprite)", True)
+label(0x4311, "set_sprite_a_and1f_and_collision_x")
+label(0x4313, "set_sprite_a_and_collision_x")
 entry(0x4319, "room_decode_draw_rect")
 comment(0x431b, "rectangle height", True)
 comment(0x4321, "rectangle width", True)
@@ -818,6 +1197,7 @@ expr(0x4948, "collision_map_addr_low - 5")
 expr(0x494f, "collision_map_addr_high - 5")
 label(0x4909, "handle_shift_pressed")
 label(0x4925, "update_falling")
+label(0x4941, "get_player_collision_address")
 label(0x4954, "read_key")
 label(0x495b, "draw_arrows")
 label(0x4963, "draw_arrows_loop")
@@ -870,7 +1250,7 @@ comment(0x4c7b, "ALWAYS branch", True)
 blank(0x4c7d)
 label(0x4c7d, "check_vertical_door")
 label(0x4c8b, "is_vertical_door_open")
-
+label(0x4c98, "get_teleport_destination")
 
 comment(0x4c95, "found door")
 label(0x4c96, "no_door_found")

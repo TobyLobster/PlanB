@@ -1,14 +1,14 @@
 osword_sound = $07
 room_count = $37
-inkey_key_p = $c8
-inkey_key_o = $c9
 inkey_key_q = $ef
-inkey_key_space = $9d
 inkey_key_w = $de
-inkey_key_return = $b6
-inkey_key_x = $bd
+inkey_key_o = $c9
+inkey_key_p = $c8
 inkey_key_z = $9e
+inkey_key_x = $bd
 inkey_key_shift = $ff
+inkey_key_space = $9d
+inkey_key_return = $b6
 osword_read_clock = $01
 osword_write_clock = $02
 osbyte_read_text_cursor_pos = $86
@@ -121,7 +121,8 @@ osbyte = $fff4
     * = $1210
 
 ; There are 85 sprites. Sprites are stored 8x8 character cells which
-; are ordered upside down and from right to left.
+; are ordered upside down and from right to left. The first 32 sprites
+; can be specified in the room definition.
 ; 
 ;     /----------------\      /--------\      /--------\      /--------\
 ;     |################|      |########|      |# ######|      |#  ##  #|
@@ -4573,682 +4574,4662 @@ sprite_offset_table_high
     !byte   7,   7,   8,   8,   8,   8,   9,   9,   9, $0a, $0a, $0a  ; 2123: 07 07 08... ...
     !byte $0a, $0a, $0a, $0a, $0a, $0a, $0b, $0b, $0b, $0b, $0c, $0c  ; 212f: 0a 0a 0a... ...
     !byte $0d                                                         ; 213b: 0d          .
+
+;                 PLAN B
+; ****************************************
+; *..............................*....*..*
+; *.OO...........................*....*..*
+; *.OO...........................*....*..*
+; *.OO...........................*....*..*
+; *****..........................*....*..*
+; *..............................*....*..*
+; *.AA..........................********.*
+; *.AA..........................|......*.*
+; *.AA..........................|......*.*
+; *****.........................|......*.*
+; *.............................|......*.*
+; *.AA..........................|......*.*
+; *.AA..........................********.*
+; *.AA...........................*....*..*
+; *****..........................*....*..*
+; *..............................*....*..*
+; *.SS...........................*....*..*
+; *.SS...........................*....*..*
+; *.SS...........................*....*..*
+; 1********....***************************
+; D.......................................
+; D.......................................
+; D.......................................
+; D.......................................
+; 1***************************************
 room_0_definition
-    !byte $3d,   2,   2,   2,   2,   1                                ; 213c: 3d 02 02... =..            ; room header
-    !byte $28, $71, $19                                               ; 2142: 28 71 19    (q.            ; room commands
-    !text "i'y"                                                       ; 2145: 69 27 79    i'y
-    !byte $18, $d4, $92, $1e,   5, $46,   1, $61,   7, $71,   6, $69  ; 2148: 18 d4 92... ...
-    !byte   7, $55, $87, $1f, $e6,   8, $94, $1f, $e6,   8, $48, $72  ; 2154: 07 55 87... .U.
-    !byte $87, $1f,   3, $94, $1f,   3, $87, $24,   3, $94, $24,   3  ; 2160: 87 1f 03... ...
-    !byte $75, $40, $8b,   1,   4, $8b,   3,   4, $62,   2, $a2, $0d  ; 216c: 75 40 8b... u@.
-    !byte   0, $44, $27, $1a,   2, $1a, $70,   0, $1a,   0, $20,   0  ; 2178: 00 44 27... .D'
-    !byte   0,   0, $c1,   2,   8, $c3,   2, $0d, $c3,   2, $12, $c2  ; 2184: 00 00 c1... ...
-    !byte   2, $17,   0                                               ; 2190: 02 17 00    ...
-    !text "PLAN ", $80+'B'                                            ; 2193: 50 4c 41... PLA
+    !byte $3d                                                         ; 213c: 3d          =              ; offset to start of doors
+    !byte 2, 2, 2, 2, 1                                               ; 213d: 02 02 02... ...            ; room header
+    !byte $28                                                         ; 2142: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2143: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 2144: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 2145: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 2146: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 2147: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 2148: 18          .              ; plot strip at 0,31 of length 24
+    !byte $d4                                                         ; 2149: d4          .              ; set sprite 20, collision byte 144
+    !byte $92, $1e                                                    ; 214a: 92 1e       ..             ; set position to 30,18
+    !byte 5                                                           ; 214c: 05          .              ; plot strip at 30,18 of length 5
+    !byte $46                                                         ; 214d: 46          F              ; set sprite 6, collision byte 128
+    !byte 1                                                           ; 214e: 01          .              ; plot strip at 30,14 of length 1
+    !byte $61                                                         ; 214f: 61          a              ; set delta to 1,0
+    !byte 7                                                           ; 2150: 07          .              ; plot strip at 30,13 of length 7
+    !byte $71                                                         ; 2151: 71          q              ; set delta to 0,1
+    !byte 6                                                           ; 2152: 06          .              ; plot strip at 37,13 of length 6
+    !byte $69                                                         ; 2153: 69          i              ; set delta to -1,0
+    !byte 7                                                           ; 2154: 07          .              ; plot strip at 37,19 of length 7
+    !byte $55                                                         ; 2155: 55          U              ; set sprite 21, collision byte 128
+    !byte $87, $1f                                                    ; 2156: 87 1f       ..             ; set position to 31,7
+    !byte $e6,   8                                                    ; 2158: e6 08       ..             ; draw rect from 31,7 with size 8x6
+    !byte $94, $1f                                                    ; 215a: 94 1f       ..             ; set position to 31,20
+    !byte $e6,   8                                                    ; 215c: e6 08       ..             ; draw rect from 31,20 with size 8x6
+    !byte $48                                                         ; 215e: 48          H              ; set sprite 8, collision byte 128
+    !byte $72                                                         ; 215f: 72          r              ; set delta to 0,2
+    !byte $87, $1f                                                    ; 2160: 87 1f       ..             ; set position to 31,7
+    !byte 3                                                           ; 2162: 03          .              ; plot strip at 31,7 of length 3
+    !byte $94, $1f                                                    ; 2163: 94 1f       ..             ; set position to 31,20
+    !byte 3                                                           ; 2165: 03          .              ; plot strip at 31,20 of length 3
+    !byte $87, $24                                                    ; 2166: 87 24       .$             ; set position to 36,7
+    !byte 3                                                           ; 2168: 03          .              ; plot strip at 36,7 of length 3
+    !byte $94, $24                                                    ; 2169: 94 24       .$             ; set position to 36,20
+    !byte 3                                                           ; 216b: 03          .              ; plot strip at 36,20 of length 3
+    !byte $75                                                         ; 216c: 75          u              ; set delta to 0,5
+    !byte $40                                                         ; 216d: 40          @              ; set sprite 0, collision byte 128
+    !byte $8b,   1                                                    ; 216e: 8b 01       ..             ; set position to 1,11
+    !byte 4                                                           ; 2170: 04          .              ; plot strip at 1,11 of length 4
+    !byte $8b,   3                                                    ; 2171: 8b 03       ..             ; set position to 3,11
+    !byte 4                                                           ; 2173: 04          .              ; plot strip at 3,11 of length 4
+    !byte $62                                                         ; 2174: 62          b              ; set delta to 2,0
+    !byte 2                                                           ; 2175: 02          .              ; plot strip at 3,26 of length 2
+    !byte $a2                                                         ; 2176: a2          .              ; move by 2*delta to 11,26
+    !byte $0d                                                         ; 2177: 0d          .              ; plot strip at 11,26 of length 13
+    !byte 0                                                           ; 2178: 00          .              ; terminator for commands
+    !byte $44, $27, $1a,   2, $1a                                     ; 2179: 44 27 1a... D'.            ; invisible vertical door at 39,26 to door 2 in room 26
+    !byte $70,   0, $1a,   0, $20                                     ; 217e: 70 00 1a... p..            ; visible vertical door at 0,26 to door 0 in room 32
+    !byte 0                                                           ; 2183: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2184: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2185: 00          .              ; terminator for computers
+    !byte $c1,   2,   8                                               ; 2186: c1 02 08    ...            ; collectible at 2,8
+    !byte $c3,   2, $0d                                               ; 2189: c3 02 0d    ...            ; collectible at 2,13
+    !byte $c3,   2, $12                                               ; 218c: c3 02 12    ...            ; collectible at 2,18
+    !byte $c2,   2, $17                                               ; 218f: c2 02 17    ...            ; collectible at 2,23
+    !byte 0                                                           ; 2192: 00          .              ; terminator for collectibles
+    !text "PLAN ", $80+'B'                                            ; 2193: 50 4c 41... PLA            ; "PLAN B"
+
+;               Crossroads
+; *****************......*****************
+; *****************......*****************
+; *****************......*****************
+; *****************......*****************
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; .......................................1
+; .......................................D
+; .......................................D
+; .......................................D
+; .......................................D
+; .......................................1
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *********......................*********
+; *****************......*****************
+; *****************......*****************
+; *****************......*****************
+; *****************......*****************
 room_1_definition
-    !byte $25,   1,   1,   1,   1, $14                                ; 2199: 25 01 01... %..            ; room header
-    !byte $e4, $11, $e6,   9, $96,   0, $e6,   9, $e4, $11, $86, $17  ; 219f: e4 11 e6... ...            ; room commands
-    !byte $e4, $11, $8a, $1f, $e6,   9, $96, $1f, $e6,   9, $9c, $17  ; 21ab: e4 11 8a... ...
-    !byte $e4, $11, $51, $8d, $20,   1,   0, $78, $27, $10,   0, $1b  ; 21b7: e4 11 51... ..Q
-    !byte   4, $11, $1f,   1, $1d,   4, $11,   6,   0, $34, $44,   0  ; 21c3: 04 11 1f... ...
-    !byte $10,   0, $1a,   0,   0,   0,   0                           ; 21cf: 10 00 1a... ...
-    !text "Crossroad", $80+'s'                                        ; 21d6: 43 72 6f... Cro
+    !byte $25                                                         ; 2199: 25          %              ; offset to start of doors
+    !byte   1,   1,   1,   1, $14                                     ; 219a: 01 01 01... ...            ; room header
+    !byte $e4, $11                                                    ; 219f: e4 11       ..             ; draw rect from 0,6 with size 17x4
+    !byte $e6,   9                                                    ; 21a1: e6 09       ..             ; draw rect from 0,10 with size 9x6
+    !byte $96,   0                                                    ; 21a3: 96 00       ..             ; set position to 0,22
+    !byte $e6,   9                                                    ; 21a5: e6 09       ..             ; draw rect from 0,22 with size 9x6
+    !byte $e4, $11                                                    ; 21a7: e4 11       ..             ; draw rect from 0,28 with size 17x4
+    !byte $86, $17                                                    ; 21a9: 86 17       ..             ; set position to 23,6
+    !byte $e4, $11                                                    ; 21ab: e4 11       ..             ; draw rect from 23,6 with size 17x4
+    !byte $8a, $1f                                                    ; 21ad: 8a 1f       ..             ; set position to 31,10
+    !byte $e6,   9                                                    ; 21af: e6 09       ..             ; draw rect from 31,10 with size 9x6
+    !byte $96, $1f                                                    ; 21b1: 96 1f       ..             ; set position to 31,22
+    !byte $e6,   9                                                    ; 21b3: e6 09       ..             ; draw rect from 31,22 with size 9x6
+    !byte $9c, $17                                                    ; 21b5: 9c 17       ..             ; set position to 23,28
+    !byte $e4, $11                                                    ; 21b7: e4 11       ..             ; draw rect from 23,28 with size 17x4
+    !byte $51                                                         ; 21b9: 51          Q              ; set sprite 17, collision byte 128
+    !byte $8d, $20                                                    ; 21ba: 8d 20       .              ; set position to 32,13
+    !byte 1                                                           ; 21bc: 01          .              ; plot strip at 32,13 of length 1
+    !byte 0                                                           ; 21bd: 00          .              ; terminator for commands
+    !byte $78, $27, $10,   0, $1b                                     ; 21be: 78 27 10... x'.            ; visible vertical door at 39,16 to door 0 in room 27
+    !byte   4, $11, $1f,   1, $1d                                     ; 21c3: 04 11 1f... ...            ; invisible horizontal door at 17,31 to door 1 in room 29
+    !byte   4, $11,   6,   0, $34                                     ; 21c8: 04 11 06... ...            ; invisible horizontal door at 17,6 to door 0 in room 52
+    !byte $44,   0, $10,   0, $1a                                     ; 21cd: 44 00 10... D..            ; invisible vertical door at 0,16 to door 0 in room 26
+    !byte 0                                                           ; 21d2: 00          .              ; terminator for doors
+    !byte 0                                                           ; 21d3: 00          .              ; terminator for keys
+    !byte 0                                                           ; 21d4: 00          .              ; terminator for computers
+    !byte 0                                                           ; 21d5: 00          .              ; terminator for collectibles
+    !text "Crossroad", $80+'s'                                        ; 21d6: 43 72 6f... Cro            ; "Crossroads"
+
+;              The Storeroom
+; ****************************************
+; ****...*........................*...****
+; ****.K.*........................*.OO****
+; ****.2.*........................*.OO****
+; ****...*........................*.OO****
+; ********........................********
+; ****...*........................*...****
+; ****OO.*........................*.OO****
+; ****OO.*........................*.OO****
+; ****OO.*........................*.OO****
+; ********........................********
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ********........................********
+; ****...*........................*...****
+; ****AA.*........................*.AA****
+; ****AA.*........................*.AA****
+; ****AA.*........................*.AA****
+; ********........................********
+; ****...*........................*...****
+; ****AA.*........................*.K.****
+; ****AA.*........................*.1.****
+; ****AA.*........................*...****
+; ****************************************
 room_2_definition
-    !byte $4d,   3,   3,   3,   3,   6                                ; 21e0: 4d 03 03... M..            ; room header
-    !byte $42, $eb,   4, $95,   0, $eb,   4, $86, $24, $eb,   4, $95  ; 21e6: 42 eb 04... B..            ; room commands
-    !byte $24, $eb,   4, $4b, $86,   4, $20, $8b,   4,   3, $ba,   3  ; 21f2: 24 eb 04... $..
-    !byte $90,   4,   3, $ba,   3, $95,   4,   3, $ba,   3, $9a,   4  ; 21fe: 90 04 03... ...
-    !byte   3, $ba,   3, $9f,   4                                     ; 220a: 03 ba 03... ...
-    !text " Ou"                                                       ; 220f: 20 4f 75     Ou
-    !byte $86,   7,   6, $86, $20,   6, $71, $cc, $87,   7,   4, $a1  ; 2212: 86 07 06... ...
-    !byte   4, $a6,   4, $a1,   4, $87, $20,   4, $a1,   4, $a6,   4  ; 221e: 04 a6 04... ...
-    !byte $a1,   4,   0, $44, $27, $10,   2, $1e, $44,   0, $10,   0  ; 222a: a1 04 00... ...
-    !byte $22,   0, $c1,   5,   8, $c0, $22, $1c,   0,   0, $c1,   4  ; 2236: 22 00 c1... "..
-    !byte $0d, $c1, $22,   8, $c1, $22, $0d, $c3,   4, $17, $c3,   4  ; 2242: 0d c1 22... .."
-    !byte $1c, $c3, $22, $17,   0                                     ; 224e: 1c c3 22... .."
-    !text "The Storeroo", $80+'m'                                     ; 2253: 54 68 65... The
+    !byte $4d                                                         ; 21e0: 4d          M              ; offset to start of doors
+    !byte 3, 3, 3, 3, 6                                               ; 21e1: 03 03 03... ...            ; room header
+    !byte $42                                                         ; 21e6: 42          B              ; set sprite 2, collision byte 128
+    !byte $eb,   4                                                    ; 21e7: eb 04       ..             ; draw rect from 0,6 with size 4x11
+    !byte $95,   0                                                    ; 21e9: 95 00       ..             ; set position to 0,21
+    !byte $eb,   4                                                    ; 21eb: eb 04       ..             ; draw rect from 0,21 with size 4x11
+    !byte $86, $24                                                    ; 21ed: 86 24       .$             ; set position to 36,6
+    !byte $eb,   4                                                    ; 21ef: eb 04       ..             ; draw rect from 36,6 with size 4x11
+    !byte $95, $24                                                    ; 21f1: 95 24       .$             ; set position to 36,21
+    !byte $eb,   4                                                    ; 21f3: eb 04       ..             ; draw rect from 36,21 with size 4x11
+    !byte $4b                                                         ; 21f5: 4b          K              ; set sprite 11, collision byte 128
+    !byte $86,   4                                                    ; 21f6: 86 04       ..             ; set position to 4,6
+    !byte $20                                                         ; 21f8: 20                         ; plot strip at 4,6 of length 32
+    !byte $8b,   4                                                    ; 21f9: 8b 04       ..             ; set position to 4,11
+    !byte 3                                                           ; 21fb: 03          .              ; plot strip at 4,11 of length 3
+    !byte $ba                                                         ; 21fc: ba          .              ; move by 26*delta to 32,11
+    !byte 3                                                           ; 21fd: 03          .              ; plot strip at 32,11 of length 3
+    !byte $90,   4                                                    ; 21fe: 90 04       ..             ; set position to 4,16
+    !byte 3                                                           ; 2200: 03          .              ; plot strip at 4,16 of length 3
+    !byte $ba                                                         ; 2201: ba          .              ; move by 26*delta to 32,16
+    !byte 3                                                           ; 2202: 03          .              ; plot strip at 32,16 of length 3
+    !byte $95,   4                                                    ; 2203: 95 04       ..             ; set position to 4,21
+    !byte 3                                                           ; 2205: 03          .              ; plot strip at 4,21 of length 3
+    !byte $ba                                                         ; 2206: ba          .              ; move by 26*delta to 32,21
+    !byte 3                                                           ; 2207: 03          .              ; plot strip at 32,21 of length 3
+    !byte $9a,   4                                                    ; 2208: 9a 04       ..             ; set position to 4,26
+    !byte 3                                                           ; 220a: 03          .              ; plot strip at 4,26 of length 3
+    !byte $ba                                                         ; 220b: ba          .              ; move by 26*delta to 32,26
+    !byte 3                                                           ; 220c: 03          .              ; plot strip at 32,26 of length 3
+    !byte $9f,   4                                                    ; 220d: 9f 04       ..             ; set position to 4,31
+    !byte $20                                                         ; 220f: 20                         ; plot strip at 4,31 of length 32
+    !byte $4f                                                         ; 2210: 4f          O              ; set sprite 15, collision byte 128
+    !byte $75                                                         ; 2211: 75          u              ; set delta to 0,5
+    !byte $86,   7                                                    ; 2212: 86 07       ..             ; set position to 7,6
+    !byte 6                                                           ; 2214: 06          .              ; plot strip at 7,6 of length 6
+    !byte $86, $20                                                    ; 2215: 86 20       .              ; set position to 32,6
+    !byte 6                                                           ; 2217: 06          .              ; plot strip at 32,6 of length 6
+    !byte $71                                                         ; 2218: 71          q              ; set delta to 0,1
+    !byte $cc                                                         ; 2219: cc          .              ; set sprite 12, collision byte 144
+    !byte $87,   7                                                    ; 221a: 87 07       ..             ; set position to 7,7
+    !byte 4                                                           ; 221c: 04          .              ; plot strip at 7,7 of length 4
+    !byte $a1                                                         ; 221d: a1          .              ; move by 1*delta to 7,11
+    !byte 4                                                           ; 221e: 04          .              ; plot strip at 7,11 of length 4
+    !byte $a6                                                         ; 221f: a6          .              ; move by 6*delta to 7,21
+    !byte 4                                                           ; 2220: 04          .              ; plot strip at 7,21 of length 4
+    !byte $a1                                                         ; 2221: a1          .              ; move by 1*delta to 7,26
+    !byte 4                                                           ; 2222: 04          .              ; plot strip at 7,26 of length 4
+    !byte $87, $20                                                    ; 2223: 87 20       .              ; set position to 32,7
+    !byte 4                                                           ; 2225: 04          .              ; plot strip at 32,7 of length 4
+    !byte $a1                                                         ; 2226: a1          .              ; move by 1*delta to 32,11
+    !byte 4                                                           ; 2227: 04          .              ; plot strip at 32,11 of length 4
+    !byte $a6                                                         ; 2228: a6          .              ; move by 6*delta to 32,21
+    !byte 4                                                           ; 2229: 04          .              ; plot strip at 32,21 of length 4
+    !byte $a1                                                         ; 222a: a1          .              ; move by 1*delta to 32,26
+    !byte 4                                                           ; 222b: 04          .              ; plot strip at 32,26 of length 4
+    !byte 0                                                           ; 222c: 00          .              ; terminator for commands
+    !byte $44, $27, $10,   2, $1e                                     ; 222d: 44 27 10... D'.            ; invisible vertical door at 39,16 to door 2 in room 30
+    !byte $44,   0, $10,   0, $22                                     ; 2232: 44 00 10... D..            ; invisible vertical door at 0,16 to door 0 in room 34
+    !byte 0                                                           ; 2237: 00          .              ; terminator for doors
+    !byte $c1,   5,   8                                               ; 2238: c1 05 08    ...            ; key at 5,8
+    !byte $c0, $22, $1c                                               ; 223b: c0 22 1c    .".            ; key at 34,28
+    !byte 0                                                           ; 223e: 00          .              ; terminator for keys
+    !byte 0                                                           ; 223f: 00          .              ; terminator for computers
+    !byte $c1,   4, $0d                                               ; 2240: c1 04 0d    ...            ; collectible at 4,13
+    !byte $c1, $22,   8                                               ; 2243: c1 22 08    .".            ; collectible at 34,8
+    !byte $c1, $22, $0d                                               ; 2246: c1 22 0d    .".            ; collectible at 34,13
+    !byte $c3,   4, $17                                               ; 2249: c3 04 17    ...            ; collectible at 4,23
+    !byte $c3,   4, $1c                                               ; 224c: c3 04 1c    ...            ; collectible at 4,28
+    !byte $c3, $22, $17                                               ; 224f: c3 22 17    .".            ; collectible at 34,23
+    !byte 0                                                           ; 2252: 00          .              ; terminator for collectibles
+    !text "The Storeroo", $80+'m'                                     ; 2253: 54 68 65... The            ; "The Storeroom"
+
+;              The Basement
+; **....**************************....****
+; **....**************************....****
+; **....**************************....****
+; **....**************************....****
+; **..................................****
+; **..................................****
+; **..................................****
+; **..................................****
+; ******************....*....*************
+; *************...................********
+; *************...................********
+; *************................***********
+; *************................*..********
+; *************................*..********
+; *************...............**..********
+; *************...............**..********
+; *.........***................*..********
+; *..AA.AA..***................*..********
+; *..AA.AA..***................*..********
+; *..AA.AA..***................*..********
+; *************................*..********
+; *************................*..********
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_3_definition
-    !byte $4c,   0,   0,   0,   0, $0a                                ; 2260: 4c 00 00... L..            ; room header
-    !byte $42, $e8,   2, $86,   6, $e4, $1a, $8e,   0, $e8, $0d, $9a  ; 2266: 42 e8 02... B..            ; room commands
-    !byte   0, $e6, $0d, $86, $24, $e8,   4, $8e, $20, $e4,   8, $43  ; 2272: 00 e6 0d... ...
-    !byte $92, $20, $ea,   8, $9c, $0d, $e4, $1b, $4b, $8e, $0d,   4  ; 227e: 92 20 ea... . .
-    !byte $ab,   4, $4f, $65, $8e, $0c,   5, $c8, $7a, $9a, $1d,   5  ; 228a: ab 04 4f... ..O
-    !byte $d7, $79,   1, $c9, $61,   1, $cd, $94, $1c,   1, $c7,   1  ; 2296: d7 79 01... .y.
-    !byte $c2, $96,   0, $e4,   1, $96, $0a, $e4,   3,   0,   4, $1f  ; 22a2: c2 96 00... ...
-    !byte   6,   1, $17,   4,   1,   6,   0, $17, $44,   1, $15,   0  ; 22ae: 06 01 17... ...
-    !byte   4,   0,   0,   0, $c3,   3, $17, $c3,   6, $17,   0       ; 22ba: 04 00 00... ...
-    !text "The Basemen", $80+'t'                                      ; 22c5: 54 68 65... The
+    !byte $4c                                                         ; 2260: 4c          L              ; offset to start of doors
+    !byte   0,   0,   0,   0, $0a                                     ; 2261: 00 00 00... ...            ; room header
+    !byte $42                                                         ; 2266: 42          B              ; set sprite 2, collision byte 128
+    !byte $e8,   2                                                    ; 2267: e8 02       ..             ; draw rect from 0,6 with size 2x8
+    !byte $86,   6                                                    ; 2269: 86 06       ..             ; set position to 6,6
+    !byte $e4, $1a                                                    ; 226b: e4 1a       ..             ; draw rect from 6,6 with size 26x4
+    !byte $8e,   0                                                    ; 226d: 8e 00       ..             ; set position to 0,14
+    !byte $e8, $0d                                                    ; 226f: e8 0d       ..             ; draw rect from 0,14 with size 13x8
+    !byte $9a,   0                                                    ; 2271: 9a 00       ..             ; set position to 0,26
+    !byte $e6, $0d                                                    ; 2273: e6 0d       ..             ; draw rect from 0,26 with size 13x6
+    !byte $86, $24                                                    ; 2275: 86 24       .$             ; set position to 36,6
+    !byte $e8,   4                                                    ; 2277: e8 04       ..             ; draw rect from 36,6 with size 4x8
+    !byte $8e, $20                                                    ; 2279: 8e 20       .              ; set position to 32,14
+    !byte $e4,   8                                                    ; 227b: e4 08       ..             ; draw rect from 32,14 with size 8x4
+    !byte $43                                                         ; 227d: 43          C              ; set sprite 3, collision byte 128
+    !byte $92, $20                                                    ; 227e: 92 20       .              ; set position to 32,18
+    !byte $ea,   8                                                    ; 2280: ea 08       ..             ; draw rect from 32,18 with size 8x10
+    !byte $9c, $0d                                                    ; 2282: 9c 0d       ..             ; set position to 13,28
+    !byte $e4, $1b                                                    ; 2284: e4 1b       ..             ; draw rect from 13,28 with size 27x4
+    !byte $4b                                                         ; 2286: 4b          K              ; set sprite 11, collision byte 128
+    !byte $8e, $0d                                                    ; 2287: 8e 0d       ..             ; set position to 13,14
+    !byte 4                                                           ; 2289: 04          .              ; plot strip at 13,14 of length 4
+    !byte $ab                                                         ; 228a: ab          .              ; move by 11*delta to 27,14
+    !byte 4                                                           ; 228b: 04          .              ; plot strip at 27,14 of length 4
+    !byte $4f                                                         ; 228c: 4f          O              ; set sprite 15, collision byte 128
+    !byte $65                                                         ; 228d: 65          e              ; set delta to 5,0
+    !byte $8e, $0c                                                    ; 228e: 8e 0c       ..             ; set position to 12,14
+    !byte 5                                                           ; 2290: 05          .              ; plot strip at 12,14 of length 5
+    !byte $c8                                                         ; 2291: c8          .              ; set sprite 8, collision byte 144
+    !byte $7a                                                         ; 2292: 7a          z              ; set delta to 0,-2
+    !byte $9a, $1d                                                    ; 2293: 9a 1d       ..             ; set position to 29,26
+    !byte 5                                                           ; 2295: 05          .              ; plot strip at 29,26 of length 5
+    !byte $d7                                                         ; 2296: d7          .              ; set sprite 23, collision byte 144
+    !byte $79                                                         ; 2297: 79          y              ; set delta to 0,-1
+    !byte 1                                                           ; 2298: 01          .              ; plot strip at 29,18 of length 1
+    !byte $c9                                                         ; 2299: c9          .              ; set sprite 9, collision byte 144
+    !byte $61                                                         ; 229a: 61          a              ; set delta to 1,0
+    !byte 1                                                           ; 229b: 01          .              ; plot strip at 29,17 of length 1
+    !byte $cd                                                         ; 229c: cd          .              ; set sprite 13, collision byte 144
+    !byte $94, $1c                                                    ; 229d: 94 1c       ..             ; set position to 28,20
+    !byte 1                                                           ; 229f: 01          .              ; plot strip at 28,20 of length 1
+    !byte $c7                                                         ; 22a0: c7          .              ; set sprite 7, collision byte 144
+    !byte 1                                                           ; 22a1: 01          .              ; plot strip at 28,20 of length 1
+    !byte $c2                                                         ; 22a2: c2          .              ; set sprite 2, collision byte 144
+    !byte $96,   0                                                    ; 22a3: 96 00       ..             ; set position to 0,22
+    !byte $e4,   1                                                    ; 22a5: e4 01       ..             ; draw rect from 0,22 with size 1x4
+    !byte $96, $0a                                                    ; 22a7: 96 0a       ..             ; set position to 10,22
+    !byte $e4,   3                                                    ; 22a9: e4 03       ..             ; draw rect from 10,22 with size 3x4
+    !byte 0                                                           ; 22ab: 00          .              ; terminator for commands
+    !byte   4, $1f,   6,   1, $17                                     ; 22ac: 04 1f 06... ...            ; invisible horizontal door at 31,6 to door 1 in room 23
+    !byte   4,   1,   6,   0, $17                                     ; 22b1: 04 01 06... ...            ; invisible horizontal door at 1,6 to door 0 in room 23
+    !byte $44,   1, $15,   0,   4                                     ; 22b6: 44 01 15... D..            ; invisible vertical door at 1,21 to door 0 in room 4
+    !byte 0                                                           ; 22bb: 00          .              ; terminator for doors
+    !byte 0                                                           ; 22bc: 00          .              ; terminator for keys
+    !byte 0                                                           ; 22bd: 00          .              ; terminator for computers
+    !byte $c3,   3, $17                                               ; 22be: c3 03 17    ...            ; collectible at 3,23
+    !byte $c3,   6, $17                                               ; 22c1: c3 06 17    ...            ; collectible at 6,23
+    !byte 0                                                           ; 22c4: 00          .              ; terminator for collectibles
+    !text "The Basemen", $80+'t'                                      ; 22c5: 54 68 65... The            ; "The Basement"
+
+;               The Cellar
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****AAOO...........**.................**
+; ****AAOO...........**.................**
+; ****AAOO..............................**
+; **********............................**
+; ............................************
+; ............................************
+; ............................************
+; ............................************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
 room_4_definition
-    !byte $25,   0,   0,   0,   0,   5                                ; 22d1: 25 00 00... %..            ; room header
-    !byte $42, $e4, $28, $e3,   4, $0a, $92,   0, $e2, $18, $8e, $1c  ; 22d7: 42 e4 28... B.(            ; room commands
-    !byte $e6, $0c, $43, $ec, $0c, $94,   0, $ec, $18, $8a, $13, $d0  ; 22e3: e6 0c 43... ..C
-    !byte   1, $42, $8a, $26, $e4,   2,   0, $44, $25,   9,   0,   4  ; 22ef: 01 42 8a... .B.
-    !byte   4, $17, $1f,   0,   5, $44,   0, $0d,   0,   7,   0,   0  ; 22fb: 04 17 1f... ...
-    !byte   0, $c3,   4, $0a, $c1,   6, $0a,   0                      ; 2307: 00 c3 04... ...
-    !text "The Cella", $80+'r'                                        ; 230f: 54 68 65... The
+    !byte $25                                                         ; 22d1: 25          %              ; offset to start of doors
+    !byte 0, 0, 0, 0, 5                                               ; 22d2: 00 00 00... ...            ; room header
+    !byte $42                                                         ; 22d7: 42          B              ; set sprite 2, collision byte 128
+    !byte $e4, $28                                                    ; 22d8: e4 28       .(             ; draw rect from 0,6 with size 40x4
+    !byte $e3,   4                                                    ; 22da: e3 04       ..             ; draw rect from 0,10 with size 4x3
+    !byte $0a                                                         ; 22dc: 0a          .              ; plot strip at 0,13 of length 10
+    !byte $92,   0                                                    ; 22dd: 92 00       ..             ; set position to 0,18
+    !byte $e2, $18                                                    ; 22df: e2 18       ..             ; draw rect from 0,18 with size 24x2
+    !byte $8e, $1c                                                    ; 22e1: 8e 1c       ..             ; set position to 28,14
+    !byte $e6, $0c                                                    ; 22e3: e6 0c       ..             ; draw rect from 28,14 with size 12x6
+    !byte $43                                                         ; 22e5: 43          C              ; set sprite 3, collision byte 128
+    !byte $ec, $0c                                                    ; 22e6: ec 0c       ..             ; draw rect from 28,20 with size 12x12
+    !byte $94,   0                                                    ; 22e8: 94 00       ..             ; set position to 0,20
+    !byte $ec, $18                                                    ; 22ea: ec 18       ..             ; draw rect from 0,20 with size 24x12
+    !byte $8a, $13                                                    ; 22ec: 8a 13       ..             ; set position to 19,10
+    !byte $d0                                                         ; 22ee: d0          .              ; set sprite 16, collision byte 144
+    !byte 1                                                           ; 22ef: 01          .              ; plot strip at 19,10 of length 1
+    !byte $42                                                         ; 22f0: 42          B              ; set sprite 2, collision byte 128
+    !byte $8a, $26                                                    ; 22f1: 8a 26       .&             ; set position to 38,10
+    !byte $e4,   2                                                    ; 22f3: e4 02       ..             ; draw rect from 38,10 with size 2x4
+    !byte 0                                                           ; 22f5: 00          .              ; terminator for commands
+    !byte $44, $25,   9,   0,   4                                     ; 22f6: 44 25 09... D%.            ; invisible vertical door at 37,9 to door 0 in room 4
+    !byte   4, $17, $1f,   0,   5                                     ; 22fb: 04 17 1f... ...            ; invisible horizontal door at 23,31 to door 0 in room 5
+    !byte $44,   0, $0d,   0,   7                                     ; 2300: 44 00 0d... D..            ; invisible vertical door at 0,13 to door 0 in room 7
+    !byte 0                                                           ; 2305: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2306: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2307: 00          .              ; terminator for computers
+    !byte $c3,   4, $0a                                               ; 2308: c3 04 0a    ...            ; collectible at 4,10
+    !byte $c1,   6, $0a                                               ; 230b: c1 06 0a    ...            ; collectible at 6,10
+    !byte 0                                                           ; 230e: 00          .              ; terminator for collectibles
+    !text "The Cella", $80+'r'                                        ; 230f: 54 68 65... The            ; "The Cellar"
+
+;          Descent To The Depths
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
+; ************************....************
 room_5_definition
-    !byte $0e,   0,   0,   0,   0,   2                                ; 2319: 0e 00 00... ...            ; room header
-    !byte $43, $fa, $18, $86, $1c, $fa, $0c,   0,   4, $17,   6,   1  ; 231f: 43 fa 18... C..            ; room commands
-    !byte   4,   4, $17, $1f,   0,   6,   0,   0,   0,   0            ; 232b: 04 04 17... ...
-    !text "Descent To The Depth", $80+'s'                             ; 2335: 44 65 73... Des
+    !byte $0e                                                         ; 2319: 0e          .              ; offset to start of doors
+    !byte 0, 0, 0, 0, 2                                               ; 231a: 00 00 00... ...            ; room header
+    !byte $43                                                         ; 231f: 43          C              ; set sprite 3, collision byte 128
+    !byte $fa, $18                                                    ; 2320: fa 18       ..             ; draw rect from 0,6 with size 24x26
+    !byte $86, $1c                                                    ; 2322: 86 1c       ..             ; set position to 28,6
+    !byte $fa, $0c                                                    ; 2324: fa 0c       ..             ; draw rect from 28,6 with size 12x26
+    !byte 0                                                           ; 2326: 00          .              ; terminator for commands
+    !byte   4, $17,   6,   1,   4                                     ; 2327: 04 17 06... ...            ; invisible horizontal door at 23,6 to door 1 in room 4
+    !byte   4, $17, $1f,   0,   6                                     ; 232c: 04 17 1f... ...            ; invisible horizontal door at 23,31 to door 0 in room 6
+    !byte 0                                                           ; 2331: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2332: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2333: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2334: 00          .              ; terminator for collectibles
+    !text "Descent To The Depth", $80+'s'                             ; 2335: 44 65 73... Des            ; "Descent To The Depths"
+
+;      The Underground Computer Room
+; ************************....************
+; ************************....************
+; ************************....************
+; *******..............*1*....*1*....*****
+; **....................D......D........**
+; **CCCC................D......D......OO**
+; **CCCC................D......D......OO**
+; **CCCC................D......D......OO**
+; **CCCC...............*1*....*1*....*****
+; **cccc...............***....***....*****
+; **cccc.................*XXXX*.........**
+; **cccc.................*XXXX*.......K.**
+; **cccc.................*XXXX*.......2.**
+; *******..............***XXXX***....*****
+; *******..............*******************
+; **...................*******************
+; **....................xxxx.*************
+; **....................xxxx.***........**
+; **....................xxxx.***........**
+; **....................xxxx.***........**
+; *******..............*********...cccc.**
+; ******************************...cccc.**
+; ******************************...cccc.**
+; ******************************...cccc.**
+; ****************************************
+; ****************************************
 room_6_definition
-    !byte $5f,   0,   1,   0,   1,   5                                ; 234a: 5f 00 01... _..            ; room header
-    !byte $43, $e2, $18, $f4,   2, $e4, $1e, $86, $1c, $e2, $0c, $88  ; 2350: 43 e2 18... C..            ; room commands
-    !byte $26, $f8,   2, $9e, $1e, $e2,   8, $71, $90, $17,   3, $c3  ; 235c: 26 f8 02... &..
-    !byte $90, $1c,   3, $95, $1b, $e2, $0b, $e5,   3, $42, $61, $88  ; 2368: 90 1c 03... ...
-    !byte   1, $17, $a4, $0b, $89,   1,   6, $ae,   3, $a4,   3, $a4  ; 2374: 01 17 a4... ...
-    !byte   4, $8e, $15,   3, $a4,   3, $a4,   4, $8f, $15,   3, $a4  ; 2380: 04 8e 15... ...
-    !byte   3, $a4,   4, $93,   1,   6, $ae,   3, $a4,   3, $a4,   4  ; 238c: 03 a4 04... ...
-    !byte $94,   1,   6, $ae, $12, $95, $15,   7, $9a,   1,   6, $ae  ; 2398: 94 01 06... ...
-    !byte   7, $9b,   1, $1b,   0,   4, $17,   6,   1,   5, $60, $16  ; 23a4: 07 9b 01... ...
-    !byte   9,   0,   0, $60, $1d,   9,   0,   0,   0, $c1, $24, $11  ; 23b0: 09 00 00... ...
-    !byte   0, $c0,   2, $0b, $c1,   2, $0f, $c2, $18, $10, $c3, $16  ; 23bc: 00 c0 02... ...
-    !byte $16, $c1, $21, $1a,   0, $c1, $24, $0b,   0                 ; 23c8: 16 c1 21... ..!
-    !text "The Underground Computer Roo", $80+'m'                     ; 23d1: 54 68 65... The
+    !byte $5f                                                         ; 234a: 5f          _              ; offset to start of doors
+    !byte 0, 1, 0, 1, 5                                               ; 234b: 00 01 00... ...            ; room header
+    !byte $43                                                         ; 2350: 43          C              ; set sprite 3, collision byte 128
+    !byte $e2, $18                                                    ; 2351: e2 18       ..             ; draw rect from 0,6 with size 24x2
+    !byte $f4,   2                                                    ; 2353: f4 02       ..             ; draw rect from 0,8 with size 2x20
+    !byte $e4, $1e                                                    ; 2355: e4 1e       ..             ; draw rect from 0,28 with size 30x4
+    !byte $86, $1c                                                    ; 2357: 86 1c       ..             ; set position to 28,6
+    !byte $e2, $0c                                                    ; 2359: e2 0c       ..             ; draw rect from 28,6 with size 12x2
+    !byte $88, $26                                                    ; 235b: 88 26       .&             ; set position to 38,8
+    !byte $f8,   2                                                    ; 235d: f8 02       ..             ; draw rect from 38,8 with size 2x24
+    !byte $9e, $1e                                                    ; 235f: 9e 1e       ..             ; set position to 30,30
+    !byte $e2,   8                                                    ; 2361: e2 08       ..             ; draw rect from 30,30 with size 8x2
+    !byte $71                                                         ; 2363: 71          q              ; set delta to 0,1
+    !byte $90, $17                                                    ; 2364: 90 17       ..             ; set position to 23,16
+    !byte 3                                                           ; 2366: 03          .              ; plot strip at 23,16 of length 3
+    !byte $c3                                                         ; 2367: c3          .              ; set sprite 3, collision byte 144
+    !byte $90, $1c                                                    ; 2368: 90 1c       ..             ; set position to 28,16
+    !byte 3                                                           ; 236a: 03          .              ; plot strip at 28,16 of length 3
+    !byte $95, $1b                                                    ; 236b: 95 1b       ..             ; set position to 27,21
+    !byte $e2, $0b                                                    ; 236d: e2 0b       ..             ; draw rect from 27,21 with size 11x2
+    !byte $e5,   3                                                    ; 236f: e5 03       ..             ; draw rect from 27,23 with size 3x5
+    !byte $42                                                         ; 2371: 42          B              ; set sprite 2, collision byte 128
+    !byte $61                                                         ; 2372: 61          a              ; set delta to 1,0
+    !byte $88,   1                                                    ; 2373: 88 01       ..             ; set position to 1,8
+    !byte $17                                                         ; 2375: 17          .              ; plot strip at 1,8 of length 23
+    !byte $a4                                                         ; 2376: a4          .              ; move by 4*delta to 27,8
+    !byte $0b                                                         ; 2377: 0b          .              ; plot strip at 27,8 of length 11
+    !byte $89,   1                                                    ; 2378: 89 01       ..             ; set position to 1,9
+    !byte 6                                                           ; 237a: 06          .              ; plot strip at 1,9 of length 6
+    !byte $ae                                                         ; 237b: ae          .              ; move by 14*delta to 20,9
+    !byte 3                                                           ; 237c: 03          .              ; plot strip at 20,9 of length 3
+    !byte $a4                                                         ; 237d: a4          .              ; move by 4*delta to 27,9
+    !byte 3                                                           ; 237e: 03          .              ; plot strip at 27,9 of length 3
+    !byte $a4                                                         ; 237f: a4          .              ; move by 4*delta to 34,9
+    !byte 4                                                           ; 2380: 04          .              ; plot strip at 34,9 of length 4
+    !byte $8e, $15                                                    ; 2381: 8e 15       ..             ; set position to 21,14
+    !byte 3                                                           ; 2383: 03          .              ; plot strip at 21,14 of length 3
+    !byte $a4                                                         ; 2384: a4          .              ; move by 4*delta to 27,14
+    !byte 3                                                           ; 2385: 03          .              ; plot strip at 27,14 of length 3
+    !byte $a4                                                         ; 2386: a4          .              ; move by 4*delta to 34,14
+    !byte 4                                                           ; 2387: 04          .              ; plot strip at 34,14 of length 4
+    !byte $8f, $15                                                    ; 2388: 8f 15       ..             ; set position to 21,15
+    !byte 3                                                           ; 238a: 03          .              ; plot strip at 21,15 of length 3
+    !byte $a4                                                         ; 238b: a4          .              ; move by 4*delta to 27,15
+    !byte 3                                                           ; 238c: 03          .              ; plot strip at 27,15 of length 3
+    !byte $a4                                                         ; 238d: a4          .              ; move by 4*delta to 34,15
+    !byte 4                                                           ; 238e: 04          .              ; plot strip at 34,15 of length 4
+    !byte $93,   1                                                    ; 238f: 93 01       ..             ; set position to 1,19
+    !byte 6                                                           ; 2391: 06          .              ; plot strip at 1,19 of length 6
+    !byte $ae                                                         ; 2392: ae          .              ; move by 14*delta to 20,19
+    !byte 3                                                           ; 2393: 03          .              ; plot strip at 20,19 of length 3
+    !byte $a4                                                         ; 2394: a4          .              ; move by 4*delta to 27,19
+    !byte 3                                                           ; 2395: 03          .              ; plot strip at 27,19 of length 3
+    !byte $a4                                                         ; 2396: a4          .              ; move by 4*delta to 34,19
+    !byte 4                                                           ; 2397: 04          .              ; plot strip at 34,19 of length 4
+    !byte $94,   1                                                    ; 2398: 94 01       ..             ; set position to 1,20
+    !byte 6                                                           ; 239a: 06          .              ; plot strip at 1,20 of length 6
+    !byte $ae                                                         ; 239b: ae          .              ; move by 14*delta to 20,20
+    !byte $12                                                         ; 239c: 12          .              ; plot strip at 20,20 of length 18
+    !byte $95, $15                                                    ; 239d: 95 15       ..             ; set position to 21,21
+    !byte 7                                                           ; 239f: 07          .              ; plot strip at 21,21 of length 7
+    !byte $9a,   1                                                    ; 23a0: 9a 01       ..             ; set position to 1,26
+    !byte 6                                                           ; 23a2: 06          .              ; plot strip at 1,26 of length 6
+    !byte $ae                                                         ; 23a3: ae          .              ; move by 14*delta to 20,26
+    !byte 7                                                           ; 23a4: 07          .              ; plot strip at 20,26 of length 7
+    !byte $9b,   1                                                    ; 23a5: 9b 01       ..             ; set position to 1,27
+    !byte $1b                                                         ; 23a7: 1b          .              ; plot strip at 1,27 of length 27
+    !byte 0                                                           ; 23a8: 00          .              ; terminator for commands
+    !byte   4, $17,   6,   1,   5                                     ; 23a9: 04 17 06... ...            ; invisible horizontal door at 23,6 to door 1 in room 5
+    !byte $60, $16,   9,   0,   0                                     ; 23ae: 60 16 09... `..            ; visible vertical door at 22,9 to door 0 in room 0
+    !byte $60, $1d,   9,   0,   0                                     ; 23b3: 60 1d 09... `..            ; visible vertical door at 29,9 to door 0 in room 0
+    !byte 0                                                           ; 23b8: 00          .              ; terminator for doors
+    !byte $c1, $24, $11                                               ; 23b9: c1 24 11    .$.            ; key at 36,17
+    !byte 0                                                           ; 23bc: 00          .              ; terminator for keys
+    !byte $c0,   2, $0b                                               ; 23bd: c0 02 0b    ...            ; computer at 2,11
+    !byte $c1,   2, $0f                                               ; 23c0: c1 02 0f    ...            ; computer at 2,15
+    !byte $c2, $18, $10                                               ; 23c3: c2 18 10    ...            ; computer at 24,16
+    !byte $c3, $16, $16                                               ; 23c6: c3 16 16    ...            ; computer at 22,22
+    !byte $c1, $21, $1a                                               ; 23c9: c1 21 1a    .!.            ; computer at 33,26
+    !byte 0                                                           ; 23cc: 00          .              ; terminator for computers
+    !byte $c1, $24, $0b                                               ; 23cd: c1 24 0b    .$.            ; collectible at 36,11
+    !byte 0                                                           ; 23d0: 00          .              ; terminator for collectibles
+    !text "The Underground Computer Roo", $80+'m'                     ; 23d1: 54 68 65... The            ; "The Underground Computer Room"
+
+;                    
+; ****************************************
+; ****************************************
+; ....................................****
+; ....................................****
+; ....................................****
+; ....................................****
+; ********************************....****
+; ********************************....****
+; ********************************........
+; ********************************........
+; ********************************........
+; ********************************........
+; ********************************....****
+; ********************************....****
+; ********************************....****
+; ****.....**..............**.........****
+; ****.....**..............**.........****
+; ****................................****
+; ****................................****
+; ****................................****
+; ****................................****
+; ****................................****
+; ****................................****
+; ****....********************************
+; ****....********************************
+; ****....********************************
 room_7_definition
-    !byte $2a,   2,   2,   2,   0,   6                                ; 23ee: 2a 02 02... *..            ; room header
-    !byte $42, $e2, $28, $88, $24, $e6,   4, $92, $24, $e3,   4, $8c  ; 23f4: 42 e2 28... B.(            ; room commands
-    !byte   0, $e9, $20, $43, $95,   0, $eb,   4, $9d,   8, $e3, $20  ; 2400: 00 e9 20... ..
-    !byte $95, $24, $e8,   4, $d0, $95,   9,   1, $95, $19,   1,   0  ; 240c: 95 24 e8... .$.
-    !byte $44, $27, $0d,   2,   4, $44,   0,   7,   0,   8,   4,   3  ; 2418: 44 27 0d... D'.
-    !byte $1f,   0, $0c,   0,   0,   0,   0,   0                      ; 2424: 1f 00 0c... ...
+    !byte $2a                                                         ; 23ee: 2a          *              ; offset to start of doors
+    !byte 2, 2, 2, 0, 6                                               ; 23ef: 02 02 02... ...            ; room header
+    !byte $42                                                         ; 23f4: 42          B              ; set sprite 2, collision byte 128
+    !byte $e2, $28                                                    ; 23f5: e2 28       .(             ; draw rect from 0,6 with size 40x2
+    !byte $88, $24                                                    ; 23f7: 88 24       .$             ; set position to 36,8
+    !byte $e6,   4                                                    ; 23f9: e6 04       ..             ; draw rect from 36,8 with size 4x6
+    !byte $92, $24                                                    ; 23fb: 92 24       .$             ; set position to 36,18
+    !byte $e3,   4                                                    ; 23fd: e3 04       ..             ; draw rect from 36,18 with size 4x3
+    !byte $8c,   0                                                    ; 23ff: 8c 00       ..             ; set position to 0,12
+    !byte $e9, $20                                                    ; 2401: e9 20       .              ; draw rect from 0,12 with size 32x9
+    !byte $43                                                         ; 2403: 43          C              ; set sprite 3, collision byte 128
+    !byte $95,   0                                                    ; 2404: 95 00       ..             ; set position to 0,21
+    !byte $eb,   4                                                    ; 2406: eb 04       ..             ; draw rect from 0,21 with size 4x11
+    !byte $9d,   8                                                    ; 2408: 9d 08       ..             ; set position to 8,29
+    !byte $e3, $20                                                    ; 240a: e3 20       .              ; draw rect from 8,29 with size 32x3
+    !byte $95, $24                                                    ; 240c: 95 24       .$             ; set position to 36,21
+    !byte $e8,   4                                                    ; 240e: e8 04       ..             ; draw rect from 36,21 with size 4x8
+    !byte $d0                                                         ; 2410: d0          .              ; set sprite 16, collision byte 144
+    !byte $95,   9                                                    ; 2411: 95 09       ..             ; set position to 9,21
+    !byte 1                                                           ; 2413: 01          .              ; plot strip at 9,21 of length 1
+    !byte $95, $19                                                    ; 2414: 95 19       ..             ; set position to 25,21
+    !byte 1                                                           ; 2416: 01          .              ; plot strip at 25,21 of length 1
+    !byte 0                                                           ; 2417: 00          .              ; terminator for commands
+    !byte $44, $27, $0d,   2,   4                                     ; 2418: 44 27 0d... D'.            ; invisible vertical door at 39,13 to door 2 in room 4
+    !byte $44,   0,   7,   0,   8                                     ; 241d: 44 00 07... D..            ; invisible vertical door at 0,7 to door 0 in room 8
+    !byte   4,   3, $1f,   0, $0c                                     ; 2422: 04 03 1f... ...            ; invisible horizontal door at 3,31 to door 0 in room 12
+    !byte 0                                                           ; 2427: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2428: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2429: 00          .              ; terminator for computers
+    !byte 0                                                           ; 242a: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 242b: 00          .              ; terminator for title
+
+;          The Underground Pool
+; ****************************************
+; ***..................................***
+; ***...............................AA.***
+; ***...............................AA.***
+; ..................................AA.***
+; .................................*******
+; .....................................***
+; .....................................***
+; ***..................................***
+; ****.................................***
+; ****.................................***
+; ****.................................***
+; ****....................................
+; ****....................................
+; ****....................................
+; ****....................................
+; ****....................................
+; ****....................................
+; *****..............................*****
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_8_definition
-    !byte $3b,   0,   1,   2,   3, $0a                                ; 242c: 3b 00 01... ;..            ; room header
-    !byte $42, $e4,   3, $8e,   0, $ea,   3, $e8,   5, $9e,   5, $e2  ; 2432: 42 e4 03... B..            ; room commands
-    !byte $1e, $98, $23, $e8,   5, $86, $25, $ec,   3, $4f, $8b, $21  ; 243e: 1e 98 23... ..#
-    !byte   1, $4b,   3, $86,   3                                     ; 244a: 01 4b 03... .K.
-    !text "\"Ib"                                                      ; 244f: 22 49 62    "Ib
-    !byte $99,   5, $0f, $8f,   3, $56,   1, $90,   3, $48, $72,   4  ; 2452: 99 05 0f... ...
-    !byte $4e, $9a,   5, $e1, $1e, $4a, $e3, $1e,   0, $44, $27, $12  ; 245e: 4e 9a 05... N..
-    !byte   1,   7, $44,   0,   9,   0,   9,   0,   0,   0, $c3, $22  ; 246a: 01 07 44... ..D
-    !byte   8,   0                                                    ; 2476: 08 00       ..
-    !text "The Underground Poo", $80+'l'                              ; 2478: 54 68 65... The
+    !byte $3b                                                         ; 242c: 3b          ;              ; offset to start of doors
+    !byte   0,   1,   2,   3, $0a                                     ; 242d: 00 01 02... ...            ; room header
+    !byte $42                                                         ; 2432: 42          B              ; set sprite 2, collision byte 128
+    !byte $e4,   3                                                    ; 2433: e4 03       ..             ; draw rect from 0,6 with size 3x4
+    !byte $8e,   0                                                    ; 2435: 8e 00       ..             ; set position to 0,14
+    !byte $ea,   3                                                    ; 2437: ea 03       ..             ; draw rect from 0,14 with size 3x10
+    !byte $e8,   5                                                    ; 2439: e8 05       ..             ; draw rect from 0,24 with size 5x8
+    !byte $9e,   5                                                    ; 243b: 9e 05       ..             ; set position to 5,30
+    !byte $e2, $1e                                                    ; 243d: e2 1e       ..             ; draw rect from 5,30 with size 30x2
+    !byte $98, $23                                                    ; 243f: 98 23       .#             ; set position to 35,24
+    !byte $e8,   5                                                    ; 2441: e8 05       ..             ; draw rect from 35,24 with size 5x8
+    !byte $86, $25                                                    ; 2443: 86 25       .%             ; set position to 37,6
+    !byte $ec,   3                                                    ; 2445: ec 03       ..             ; draw rect from 37,6 with size 3x12
+    !byte $4f                                                         ; 2447: 4f          O              ; set sprite 15, collision byte 128
+    !byte $8b, $21                                                    ; 2448: 8b 21       .!             ; set position to 33,11
+    !byte 1                                                           ; 244a: 01          .              ; plot strip at 33,11 of length 1
+    !byte $4b                                                         ; 244b: 4b          K              ; set sprite 11, collision byte 128
+    !byte 3                                                           ; 244c: 03          .              ; plot strip at 33,11 of length 3
+    !byte $86,   3                                                    ; 244d: 86 03       ..             ; set position to 3,6
+    !byte $22                                                         ; 244f: 22          "              ; plot strip at 3,6 of length 34
+    !byte $49                                                         ; 2450: 49          I              ; set sprite 9, collision byte 128
+    !byte $62                                                         ; 2451: 62          b              ; set delta to 2,0
+    !byte $99,   5                                                    ; 2452: 99 05       ..             ; set position to 5,25
+    !byte $0f                                                         ; 2454: 0f          .              ; plot strip at 5,25 of length 15
+    !byte $8f,   3                                                    ; 2455: 8f 03       ..             ; set position to 3,15
+    !byte $56                                                         ; 2457: 56          V              ; set sprite 22, collision byte 128
+    !byte 1                                                           ; 2458: 01          .              ; plot strip at 3,15 of length 1
+    !byte $90,   3                                                    ; 2459: 90 03       ..             ; set position to 3,16
+    !byte $48                                                         ; 245b: 48          H              ; set sprite 8, collision byte 128
+    !byte $72                                                         ; 245c: 72          r              ; set delta to 0,2
+    !byte 4                                                           ; 245d: 04          .              ; plot strip at 3,16 of length 4
+    !byte $4e                                                         ; 245e: 4e          N              ; set sprite 14, collision byte 128
+    !byte $9a,   5                                                    ; 245f: 9a 05       ..             ; set position to 5,26
+    !byte $e1, $1e                                                    ; 2461: e1 1e       ..             ; draw rect from 5,26 with size 30x1
+    !byte $4a                                                         ; 2463: 4a          J              ; set sprite 10, collision byte 128
+    !byte $e3, $1e                                                    ; 2464: e3 1e       ..             ; draw rect from 5,27 with size 30x3
+    !byte 0                                                           ; 2466: 00          .              ; terminator for commands
+    !byte $44, $27, $12,   1,   7                                     ; 2467: 44 27 12... D'.            ; invisible vertical door at 39,18 to door 1 in room 7
+    !byte $44,   0,   9,   0,   9                                     ; 246c: 44 00 09... D..            ; invisible vertical door at 0,9 to door 0 in room 9
+    !byte 0                                                           ; 2471: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2472: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2473: 00          .              ; terminator for computers
+    !byte $c3, $22,   8                                               ; 2474: c3 22 08    .".            ; collectible at 34,8
+    !byte 0                                                           ; 2477: 00          .              ; terminator for collectibles
+    !text "The Underground Poo", $80+'l'                              ; 2478: 54 68 65... The            ; "The Underground Pool"
+
+;          The Processing Plant
+; ****************************************
+; *................*****.................*
+; *.....cccc..cccc.*****.................*
+; *.....cccc..cccc.*****.................*
+; *.....cccc..cccc.*****..................
+; *.....cccc..cccc.*****..................
+; *....*****************..................
+; *................*****..................
+; *.....XXXX..XXXX.*****............******
+; *.....XXXX..XXXX.*****............*....*
+; *.....XXXX..XXXX.*****............*....*
+; *.....XXXX..XXXX.*****............*....*
+; *....*****************............*....*
+; *....*****************............*....*
+; *....*****************............*....*
+; .....*******************************...*
+; .....*******************************...*
+; .....*******************************...*
+; .....*******************************...*
+; *....*******************************...*
+; *....***********.................***...*
+; *....***********xxxx..............*....*
+; *....***********xxxx..............*....*
+; *....***********xxxx..............*....*
+; *....***********xxxx..............*....*
+; *********************....***************
 room_9_definition
-    !byte $57,   1,   2,   2,   1,   5                                ; 248c: 57 01 02... W..            ; room header
-    !text "B(q"                                                       ; 2492: 42 28 71    B(q            ; room commands
-    !byte $19                                                         ; 2495: 19          .
-    !text "i'y"                                                       ; 2496: 69 27 79    i'y
-    !byte $18, $97, $19,   3, $97, $1d,   3, $61, $8c,   5, $0c, $87  ; 2499: 18 97 19... ...
-    !byte $11, $eb,   5, $92,   5, $e6, $11, $e2, $1f, $e5, $0b, $95  ; 24a5: 11 eb 05... ...
-    !byte $21, $e6,   3, $c2, $89, $11,   5, $8f, $11,   5, $4e, $95  ; 24b1: 21 e6 03... !..
-    !byte $16,   3, $a1,   3, $a1,   3, $4a, $96, $16,   3, $a1,   3  ; 24bd: 16 03 a1... ...
-    !byte $a1,   3, $97, $16,   3, $a1,   3, $a1,   3, $d7, $8e, $22  ; 24c9: a1 03 97... ...
-    !byte   1, $8e, $23, $62, $c9,   2, $72, $c8, $8f, $22,   3, $a3  ; 24d5: 01 8e 23... ..#
-    !byte   2,   0, $44, $27,   9,   1,   8,   4, $14, $1f,   0, $0a  ; 24e1: 02 00 44... ..D
-    !byte $44,   0, $14,   0,   0,   0,   0, $c1,   6,   8, $c1, $0c  ; 24ed: 44 00 14... D..
-    !byte   8, $c2,   6, $0e, $c2, $0c, $0e, $c3, $10, $1b,   0,   0  ; 24f9: 08 c2 06... ...
-    !text "The Processing Plan", $80+'t'                              ; 2505: 54 68 65... The
+    !byte $57                                                         ; 248c: 57          W              ; offset to start of doors
+    !byte 1, 2, 2, 1, 5                                               ; 248d: 01 02 02... ...            ; room header
+    !byte $42                                                         ; 2492: 42          B              ; set sprite 2, collision byte 128
+    !byte $28                                                         ; 2493: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2494: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 2495: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 2496: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 2497: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 2498: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 2499: 18          .              ; plot strip at 0,31 of length 24
+    !byte $97, $19                                                    ; 249a: 97 19       ..             ; set position to 25,23
+    !byte 3                                                           ; 249c: 03          .              ; plot strip at 25,23 of length 3
+    !byte $97, $1d                                                    ; 249d: 97 1d       ..             ; set position to 29,23
+    !byte 3                                                           ; 249f: 03          .              ; plot strip at 29,23 of length 3
+    !byte $61                                                         ; 24a0: 61          a              ; set delta to 1,0
+    !byte $8c,   5                                                    ; 24a1: 8c 05       ..             ; set position to 5,12
+    !byte $0c                                                         ; 24a3: 0c          .              ; plot strip at 5,12 of length 12
+    !byte $87, $11                                                    ; 24a4: 87 11       ..             ; set position to 17,7
+    !byte $eb,   5                                                    ; 24a6: eb 05       ..             ; draw rect from 17,7 with size 5x11
+    !byte $92,   5                                                    ; 24a8: 92 05       ..             ; set position to 5,18
+    !byte $e6, $11                                                    ; 24aa: e6 11       ..             ; draw rect from 5,18 with size 17x6
+    !byte $e2, $1f                                                    ; 24ac: e2 1f       ..             ; draw rect from 5,24 with size 31x2
+    !byte $e5, $0b                                                    ; 24ae: e5 0b       ..             ; draw rect from 5,26 with size 11x5
+    !byte $95, $21                                                    ; 24b0: 95 21       .!             ; set position to 33,21
+    !byte $e6,   3                                                    ; 24b2: e6 03       ..             ; draw rect from 33,21 with size 3x6
+    !byte $c2                                                         ; 24b4: c2          .              ; set sprite 2, collision byte 144
+    !byte $89, $11                                                    ; 24b5: 89 11       ..             ; set position to 17,9
+    !byte 5                                                           ; 24b7: 05          .              ; plot strip at 17,9 of length 5
+    !byte $8f, $11                                                    ; 24b8: 8f 11       ..             ; set position to 17,15
+    !byte 5                                                           ; 24ba: 05          .              ; plot strip at 17,15 of length 5
+    !byte $4e                                                         ; 24bb: 4e          N              ; set sprite 14, collision byte 128
+    !byte $95, $16                                                    ; 24bc: 95 16       ..             ; set position to 22,21
+    !byte 3                                                           ; 24be: 03          .              ; plot strip at 22,21 of length 3
+    !byte $a1                                                         ; 24bf: a1          .              ; move by 1*delta to 25,21
+    !byte 3                                                           ; 24c0: 03          .              ; plot strip at 25,21 of length 3
+    !byte $a1                                                         ; 24c1: a1          .              ; move by 1*delta to 29,21
+    !byte 3                                                           ; 24c2: 03          .              ; plot strip at 29,21 of length 3
+    !byte $4a                                                         ; 24c3: 4a          J              ; set sprite 10, collision byte 128
+    !byte $96, $16                                                    ; 24c4: 96 16       ..             ; set position to 22,22
+    !byte 3                                                           ; 24c6: 03          .              ; plot strip at 22,22 of length 3
+    !byte $a1                                                         ; 24c7: a1          .              ; move by 1*delta to 25,22
+    !byte 3                                                           ; 24c8: 03          .              ; plot strip at 25,22 of length 3
+    !byte $a1                                                         ; 24c9: a1          .              ; move by 1*delta to 29,22
+    !byte 3                                                           ; 24ca: 03          .              ; plot strip at 29,22 of length 3
+    !byte $97, $16                                                    ; 24cb: 97 16       ..             ; set position to 22,23
+    !byte 3                                                           ; 24cd: 03          .              ; plot strip at 22,23 of length 3
+    !byte $a1                                                         ; 24ce: a1          .              ; move by 1*delta to 25,23
+    !byte 3                                                           ; 24cf: 03          .              ; plot strip at 25,23 of length 3
+    !byte $a1                                                         ; 24d0: a1          .              ; move by 1*delta to 29,23
+    !byte 3                                                           ; 24d1: 03          .              ; plot strip at 29,23 of length 3
+    !byte $d7                                                         ; 24d2: d7          .              ; set sprite 23, collision byte 144
+    !byte $8e, $22                                                    ; 24d3: 8e 22       ."             ; set position to 34,14
+    !byte 1                                                           ; 24d5: 01          .              ; plot strip at 34,14 of length 1
+    !byte $8e, $23                                                    ; 24d6: 8e 23       .#             ; set position to 35,14
+    !byte $62                                                         ; 24d8: 62          b              ; set delta to 2,0
+    !byte $c9                                                         ; 24d9: c9          .              ; set sprite 9, collision byte 144
+    !byte 2                                                           ; 24da: 02          .              ; plot strip at 35,14 of length 2
+    !byte $72                                                         ; 24db: 72          r              ; set delta to 0,2
+    !byte $c8                                                         ; 24dc: c8          .              ; set sprite 8, collision byte 144
+    !byte $8f, $22                                                    ; 24dd: 8f 22       ."             ; set position to 34,15
+    !byte 3                                                           ; 24df: 03          .              ; plot strip at 34,15 of length 3
+    !byte $a3                                                         ; 24e0: a3          .              ; move by 3*delta to 34,25
+    !byte 2                                                           ; 24e1: 02          .              ; plot strip at 34,25 of length 2
+    !byte 0                                                           ; 24e2: 00          .              ; terminator for commands
+    !byte $44, $27,   9,   1,   8                                     ; 24e3: 44 27 09... D'.            ; invisible vertical door at 39,9 to door 1 in room 8
+    !byte   4, $14, $1f,   0, $0a                                     ; 24e8: 04 14 1f... ...            ; invisible horizontal door at 20,31 to door 0 in room 10
+    !byte $44,   0, $14,   0,   0                                     ; 24ed: 44 00 14... D..            ; invisible vertical door at 0,20 to door 0 in room 0
+    !byte 0                                                           ; 24f2: 00          .              ; terminator for doors
+    !byte 0                                                           ; 24f3: 00          .              ; terminator for keys
+    !byte $c1,   6,   8                                               ; 24f4: c1 06 08    ...            ; computer at 6,8
+    !byte $c1, $0c,   8                                               ; 24f7: c1 0c 08    ...            ; computer at 12,8
+    !byte $c2,   6, $0e                                               ; 24fa: c2 06 0e    ...            ; computer at 6,14
+    !byte $c2, $0c, $0e                                               ; 24fd: c2 0c 0e    ...            ; computer at 12,14
+    !byte $c3, $10, $1b                                               ; 2500: c3 10 1b    ...            ; computer at 16,27
+    !byte 0                                                           ; 2503: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2504: 00          .              ; terminator for collectibles
+    !text "The Processing Plan", $80+'t'                              ; 2505: 54 68 65... The            ; "The Processing Plant"
+
+;         Strange Things, Part 1
+; *********************....***************
+; ***..........****.................*....*
+; ***.cccc.....****.................*....*
+; ***.cccc.....****.................*....*
+; ***.cccc.....****.AA..............*....*
+; ***.cccc.....****.AA..............*....*
+; *********....****.AA..............*....*
+; ******.......***********************...*
+; ******.K.....***********************...*
+; ******.4.....***********************...*
+; ******.......***********************...*
+; *********....************.........*....*
+; ******SS..........................*....*
+; ******SS..........................*....*
+; ******SS....................*...*.*....*
+; *****************************...********
+; *****************************...********
+; *****************************...********
+; *****************************...********
+; ****........................*...*......*
+; ..........cccc.XXXX.xxxx....*...*.......
+; ..........cccc.XXXX.xxxx................
+; ..........cccc.XXXX.xxxx................
+; ..........cccc.XXXX.xxxx................
+; ****************************************
+; ****************************************
 room_10_definition
-    !byte $49,   0,   1,   0,   1,   5                                ; 2519: 49 00 01... I..            ; room header
-    !text "B(q"                                                       ; 251f: 42 28 71    B(q            ; room commands
-    !byte $0f, $69,   6, $a5, $16, $91, $18, $0c, $a4,   3, $8c,   8  ; 2522: 0f 69 06... .i.
-    !byte   3, $71, $94, $1c,   7, $94, $20,   7, $87, $0d, $e6,   4  ; 252e: 03 71 94... .q.
-    !byte $e4, $17, $87,   0, $e5,   3, $e5,   6, $91,   4, $e5,   2  ; 253a: e4 17 87... ...
-    !byte $43, $91,   0, $e9,   4, $96,   4, $e3, $18, $96, $21, $e3  ; 2546: 43 91 00... C..
-    !byte   7, $9e,   0, $e2, $28, $99, $27,   1, $c8, $72, $87, $22  ; 2552: 07 9e 00... ...
-    !byte   3, $a2,   2,   0,   4, $14,   6,   1,   9, $44, $27, $19  ; 255e: 03 a2 02... ...
-    !byte   2, $0a, $44,   0, $19,   1, $0a,   0, $c3,   7, $0e,   0  ; 256a: 02 0a 44... ..D
-    !byte $c1,   4,   8, $c1, $0a, $1a, $c2, $0f, $1a, $c3, $14, $1a  ; 2576: c1 04 08... ...
-    !byte   0, $c2,   6, $12, $c3, $12, $0a,   0                      ; 2582: 00 c2 06... ...
-    !text "Strange Things, Part ", $80+'1'                            ; 258a: 53 74 72... Str
+    !byte $49                                                         ; 2519: 49          I              ; offset to start of doors
+    !byte 0, 1, 0, 1, 5                                               ; 251a: 00 01 00... ...            ; room header
+    !byte $42                                                         ; 251f: 42          B              ; set sprite 2, collision byte 128
+    !byte $28                                                         ; 2520: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2521: 71          q              ; set delta to 0,1
+    !byte $0f                                                         ; 2522: 0f          .              ; plot strip at 39,6 of length 15
+    !byte $69                                                         ; 2523: 69          i              ; set delta to -1,0
+    !byte 6                                                           ; 2524: 06          .              ; plot strip at 39,21 of length 6
+    !byte $a5                                                         ; 2525: a5          .              ; move by 5*delta to 28,21
+    !byte $16                                                         ; 2526: 16          .              ; plot strip at 28,21 of length 22
+    !byte $91, $18                                                    ; 2527: 91 18       ..             ; set position to 24,17
+    !byte $0c                                                         ; 2529: 0c          .              ; plot strip at 24,17 of length 12
+    !byte $a4                                                         ; 252a: a4          .              ; move by 4*delta to 9,17
+    !byte 3                                                           ; 252b: 03          .              ; plot strip at 9,17 of length 3
+    !byte $8c,   8                                                    ; 252c: 8c 08       ..             ; set position to 8,12
+    !byte 3                                                           ; 252e: 03          .              ; plot strip at 8,12 of length 3
+    !byte $71                                                         ; 252f: 71          q              ; set delta to 0,1
+    !byte $94, $1c                                                    ; 2530: 94 1c       ..             ; set position to 28,20
+    !byte 7                                                           ; 2532: 07          .              ; plot strip at 28,20 of length 7
+    !byte $94, $20                                                    ; 2533: 94 20       .              ; set position to 32,20
+    !byte 7                                                           ; 2535: 07          .              ; plot strip at 32,20 of length 7
+    !byte $87, $0d                                                    ; 2536: 87 0d       ..             ; set position to 13,7
+    !byte $e6,   4                                                    ; 2538: e6 04       ..             ; draw rect from 13,7 with size 4x6
+    !byte $e4, $17                                                    ; 253a: e4 17       ..             ; draw rect from 13,13 with size 23x4
+    !byte $87,   0                                                    ; 253c: 87 00       ..             ; set position to 0,7
+    !byte $e5,   3                                                    ; 253e: e5 03       ..             ; draw rect from 0,7 with size 3x5
+    !byte $e5,   6                                                    ; 2540: e5 06       ..             ; draw rect from 0,12 with size 6x5
+    !byte $91,   4                                                    ; 2542: 91 04       ..             ; set position to 4,17
+    !byte $e5,   2                                                    ; 2544: e5 02       ..             ; draw rect from 4,17 with size 2x5
+    !byte $43                                                         ; 2546: 43          C              ; set sprite 3, collision byte 128
+    !byte $91,   0                                                    ; 2547: 91 00       ..             ; set position to 0,17
+    !byte $e9,   4                                                    ; 2549: e9 04       ..             ; draw rect from 0,17 with size 4x9
+    !byte $96,   4                                                    ; 254b: 96 04       ..             ; set position to 4,22
+    !byte $e3, $18                                                    ; 254d: e3 18       ..             ; draw rect from 4,22 with size 24x3
+    !byte $96, $21                                                    ; 254f: 96 21       .!             ; set position to 33,22
+    !byte $e3,   7                                                    ; 2551: e3 07       ..             ; draw rect from 33,22 with size 7x3
+    !byte $9e,   0                                                    ; 2553: 9e 00       ..             ; set position to 0,30
+    !byte $e2, $28                                                    ; 2555: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $99, $27                                                    ; 2557: 99 27       .'             ; set position to 39,25
+    !byte 1                                                           ; 2559: 01          .              ; plot strip at 39,25 of length 1
+    !byte $c8                                                         ; 255a: c8          .              ; set sprite 8, collision byte 144
+    !byte $72                                                         ; 255b: 72          r              ; set delta to 0,2
+    !byte $87, $22                                                    ; 255c: 87 22       ."             ; set position to 34,7
+    !byte 3                                                           ; 255e: 03          .              ; plot strip at 34,7 of length 3
+    !byte $a2                                                         ; 255f: a2          .              ; move by 2*delta to 34,15
+    !byte 2                                                           ; 2560: 02          .              ; plot strip at 34,15 of length 2
+    !byte 0                                                           ; 2561: 00          .              ; terminator for commands
+    !byte   4, $14,   6,   1,   9                                     ; 2562: 04 14 06... ...            ; invisible horizontal door at 20,6 to door 1 in room 9
+    !byte $44, $27, $19,   2, $0a                                     ; 2567: 44 27 19... D'.            ; invisible vertical door at 39,25 to door 2 in room 10
+    !byte $44,   0, $19,   1, $0a                                     ; 256c: 44 00 19... D..            ; invisible vertical door at 0,25 to door 1 in room 10
+    !byte 0                                                           ; 2571: 00          .              ; terminator for doors
+    !byte $c3,   7, $0e                                               ; 2572: c3 07 0e    ...            ; key at 7,14
+    !byte 0                                                           ; 2575: 00          .              ; terminator for keys
+    !byte $c1,   4,   8                                               ; 2576: c1 04 08    ...            ; computer at 4,8
+    !byte $c1, $0a, $1a                                               ; 2579: c1 0a 1a    ...            ; computer at 10,26
+    !byte $c2, $0f, $1a                                               ; 257c: c2 0f 1a    ...            ; computer at 15,26
+    !byte $c3, $14, $1a                                               ; 257f: c3 14 1a    ...            ; computer at 20,26
+    !byte 0                                                           ; 2582: 00          .              ; terminator for computers
+    !byte $c2,   6, $12                                               ; 2583: c2 06 12    ...            ; collectible at 6,18
+    !byte $c3, $12, $0a                                               ; 2586: c3 12 0a    ...            ; collectible at 18,10
+    !byte 0                                                           ; 2589: 00          .              ; terminator for collectibles
+    !text "Strange Things, Part ", $80+'1'                            ; 258a: 53 74 72... Str            ; "Strange Things, Part 1"
+
+;               Not The End
+; ***************************************
+; .***************************************
+; .***************************************
+; .***************************************
+; .***************************************
+; .***...................................*
+; .***...................................*
+; .***...................................*
+; .***...................................*
+; .***...****************************....*
+; .***.....cccc***.......................*
+; .***.....cccc***.......................*
+; .***.....cccc***.......................*
+; .***.....cccc***.......................*
+; .***...*********......*************....*
+; .***.....XXXX***......*................*
+; .***.....XXXX***......*................*
+; .***.....XXXX***......*................*
+; .***.....XXXX***......*................*
+; .***...*********......******************
+; .***.....xxxx***........................
+; .***.....xxxx***........................
+; .***.....xxxx***........................
+; .***.....xxxx***........................
+; .***************************************
+; .***************************************
 room_11_definition
-    !byte $57,   2,   2,   2,   2, $0a                                ; 25a0: 57 02 02... W..            ; room header
-    !byte $43, $86,   1, $e3, $27, $71, $17                           ; 25a6: 43 86 01... C..            ; room commands
-    !text "a&B"                                                       ; 25ad: 61 26 42    a&B
-    !byte $89,   2, $e2, $26, $f3,   2, $26, $8f, $0d, $ef,   2, $8b  ; 25b0: 89 02 e2... ...
-    !byte $27, $71, $0f, $c3, $95,   1,   4, $c2, $95,   2, $e4,   2  ; 25bc: 27 71 0f... 'q.
-    !byte $4b, $61, $8f,   8,   4, $a4, $12, $94,   8,   4, $ab, $0b  ; 25c8: 4b 61 8f... Ka.
-    !byte $99,   8,   4, $ab, $10, $4c, $71, $90, $0f,   4, $a1,   4  ; 25d4: 99 08 04... ...
-    !byte $a1,   4, $95, $16,   4, $4f, $75, $8f,   7,   3, $8f, $0c  ; 25e0: a1 04 95... ...
-    !byte   3, $8f, $0f,   3, $8f, $16,   3, $8f, $22,   3,   0, $44  ; 25ec: 03 8f 0f... ...
-    !byte $27, $19,   1, $0c, $44,   0, $14,   0, $0d,   0,   0, $c1  ; 25f8: 27 19 01... '..
-    !byte   9, $10, $c2,   9, $15, $c3,   9, $1a,   0,   0            ; 2604: 09 10 c2... ...
-    !text "Not The En", $80+'d'                                       ; 260e: 4e 6f 74... Not
+    !byte $57                                                         ; 25a0: 57          W              ; offset to start of doors
+    !byte   2,   2,   2,   2, $0a                                     ; 25a1: 02 02 02... ...            ; room header
+    !byte $43                                                         ; 25a6: 43          C              ; set sprite 3, collision byte 128
+    !byte $86,   1                                                    ; 25a7: 86 01       ..             ; set position to 1,6
+    !byte $e3, $27                                                    ; 25a9: e3 27       .'             ; draw rect from 1,6 with size 39x3
+    !byte $71                                                         ; 25ab: 71          q              ; set delta to 0,1
+    !byte $17                                                         ; 25ac: 17          .              ; plot strip at 1,9 of length 23
+    !byte $61                                                         ; 25ad: 61          a              ; set delta to 1,0
+    !byte $26                                                         ; 25ae: 26          &              ; plot strip at 1,31 of length 38
+    !byte $42                                                         ; 25af: 42          B              ; set sprite 2, collision byte 128
+    !byte $89,   2                                                    ; 25b0: 89 02       ..             ; set position to 2,9
+    !byte $e2, $26                                                    ; 25b2: e2 26       .&             ; draw rect from 2,9 with size 38x2
+    !byte $f3,   2                                                    ; 25b4: f3 02       ..             ; draw rect from 2,11 with size 2x19
+    !byte $26                                                         ; 25b6: 26          &              ; plot strip at 2,30 of length 38
+    !byte $8f, $0d                                                    ; 25b7: 8f 0d       ..             ; set position to 13,15
+    !byte $ef,   2                                                    ; 25b9: ef 02       ..             ; draw rect from 13,15 with size 2x15
+    !byte $8b, $27                                                    ; 25bb: 8b 27       .'             ; set position to 39,11
+    !byte $71                                                         ; 25bd: 71          q              ; set delta to 0,1
+    !byte $0f                                                         ; 25be: 0f          .              ; plot strip at 39,11 of length 15
+    !byte $c3                                                         ; 25bf: c3          .              ; set sprite 3, collision byte 144
+    !byte $95,   1                                                    ; 25c0: 95 01       ..             ; set position to 1,21
+    !byte 4                                                           ; 25c2: 04          .              ; plot strip at 1,21 of length 4
+    !byte $c2                                                         ; 25c3: c2          .              ; set sprite 2, collision byte 144
+    !byte $95,   2                                                    ; 25c4: 95 02       ..             ; set position to 2,21
+    !byte $e4,   2                                                    ; 25c6: e4 02       ..             ; draw rect from 2,21 with size 2x4
+    !byte $4b                                                         ; 25c8: 4b          K              ; set sprite 11, collision byte 128
+    !byte $61                                                         ; 25c9: 61          a              ; set delta to 1,0
+    !byte $8f,   8                                                    ; 25ca: 8f 08       ..             ; set position to 8,15
+    !byte 4                                                           ; 25cc: 04          .              ; plot strip at 8,15 of length 4
+    !byte $a4                                                         ; 25cd: a4          .              ; move by 4*delta to 15,15
+    !byte $12                                                         ; 25ce: 12          .              ; plot strip at 15,15 of length 18
+    !byte $94,   8                                                    ; 25cf: 94 08       ..             ; set position to 8,20
+    !byte 4                                                           ; 25d1: 04          .              ; plot strip at 8,20 of length 4
+    !byte $ab                                                         ; 25d2: ab          .              ; move by 11*delta to 22,20
+    !byte $0b                                                         ; 25d3: 0b          .              ; plot strip at 22,20 of length 11
+    !byte $99,   8                                                    ; 25d4: 99 08       ..             ; set position to 8,25
+    !byte 4                                                           ; 25d6: 04          .              ; plot strip at 8,25 of length 4
+    !byte $ab                                                         ; 25d7: ab          .              ; move by 11*delta to 22,25
+    !byte $10                                                         ; 25d8: 10          .              ; plot strip at 22,25 of length 16
+    !byte $4c                                                         ; 25d9: 4c          L              ; set sprite 12, collision byte 128
+    !byte $71                                                         ; 25da: 71          q              ; set delta to 0,1
+    !byte $90, $0f                                                    ; 25db: 90 0f       ..             ; set position to 15,16
+    !byte 4                                                           ; 25dd: 04          .              ; plot strip at 15,16 of length 4
+    !byte $a1                                                         ; 25de: a1          .              ; move by 1*delta to 15,20
+    !byte 4                                                           ; 25df: 04          .              ; plot strip at 15,20 of length 4
+    !byte $a1                                                         ; 25e0: a1          .              ; move by 1*delta to 15,25
+    !byte 4                                                           ; 25e1: 04          .              ; plot strip at 15,25 of length 4
+    !byte $95, $16                                                    ; 25e2: 95 16       ..             ; set position to 22,21
+    !byte 4                                                           ; 25e4: 04          .              ; plot strip at 22,21 of length 4
+    !byte $4f                                                         ; 25e5: 4f          O              ; set sprite 15, collision byte 128
+    !byte $75                                                         ; 25e6: 75          u              ; set delta to 0,5
+    !byte $8f,   7                                                    ; 25e7: 8f 07       ..             ; set position to 7,15
+    !byte 3                                                           ; 25e9: 03          .              ; plot strip at 7,15 of length 3
+    !byte $8f, $0c                                                    ; 25ea: 8f 0c       ..             ; set position to 12,15
+    !byte 3                                                           ; 25ec: 03          .              ; plot strip at 12,15 of length 3
+    !byte $8f, $0f                                                    ; 25ed: 8f 0f       ..             ; set position to 15,15
+    !byte 3                                                           ; 25ef: 03          .              ; plot strip at 15,15 of length 3
+    !byte $8f, $16                                                    ; 25f0: 8f 16       ..             ; set position to 22,15
+    !byte 3                                                           ; 25f2: 03          .              ; plot strip at 22,15 of length 3
+    !byte $8f, $22                                                    ; 25f3: 8f 22       ."             ; set position to 34,15
+    !byte 3                                                           ; 25f5: 03          .              ; plot strip at 34,15 of length 3
+    !byte 0                                                           ; 25f6: 00          .              ; terminator for commands
+    !byte $44, $27, $19,   1, $0c                                     ; 25f7: 44 27 19... D'.            ; invisible vertical door at 39,25 to door 1 in room 12
+    !byte $44,   0, $14,   0, $0d                                     ; 25fc: 44 00 14... D..            ; invisible vertical door at 0,20 to door 0 in room 13
+    !byte 0                                                           ; 2601: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2602: 00          .              ; terminator for keys
+    !byte $c1,   9, $10                                               ; 2603: c1 09 10    ...            ; computer at 9,16
+    !byte $c2,   9, $15                                               ; 2606: c2 09 15    ...            ; computer at 9,21
+    !byte $c3,   9, $1a                                               ; 2609: c3 09 1a    ...            ; computer at 9,26
+    !byte 0                                                           ; 260c: 00          .              ; terminator for computers
+    !byte 0                                                           ; 260d: 00          .              ; terminator for collectibles
+    !text "Not The En", $80+'d'                                       ; 260e: 4e 6f 74... Not            ; "Not The End"
+
+;                    
+; *****....*******************************
+; *****....*******************************
+; *****....*******************************
+; *****....*******************************
+; *****................**........*********
+; *****............................*******
+; *****............................*******
+; *****............................*******
+; *****............................*******
+; *****....**....**....**........*********
+; **************************.....*********
+; *****....**....**....**..*..........****
+; *AA.*******************..*.......K..****
+; *AA.*******************..*.......1..****
+; *AA..cccc........XXXX**..*..........****
+; *....cccc........XXXX******....*********
+; *....cccc........XXXX******....*********
+; *....cccc........XXXX**..*.......*******
+; ***********...*********..*.......|SS****
+; .........................*.......|SS****
+; .........................*.......|SS****
+; .........................*.......*******
+; .........................*.....*********
+; ****************************************
+; ****************************************
+; ****************************************
 room_12_definition
-    !byte $79,   1,   1,   1,   1,   5                                ; 2619: 79 01 01... y..            ; room header
-    !byte $43, $e3,   5, $86,   9, $e3, $1f, $89, $25, $f7,   3, $8b  ; 261f: 43 e3 05... C..            ; room commands
-    !byte $21, $e4,   4, $91, $24, $e4,   2, $9e,   0, $e2, $28, $97  ; 262b: 21 e4 04... !..
-    !byte $21,   4, $71,   4, $69,   3, $79, $d4,   3, $42, $89,   0  ; 2637: 21 04 71... !.q
-    !byte $e9,   5, $71, $0c, $61, $1e, $9c, $1f, $e2,   6, $89,   9  ; 2643: e9 05 71... ..q
-    !byte $17, $e2,   6, $8a, $15,   2, $8f, $1f, $e2,   6, $95, $1f  ; 264f: 17 e2 06... ...
-    !byte $e2,   6, $92,   4, $e2, $11, $8f,   9, $e3,   2, $8f, $0f  ; 265b: e2 06 92... ...
-    !byte $e3,   2, $8f, $15, $ea,   2, $95, $17, $e2,   4, $98,   1  ; 2667: e3 02 8f... ...
-    !byte $4b,   9, $a5,   6, $98, $0a, $4f,   1, $a3,   1, $62, $c9  ; 2673: 4b 09 a5... K..
-    !byte $90,   5,   2, $a1,   2, $a1,   2, $a1,   1, $d6,   1, $91  ; 267f: 90 05 02... ...
-    !byte $19, $c8, $72,   2, $a1,   3,   0,   4,   4,   6,   2,   7  ; 268b: 19 c8 72... ..r
-    !byte $44,   0, $18,   0, $0b,   0, $c0, $21, $12,   0, $c2, $11  ; 2697: 44 00 18... D..
-    !byte $14, $c1,   5, $14,   0, $c3,   1, $12, $c2, $22, $18,   0  ; 26a3: 14 c1 05... ...
-    !byte   0                                                         ; 26af: 00          .
+    !byte $79                                                         ; 2619: 79          y              ; offset to start of doors
+    !byte 1, 1, 1, 1, 5                                               ; 261a: 01 01 01... ...            ; room header
+    !byte $43                                                         ; 261f: 43          C              ; set sprite 3, collision byte 128
+    !byte $e3,   5                                                    ; 2620: e3 05       ..             ; draw rect from 0,6 with size 5x3
+    !byte $86,   9                                                    ; 2622: 86 09       ..             ; set position to 9,6
+    !byte $e3, $1f                                                    ; 2624: e3 1f       ..             ; draw rect from 9,6 with size 31x3
+    !byte $89, $25                                                    ; 2626: 89 25       .%             ; set position to 37,9
+    !byte $f7,   3                                                    ; 2628: f7 03       ..             ; draw rect from 37,9 with size 3x23
+    !byte $8b, $21                                                    ; 262a: 8b 21       .!             ; set position to 33,11
+    !byte $e4,   4                                                    ; 262c: e4 04       ..             ; draw rect from 33,11 with size 4x4
+    !byte $91, $24                                                    ; 262e: 91 24       .$             ; set position to 36,17
+    !byte $e4,   2                                                    ; 2630: e4 02       ..             ; draw rect from 36,17 with size 2x4
+    !byte $9e,   0                                                    ; 2632: 9e 00       ..             ; set position to 0,30
+    !byte $e2, $28                                                    ; 2634: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $97, $21                                                    ; 2636: 97 21       .!             ; set position to 33,23
+    !byte 4                                                           ; 2638: 04          .              ; plot strip at 33,23 of length 4
+    !byte $71                                                         ; 2639: 71          q              ; set delta to 0,1
+    !byte 4                                                           ; 263a: 04          .              ; plot strip at 36,23 of length 4
+    !byte $69                                                         ; 263b: 69          i              ; set delta to -1,0
+    !byte 3                                                           ; 263c: 03          .              ; plot strip at 36,27 of length 3
+    !byte $79                                                         ; 263d: 79          y              ; set delta to 0,-1
+    !byte $d4                                                         ; 263e: d4          .              ; set sprite 20, collision byte 144
+    !byte 3                                                           ; 263f: 03          .              ; plot strip at 33,27 of length 3
+    !byte $42                                                         ; 2640: 42          B              ; set sprite 2, collision byte 128
+    !byte $89,   0                                                    ; 2641: 89 00       ..             ; set position to 0,9
+    !byte $e9,   5                                                    ; 2643: e9 05       ..             ; draw rect from 0,9 with size 5x9
+    !byte $71                                                         ; 2645: 71          q              ; set delta to 0,1
+    !byte $0c                                                         ; 2646: 0c          .              ; plot strip at 0,18 of length 12
+    !byte $61                                                         ; 2647: 61          a              ; set delta to 1,0
+    !byte $1e                                                         ; 2648: 1e          .              ; plot strip at 0,29 of length 30
+    !byte $9c, $1f                                                    ; 2649: 9c 1f       ..             ; set position to 31,28
+    !byte $e2,   6                                                    ; 264b: e2 06       ..             ; draw rect from 31,28 with size 6x2
+    !byte $89,   9                                                    ; 264d: 89 09       ..             ; set position to 9,9
+    !byte $17                                                         ; 264f: 17          .              ; plot strip at 9,9 of length 23
+    !byte $e2,   6                                                    ; 2650: e2 06       ..             ; draw rect from 31,9 with size 6x2
+    !byte $8a, $15                                                    ; 2652: 8a 15       ..             ; set position to 21,10
+    !byte 2                                                           ; 2654: 02          .              ; plot strip at 21,10 of length 2
+    !byte $8f, $1f                                                    ; 2655: 8f 1f       ..             ; set position to 31,15
+    !byte $e2,   6                                                    ; 2657: e2 06       ..             ; draw rect from 31,15 with size 6x2
+    !byte $95, $1f                                                    ; 2659: 95 1f       ..             ; set position to 31,21
+    !byte $e2,   6                                                    ; 265b: e2 06       ..             ; draw rect from 31,21 with size 6x2
+    !byte $92,   4                                                    ; 265d: 92 04       ..             ; set position to 4,18
+    !byte $e2, $11                                                    ; 265f: e2 11       ..             ; draw rect from 4,18 with size 17x2
+    !byte $8f,   9                                                    ; 2661: 8f 09       ..             ; set position to 9,15
+    !byte $e3,   2                                                    ; 2663: e3 02       ..             ; draw rect from 9,15 with size 2x3
+    !byte $8f, $0f                                                    ; 2665: 8f 0f       ..             ; set position to 15,15
+    !byte $e3,   2                                                    ; 2667: e3 02       ..             ; draw rect from 15,15 with size 2x3
+    !byte $8f, $15                                                    ; 2669: 8f 15       ..             ; set position to 21,15
+    !byte $ea,   2                                                    ; 266b: ea 02       ..             ; draw rect from 21,15 with size 2x10
+    !byte $95, $17                                                    ; 266d: 95 17       ..             ; set position to 23,21
+    !byte $e2,   4                                                    ; 266f: e2 04       ..             ; draw rect from 23,21 with size 4x2
+    !byte $98,   1                                                    ; 2671: 98 01       ..             ; set position to 1,24
+    !byte $4b                                                         ; 2673: 4b          K              ; set sprite 11, collision byte 128
+    !byte 9                                                           ; 2674: 09          .              ; plot strip at 1,24 of length 9
+    !byte $a5                                                         ; 2675: a5          .              ; move by 5*delta to 14,24
+    !byte 6                                                           ; 2676: 06          .              ; plot strip at 14,24 of length 6
+    !byte $98, $0a                                                    ; 2677: 98 0a       ..             ; set position to 10,24
+    !byte $4f                                                         ; 2679: 4f          O              ; set sprite 15, collision byte 128
+    !byte 1                                                           ; 267a: 01          .              ; plot strip at 10,24 of length 1
+    !byte $a3                                                         ; 267b: a3          .              ; move by 3*delta to 13,24
+    !byte 1                                                           ; 267c: 01          .              ; plot strip at 13,24 of length 1
+    !byte $62                                                         ; 267d: 62          b              ; set delta to 2,0
+    !byte $c9                                                         ; 267e: c9          .              ; set sprite 9, collision byte 144
+    !byte $90,   5                                                    ; 267f: 90 05       ..             ; set position to 5,16
+    !byte 2                                                           ; 2681: 02          .              ; plot strip at 5,16 of length 2
+    !byte $a1                                                         ; 2682: a1          .              ; move by 1*delta to 9,16
+    !byte 2                                                           ; 2683: 02          .              ; plot strip at 9,16 of length 2
+    !byte $a1                                                         ; 2684: a1          .              ; move by 1*delta to 15,16
+    !byte 2                                                           ; 2685: 02          .              ; plot strip at 15,16 of length 2
+    !byte $a1                                                         ; 2686: a1          .              ; move by 1*delta to 21,16
+    !byte 1                                                           ; 2687: 01          .              ; plot strip at 21,16 of length 1
+    !byte $d6                                                         ; 2688: d6          .              ; set sprite 22, collision byte 144
+    !byte 1                                                           ; 2689: 01          .              ; plot strip at 23,16 of length 1
+    !byte $91, $19                                                    ; 268a: 91 19       ..             ; set position to 25,17
+    !byte $c8                                                         ; 268c: c8          .              ; set sprite 8, collision byte 144
+    !byte $72                                                         ; 268d: 72          r              ; set delta to 0,2
+    !byte 2                                                           ; 268e: 02          .              ; plot strip at 25,17 of length 2
+    !byte $a1                                                         ; 268f: a1          .              ; move by 1*delta to 25,21
+    !byte 3                                                           ; 2690: 03          .              ; plot strip at 25,21 of length 3
+    !byte 0                                                           ; 2691: 00          .              ; terminator for commands
+    !byte 4, 4, 6, 2, 7                                               ; 2692: 04 04 06... ...            ; invisible horizontal door at 4,6 to door 2 in room 7
+    !byte $44,   0, $18,   0, $0b                                     ; 2697: 44 00 18... D..            ; invisible vertical door at 0,24 to door 0 in room 11
+    !byte 0                                                           ; 269c: 00          .              ; terminator for doors
+    !byte $c0, $21, $12                                               ; 269d: c0 21 12    .!.            ; key at 33,18
+    !byte 0                                                           ; 26a0: 00          .              ; terminator for keys
+    !byte $c2, $11, $14                                               ; 26a1: c2 11 14    ...            ; computer at 17,20
+    !byte $c1,   5, $14                                               ; 26a4: c1 05 14    ...            ; computer at 5,20
+    !byte 0                                                           ; 26a7: 00          .              ; terminator for computers
+    !byte $c3,   1, $12                                               ; 26a8: c3 01 12    ...            ; collectible at 1,18
+    !byte $c2, $22, $18                                               ; 26ab: c2 22 18    .".            ; collectible at 34,24
+    !byte 0                                                           ; 26ae: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 26af: 00          .              ; terminator for title
+
+;              Down The Mine
+; ****************************************
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; ****************************************
+; ****************************************
+; ****************************************
+; .............................**........*
+; .............................**........*
+; .............................**....xxxx*
+; ...........................K.**....xxxx*
+; *....*****************.....1.**....xxxx*
+; *....*...............*.......**....xxxx*
+; *....*.......XXXX....**********....*****
+; *.AA.*.......XXXX....*.................*
+; *.AA.*.......XXXX....*.................*
+; *.AA.*.......XXXX....*.................*
+; *....*....*******....*.................*
+; ******....*******....*.......***********
+; ******.......................***********
+; ..........................**************
+; .........................**..***********
+; .........................**..***********
+; ........................****************
+; ****************************************
 room_13_definition
-    !byte $47,   2,   3,   2,   3,   5                                ; 26b0: 47 02 03... G..            ; room header
-    !text "C(q"                                                       ; 26b6: 43 28 71    C(q            ; room commands
-    !byte $19                                                         ; 26b9: 19          .
-    !text "i'y"                                                       ; 26ba: 69 27 79    i'y
-    !byte $18, $8b,   0, $e3, $28, $98, $0a, $e2,   7, $8e, $1d, $e7  ; 26bd: 18 8b 00... ...
-    !byte   2, $99,   0, $e2,   6, $98,   5,   7, $61, $10, $71,   7  ; 26c9: 02 99 00... ...
-    !byte $99, $1d,   5, $94, $16, $61,   7, $a6,   4, $9e, $18, $0f  ; 26d5: 99 1d 05... ...
-    !byte $4e, $99, $1e, $e1,   9, $4a, $e4,   9, $69, $9b, $1b, $c9  ; 26e1: 4e 99 1e... N..
-    !byte   1, $d7,   1, $71, $c7,   1, $69, $cd,   1,   0, $44, $26  ; 26ed: 01 d7 01... ...
-    !byte   6,   0, $0d, $44,   0,   6,   0, $0e, $44,   0, $0d,   1  ; 26f9: 06 00 0d... ...
-    !byte $0e, $44,   0, $1a,   2, $0e,   0, $c0, $1b, $11,   0, $c2  ; 2705: 0e 44 00... .D.
-    !byte $0d, $14, $c3, $23, $10,   0, $c3,   2, $15,   0            ; 2711: 0d 14 c3... ...
-    !text "Down The Min", $80+'e'                                     ; 271b: 44 6f 77... Dow
+    !byte $47                                                         ; 26b0: 47          G              ; offset to start of doors
+    !byte 2, 3, 2, 3, 5                                               ; 26b1: 02 03 02... ...            ; room header
+    !byte $43                                                         ; 26b6: 43          C              ; set sprite 3, collision byte 128
+    !byte $28                                                         ; 26b7: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 26b8: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 26b9: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 26ba: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 26bb: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 26bc: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 26bd: 18          .              ; plot strip at 0,31 of length 24
+    !byte $8b,   0                                                    ; 26be: 8b 00       ..             ; set position to 0,11
+    !byte $e3, $28                                                    ; 26c0: e3 28       .(             ; draw rect from 0,11 with size 40x3
+    !byte $98, $0a                                                    ; 26c2: 98 0a       ..             ; set position to 10,24
+    !byte $e2,   7                                                    ; 26c4: e2 07       ..             ; draw rect from 10,24 with size 7x2
+    !byte $8e, $1d                                                    ; 26c6: 8e 1d       ..             ; set position to 29,14
+    !byte $e7,   2                                                    ; 26c8: e7 02       ..             ; draw rect from 29,14 with size 2x7
+    !byte $99,   0                                                    ; 26ca: 99 00       ..             ; set position to 0,25
+    !byte $e2,   6                                                    ; 26cc: e2 06       ..             ; draw rect from 0,25 with size 6x2
+    !byte $98,   5                                                    ; 26ce: 98 05       ..             ; set position to 5,24
+    !byte 7                                                           ; 26d0: 07          .              ; plot strip at 5,24 of length 7
+    !byte $61                                                         ; 26d1: 61          a              ; set delta to 1,0
+    !byte $10                                                         ; 26d2: 10          .              ; plot strip at 5,18 of length 16
+    !byte $71                                                         ; 26d3: 71          q              ; set delta to 0,1
+    !byte 7                                                           ; 26d4: 07          .              ; plot strip at 21,18 of length 7
+    !byte $99, $1d                                                    ; 26d5: 99 1d       ..             ; set position to 29,25
+    !byte 5                                                           ; 26d7: 05          .              ; plot strip at 29,25 of length 5
+    !byte $94, $16                                                    ; 26d8: 94 16       ..             ; set position to 22,20
+    !byte $61                                                         ; 26da: 61          a              ; set delta to 1,0
+    !byte 7                                                           ; 26db: 07          .              ; plot strip at 22,20 of length 7
+    !byte $a6                                                         ; 26dc: a6          .              ; move by 6*delta to 34,20
+    !byte 4                                                           ; 26dd: 04          .              ; plot strip at 34,20 of length 4
+    !byte $9e, $18                                                    ; 26de: 9e 18       ..             ; set position to 24,30
+    !byte $0f                                                         ; 26e0: 0f          .              ; plot strip at 24,30 of length 15
+    !byte $4e                                                         ; 26e1: 4e          N              ; set sprite 14, collision byte 128
+    !byte $99, $1e                                                    ; 26e2: 99 1e       ..             ; set position to 30,25
+    !byte $e1,   9                                                    ; 26e4: e1 09       ..             ; draw rect from 30,25 with size 9x1
+    !byte $4a                                                         ; 26e6: 4a          J              ; set sprite 10, collision byte 128
+    !byte $e4,   9                                                    ; 26e7: e4 09       ..             ; draw rect from 30,26 with size 9x4
+    !byte $69                                                         ; 26e9: 69          i              ; set delta to -1,0
+    !byte $9b, $1b                                                    ; 26ea: 9b 1b       ..             ; set position to 27,27
+    !byte $c9                                                         ; 26ec: c9          .              ; set sprite 9, collision byte 144
+    !byte 1                                                           ; 26ed: 01          .              ; plot strip at 27,27 of length 1
+    !byte $d7                                                         ; 26ee: d7          .              ; set sprite 23, collision byte 144
+    !byte 1                                                           ; 26ef: 01          .              ; plot strip at 27,27 of length 1
+    !byte $71                                                         ; 26f0: 71          q              ; set delta to 0,1
+    !byte $c7                                                         ; 26f1: c7          .              ; set sprite 7, collision byte 144
+    !byte 1                                                           ; 26f2: 01          .              ; plot strip at 26,27 of length 1
+    !byte $69                                                         ; 26f3: 69          i              ; set delta to -1,0
+    !byte $cd                                                         ; 26f4: cd          .              ; set sprite 13, collision byte 144
+    !byte 1                                                           ; 26f5: 01          .              ; plot strip at 26,28 of length 1
+    !byte 0                                                           ; 26f6: 00          .              ; terminator for commands
+    !byte $44, $26,   6,   0, $0d                                     ; 26f7: 44 26 06... D&.            ; invisible vertical door at 38,6 to door 0 in room 13
+    !byte $44,   0,   6,   0, $0e                                     ; 26fc: 44 00 06... D..            ; invisible vertical door at 0,6 to door 0 in room 14
+    !byte $44,   0, $0d,   1, $0e                                     ; 2701: 44 00 0d... D..            ; invisible vertical door at 0,13 to door 1 in room 14
+    !byte $44,   0, $1a,   2, $0e                                     ; 2706: 44 00 1a... D..            ; invisible vertical door at 0,26 to door 2 in room 14
+    !byte 0                                                           ; 270b: 00          .              ; terminator for doors
+    !byte $c0, $1b, $11                                               ; 270c: c0 1b 11    ...            ; key at 27,17
+    !byte 0                                                           ; 270f: 00          .              ; terminator for keys
+    !byte $c2, $0d, $14                                               ; 2710: c2 0d 14    ...            ; computer at 13,20
+    !byte $c3, $23, $10                                               ; 2713: c3 23 10    .#.            ; computer at 35,16
+    !byte 0                                                           ; 2716: 00          .              ; terminator for computers
+    !byte $c3,   2, $15                                               ; 2717: c3 02 15    ...            ; collectible at 2,21
+    !byte 0                                                           ; 271a: 00          .              ; terminator for collectibles
+    !text "Down The Min", $80+'e'                                     ; 271b: 44 6f 77... Dow            ; "Down The Mine"
+
+;               More Mines
+; ******....******************************
+; ******....*******.......................
+; **cccc....*******.......................
+; **cccc....*******.......................
+; **cccc....*******.......................
+; **cccc....*******....*******************
+; ******....*******....*******************
+; ******....*******....*******************
+; **XXXX....*******....**.................
+; **XXXX....*******....**.................
+; **XXXX....*******....**.................
+; **XXXX....*******....**.................
+; ******....*******....**....*************
+; ******....*******....**....*************
+; **xxxx....*******....**............CCCC*
+; **xxxx....*******....**.......AAAA.CCCC*
+; **xxxx....*******....**.......AAAA.CCCC*
+; **xxxx....*******....**.......AAAA.CCCC*
+; ******....*******....**....*************
+; ******....*******....**....*************
+; ***********............................*
+; ***********.............................
+; ***********.............................
+; ***********.............................
+; ***********.............................
+; ****************************************
 room_14_definition
-    !byte $32,   3,   4,   3,   4,   5                                ; 2728: 32 03 04... 2..            ; room header
-    !text "C(q"                                                       ; 272e: 43 28 71    C(q            ; room commands
-    !byte $19                                                         ; 2731: 19          .
-    !text "i'y"                                                       ; 2732: 69 27 79    i'y
-    !byte $18, $c3, $61,   5, $71, $88,   1,   5, $e2,   5,   5, $e2  ; 2735: 18 c3 61... ..a
-    !byte   5,   5, $e2,   5, $e5, $0a, $87, $0a, $f3,   7, $8b, $15  ; 2741: 05 05 e2... ...
-    !byte $e3, $12, $ec,   2, $92, $1b, $e2, $0c, $98, $1b, $e2, $0c  ; 274d: e3 12 ec... ...
-    !byte   0, $44, $27,   6,   1, $0d, $44, $27, $0d,   2, $0d, $44  ; 2759: 00 44 27... .D'
-    !byte $27, $1a,   3, $0d,   4,   5,   6,   2, $0f,   0,   0, $c1  ; 2765: 27 1a 03... '..
-    !byte   2,   8, $c2,   2, $0e, $c3,   2, $14, $c0, $23, $14,   0  ; 2771: 02 08 c2... ...
-    !byte $c3, $1e, $15, $c3, $20, $15,   0                           ; 277d: c3 1e 15... ...
-    !text "More Mine", $80+'s'                                        ; 2784: 4d 6f 72... Mor
+    !byte $32                                                         ; 2728: 32          2              ; offset to start of doors
+    !byte 3, 4, 3, 4, 5                                               ; 2729: 03 04 03... ...            ; room header
+    !byte $43                                                         ; 272e: 43          C              ; set sprite 3, collision byte 128
+    !byte $28                                                         ; 272f: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2730: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 2731: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 2732: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 2733: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 2734: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 2735: 18          .              ; plot strip at 0,31 of length 24
+    !byte $c3                                                         ; 2736: c3          .              ; set sprite 3, collision byte 144
+    !byte $61                                                         ; 2737: 61          a              ; set delta to 1,0
+    !byte 5                                                           ; 2738: 05          .              ; plot strip at 0,7 of length 5
+    !byte $71                                                         ; 2739: 71          q              ; set delta to 0,1
+    !byte $88,   1                                                    ; 273a: 88 01       ..             ; set position to 1,8
+    !byte 5                                                           ; 273c: 05          .              ; plot strip at 1,8 of length 5
+    !byte $e2,   5                                                    ; 273d: e2 05       ..             ; draw rect from 1,12 with size 5x2
+    !byte 5                                                           ; 273f: 05          .              ; plot strip at 1,14 of length 5
+    !byte $e2,   5                                                    ; 2740: e2 05       ..             ; draw rect from 1,18 with size 5x2
+    !byte 5                                                           ; 2742: 05          .              ; plot strip at 1,20 of length 5
+    !byte $e2,   5                                                    ; 2743: e2 05       ..             ; draw rect from 1,24 with size 5x2
+    !byte $e5, $0a                                                    ; 2745: e5 0a       ..             ; draw rect from 1,26 with size 10x5
+    !byte $87, $0a                                                    ; 2747: 87 0a       ..             ; set position to 10,7
+    !byte $f3,   7                                                    ; 2749: f3 07       ..             ; draw rect from 10,7 with size 7x19
+    !byte $8b, $15                                                    ; 274b: 8b 15       ..             ; set position to 21,11
+    !byte $e3, $12                                                    ; 274d: e3 12       ..             ; draw rect from 21,11 with size 18x3
+    !byte $ec,   2                                                    ; 274f: ec 02       ..             ; draw rect from 21,14 with size 2x12
+    !byte $92, $1b                                                    ; 2751: 92 1b       ..             ; set position to 27,18
+    !byte $e2, $0c                                                    ; 2753: e2 0c       ..             ; draw rect from 27,18 with size 12x2
+    !byte $98, $1b                                                    ; 2755: 98 1b       ..             ; set position to 27,24
+    !byte $e2, $0c                                                    ; 2757: e2 0c       ..             ; draw rect from 27,24 with size 12x2
+    !byte 0                                                           ; 2759: 00          .              ; terminator for commands
+    !byte $44, $27,   6,   1, $0d                                     ; 275a: 44 27 06... D'.            ; invisible vertical door at 39,6 to door 1 in room 13
+    !byte $44, $27, $0d,   2, $0d                                     ; 275f: 44 27 0d... D'.            ; invisible vertical door at 39,13 to door 2 in room 13
+    !byte $44, $27, $1a,   3, $0d                                     ; 2764: 44 27 1a... D'.            ; invisible vertical door at 39,26 to door 3 in room 13
+    !byte   4,   5,   6,   2, $0f                                     ; 2769: 04 05 06... ...            ; invisible horizontal door at 5,6 to door 2 in room 15
+    !byte 0                                                           ; 276e: 00          .              ; terminator for doors
+    !byte 0                                                           ; 276f: 00          .              ; terminator for keys
+    !byte $c1,   2,   8                                               ; 2770: c1 02 08    ...            ; computer at 2,8
+    !byte $c2,   2, $0e                                               ; 2773: c2 02 0e    ...            ; computer at 2,14
+    !byte $c3,   2, $14                                               ; 2776: c3 02 14    ...            ; computer at 2,20
+    !byte $c0, $23, $14                                               ; 2779: c0 23 14    .#.            ; computer at 35,20
+    !byte 0                                                           ; 277c: 00          .              ; terminator for computers
+    !byte $c3, $1e, $15                                               ; 277d: c3 1e 15    ...            ; collectible at 30,21
+    !byte $c3, $20, $15                                               ; 2780: c3 20 15    . .            ; collectible at 32,21
+    !byte 0                                                           ; 2783: 00          .              ; terminator for collectibles
+    !text "More Mine", $80+'s'                                        ; 2784: 4d 6f 72... Mor            ; "More Mines"
+
+;         Strange Things, part 2
+; *****1DDDD1*****************************
+; ******....******************************
+; ******....****************************1*
+; ******....*******.....................D.
+; ******....*******.....................D.
+; ******....*******.....................D.
+; **........*******.....................D.
+; **.AA.....*******........***.........*1*
+; **.AA.....*******..........*.........***
+; **.AA.....*******........K.*.........***
+; ******....*******........1.*.........***
+; ******....*******..........*.........***
+; ******....*******........***.........***
+; ******....*******........***.........***
+; ******....*******........*...........***
+; ******....*******........*.K.........***
+; ******....*******........*.1.........***
+; ******....*******........*...........***
+; ******....*******........***.........*1*
+; ******....*******.....................D.
+; ******....*******.....................D.
+; ******....*******.....................D.
+; ******....*******.....................D.
+; ******....****************************1*
+; ******....******************************
+; ******....******************************
 room_15_definition
-    !byte $47,   0,   3,   0,   3,   5                                ; 278e: 47 00 03... G..            ; room header
-    !byte $43, $e6,   6, $e4,   2, $f0,   6, $86, $0a, $f8,   4, $e2  ; 2794: 43 e6 06... C..            ; room commands
-    !byte $1b, $86, $11, $e2, $14, $42, $86, $0e, $e2,   3, $e1, $17  ; 27a0: 1b 86 11... ...
-    !byte $f4,   3, $e1, $17, $86, $25, $e3,   3, $8d, $25, $ec,   3  ; 27ac: f4 03 e1... ...
-    !byte $9d, $25, $e3,   3, $c3, $95, $0a, $e3,   4, $c2, $95, $0e  ; 27b8: 9d 25 e3... .%.
-    !byte $e3,   3, $8d, $19,   3, $71,   6, $69,   2, $71,   5, $61  ; 27c4: e3 03 8d... ...
-    !byte   2, $92, $19,   2,   0, $60, $26,   8,   1, $0f, $60, $26  ; 27d0: 02 92 19... ...
-    !byte $18,   0, $0f,   4,   5, $1f,   3, $0e, $28,   5,   6,   0  ; 27dc: 18 00 0f... ...
-    !byte $10,   0, $c0, $19, $0f, $c0, $1b, $15,   0,   0, $c3,   3  ; 27e8: 10 00 c0... ...
-    !byte $0d,   0                                                    ; 27f4: 0d 00       ..
-    !text "Strange Things, part ", $80+'2'                            ; 27f6: 53 74 72... Str
+    !byte $47                                                         ; 278e: 47          G              ; offset to start of doors
+    !byte 0, 3, 0, 3, 5                                               ; 278f: 00 03 00... ...            ; room header
+    !byte $43                                                         ; 2794: 43          C              ; set sprite 3, collision byte 128
+    !byte $e6,   6                                                    ; 2795: e6 06       ..             ; draw rect from 0,6 with size 6x6
+    !byte $e4,   2                                                    ; 2797: e4 02       ..             ; draw rect from 0,12 with size 2x4
+    !byte $f0,   6                                                    ; 2799: f0 06       ..             ; draw rect from 0,16 with size 6x16
+    !byte $86, $0a                                                    ; 279b: 86 0a       ..             ; set position to 10,6
+    !byte $f8,   4                                                    ; 279d: f8 04       ..             ; draw rect from 10,6 with size 4x24
+    !byte $e2, $1b                                                    ; 279f: e2 1b       ..             ; draw rect from 10,30 with size 27x2
+    !byte $86, $11                                                    ; 27a1: 86 11       ..             ; set position to 17,6
+    !byte $e2, $14                                                    ; 27a3: e2 14       ..             ; draw rect from 17,6 with size 20x2
+    !byte $42                                                         ; 27a5: 42          B              ; set sprite 2, collision byte 128
+    !byte $86, $0e                                                    ; 27a6: 86 0e       ..             ; set position to 14,6
+    !byte $e2,   3                                                    ; 27a8: e2 03       ..             ; draw rect from 14,6 with size 3x2
+    !byte $e1, $17                                                    ; 27aa: e1 17       ..             ; draw rect from 14,8 with size 23x1
+    !byte $f4,   3                                                    ; 27ac: f4 03       ..             ; draw rect from 14,9 with size 3x20
+    !byte $e1, $17                                                    ; 27ae: e1 17       ..             ; draw rect from 14,29 with size 23x1
+    !byte $86, $25                                                    ; 27b0: 86 25       .%             ; set position to 37,6
+    !byte $e3,   3                                                    ; 27b2: e3 03       ..             ; draw rect from 37,6 with size 3x3
+    !byte $8d, $25                                                    ; 27b4: 8d 25       .%             ; set position to 37,13
+    !byte $ec,   3                                                    ; 27b6: ec 03       ..             ; draw rect from 37,13 with size 3x12
+    !byte $9d, $25                                                    ; 27b8: 9d 25       .%             ; set position to 37,29
+    !byte $e3,   3                                                    ; 27ba: e3 03       ..             ; draw rect from 37,29 with size 3x3
+    !byte $c3                                                         ; 27bc: c3          .              ; set sprite 3, collision byte 144
+    !byte $95, $0a                                                    ; 27bd: 95 0a       ..             ; set position to 10,21
+    !byte $e3,   4                                                    ; 27bf: e3 04       ..             ; draw rect from 10,21 with size 4x3
+    !byte $c2                                                         ; 27c1: c2          .              ; set sprite 2, collision byte 144
+    !byte $95, $0e                                                    ; 27c2: 95 0e       ..             ; set position to 14,21
+    !byte $e3,   3                                                    ; 27c4: e3 03       ..             ; draw rect from 14,21 with size 3x3
+    !byte $8d, $19                                                    ; 27c6: 8d 19       ..             ; set position to 25,13
+    !byte 3                                                           ; 27c8: 03          .              ; plot strip at 25,13 of length 3
+    !byte $71                                                         ; 27c9: 71          q              ; set delta to 0,1
+    !byte 6                                                           ; 27ca: 06          .              ; plot strip at 27,13 of length 6
+    !byte $69                                                         ; 27cb: 69          i              ; set delta to -1,0
+    !byte 2                                                           ; 27cc: 02          .              ; plot strip at 27,19 of length 2
+    !byte $71                                                         ; 27cd: 71          q              ; set delta to 0,1
+    !byte 5                                                           ; 27ce: 05          .              ; plot strip at 25,19 of length 5
+    !byte $61                                                         ; 27cf: 61          a              ; set delta to 1,0
+    !byte 2                                                           ; 27d0: 02          .              ; plot strip at 25,24 of length 2
+    !byte $92, $19                                                    ; 27d1: 92 19       ..             ; set position to 25,18
+    !byte 2                                                           ; 27d3: 02          .              ; plot strip at 25,18 of length 2
+    !byte 0                                                           ; 27d4: 00          .              ; terminator for commands
+    !byte $60, $26,   8,   1, $0f                                     ; 27d5: 60 26 08... `&.            ; visible vertical door at 38,8 to door 1 in room 15
+    !byte $60, $26, $18,   0, $0f                                     ; 27da: 60 26 18... `&.            ; visible vertical door at 38,24 to door 0 in room 15
+    !byte   4,   5, $1f,   3, $0e                                     ; 27df: 04 05 1f... ...            ; invisible horizontal door at 5,31 to door 3 in room 14
+    !byte $28,   5,   6,   0, $10                                     ; 27e4: 28 05 06... (..            ; visible horizontal door at 5,6 to door 0 in room 16
+    !byte 0                                                           ; 27e9: 00          .              ; terminator for doors
+    !byte $c0, $19, $0f                                               ; 27ea: c0 19 0f    ...            ; key at 25,15
+    !byte $c0, $1b, $15                                               ; 27ed: c0 1b 15    ...            ; key at 27,21
+    !byte 0                                                           ; 27f0: 00          .              ; terminator for keys
+    !byte 0                                                           ; 27f1: 00          .              ; terminator for computers
+    !byte $c3,   3, $0d                                               ; 27f2: c3 03 0d    ...            ; collectible at 3,13
+    !byte 0                                                           ; 27f5: 00          .              ; terminator for collectibles
+    !text "Strange Things, part ", $80+'2'                            ; 27f6: 53 74 72... Str            ; "Strange Things, part 2"
+
+;              Back Up Again
+; ******....******************************
+; ******....******************************
+; ******....******************************
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******..................*****
+; ******....*******..................*...*
+; ******.............................*...*
+; ******...............................K.*
+; ******...............................4.*
+; ******.............................*...*
+; ******....*******..................*...*
+; ******....*******..................*****
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....*******....................***
+; ******....******************************
+; ******....******************************
+; *****1DDDD1*****************************
 room_16_definition
-    !byte $3f,   2,   3,   2,   3,   5                                ; 280c: 3f 02 03... ?..            ; room header
-    !byte $43, $fa,   6, $86, $0a, $eb,   4, $95, $0a, $eb,   4, $86  ; 2812: 43 fa 06... C..            ; room commands
-    !byte $11, $e2, $14, $9e, $11, $e2, $14, $42, $86, $0e, $e2,   3  ; 281e: 11 e2 14... ...
-    !byte $e1, $17, $e8,   3, $95, $0e, $e8,   3, $e1, $17, $e2,   3  ; 282a: e1 17 e8... ...
-    !byte $86, $25, $e9,   3, $97, $25, $e9,   3, $8f, $23,   5, $71  ; 2836: 86 25 e9... .%.
-    !byte   7, $69,   4, $79, $c5,   2, $a2,   2,   0, $28,   5, $1f  ; 2842: 07 69 04... .i.
-    !byte   3, $0f,   4,   5,   6,   1, $11,   0, $c3, $25, $12,   0  ; 284e: 03 0f 04... ...
-    !byte   0,   0                                                    ; 285a: 00 00       ..
-    !text "Back Up Agai", $80+'n'                                     ; 285c: 42 61 63... Bac
+    !byte $3f                                                         ; 280c: 3f          ?              ; offset to start of doors
+    !byte 2, 3, 2, 3, 5                                               ; 280d: 02 03 02... ...            ; room header
+    !byte $43                                                         ; 2812: 43          C              ; set sprite 3, collision byte 128
+    !byte $fa,   6                                                    ; 2813: fa 06       ..             ; draw rect from 0,6 with size 6x26
+    !byte $86, $0a                                                    ; 2815: 86 0a       ..             ; set position to 10,6
+    !byte $eb,   4                                                    ; 2817: eb 04       ..             ; draw rect from 10,6 with size 4x11
+    !byte $95, $0a                                                    ; 2819: 95 0a       ..             ; set position to 10,21
+    !byte $eb,   4                                                    ; 281b: eb 04       ..             ; draw rect from 10,21 with size 4x11
+    !byte $86, $11                                                    ; 281d: 86 11       ..             ; set position to 17,6
+    !byte $e2, $14                                                    ; 281f: e2 14       ..             ; draw rect from 17,6 with size 20x2
+    !byte $9e, $11                                                    ; 2821: 9e 11       ..             ; set position to 17,30
+    !byte $e2, $14                                                    ; 2823: e2 14       ..             ; draw rect from 17,30 with size 20x2
+    !byte $42                                                         ; 2825: 42          B              ; set sprite 2, collision byte 128
+    !byte $86, $0e                                                    ; 2826: 86 0e       ..             ; set position to 14,6
+    !byte $e2,   3                                                    ; 2828: e2 03       ..             ; draw rect from 14,6 with size 3x2
+    !byte $e1, $17                                                    ; 282a: e1 17       ..             ; draw rect from 14,8 with size 23x1
+    !byte $e8,   3                                                    ; 282c: e8 03       ..             ; draw rect from 14,9 with size 3x8
+    !byte $95, $0e                                                    ; 282e: 95 0e       ..             ; set position to 14,21
+    !byte $e8,   3                                                    ; 2830: e8 03       ..             ; draw rect from 14,21 with size 3x8
+    !byte $e1, $17                                                    ; 2832: e1 17       ..             ; draw rect from 14,29 with size 23x1
+    !byte $e2,   3                                                    ; 2834: e2 03       ..             ; draw rect from 14,30 with size 3x2
+    !byte $86, $25                                                    ; 2836: 86 25       .%             ; set position to 37,6
+    !byte $e9,   3                                                    ; 2838: e9 03       ..             ; draw rect from 37,6 with size 3x9
+    !byte $97, $25                                                    ; 283a: 97 25       .%             ; set position to 37,23
+    !byte $e9,   3                                                    ; 283c: e9 03       ..             ; draw rect from 37,23 with size 3x9
+    !byte $8f, $23                                                    ; 283e: 8f 23       .#             ; set position to 35,15
+    !byte 5                                                           ; 2840: 05          .              ; plot strip at 35,15 of length 5
+    !byte $71                                                         ; 2841: 71          q              ; set delta to 0,1
+    !byte 7                                                           ; 2842: 07          .              ; plot strip at 39,15 of length 7
+    !byte $69                                                         ; 2843: 69          i              ; set delta to -1,0
+    !byte 4                                                           ; 2844: 04          .              ; plot strip at 39,22 of length 4
+    !byte $79                                                         ; 2845: 79          y              ; set delta to 0,-1
+    !byte $c5                                                         ; 2846: c5          .              ; set sprite 5, collision byte 144
+    !byte 2                                                           ; 2847: 02          .              ; plot strip at 35,22 of length 2
+    !byte $a2                                                         ; 2848: a2          .              ; move by 2*delta to 35,18
+    !byte 2                                                           ; 2849: 02          .              ; plot strip at 35,18 of length 2
+    !byte 0                                                           ; 284a: 00          .              ; terminator for commands
+    !byte $28,   5, $1f,   3, $0f                                     ; 284b: 28 05 1f... (..            ; visible horizontal door at 5,31 to door 3 in room 15
+    !byte   4,   5,   6,   1, $11                                     ; 2850: 04 05 06... ...            ; invisible horizontal door at 5,6 to door 1 in room 17
+    !byte 0                                                           ; 2855: 00          .              ; terminator for doors
+    !byte $c3, $25, $12                                               ; 2856: c3 25 12    .%.            ; key at 37,18
+    !byte 0                                                           ; 2859: 00          .              ; terminator for keys
+    !byte 0                                                           ; 285a: 00          .              ; terminator for computers
+    !byte 0                                                           ; 285b: 00          .              ; terminator for collectibles
+    !text "Back Up Agai", $80+'n'                                     ; 285c: 42 61 63... Bac            ; "Back Up Again"
+
+;        Computers In The Basement
+; ****************************************
+; ......**........................**......
+; ......**........................**......
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; *****************...********************
+; *****************...********************
+; *.............***.....1..............***
+; *.............***.....D..............***
+; *.............***.....D....cccc.CCCC.***
+; *cccc.....CCCC***.....D....cccc.CCCC.***
+; *cccc.....CCCC***.....D....cccc.CCCC.***
+; *cccc.....CCCC***.....1....cccc.CCCC.***
+; *cccc.....CCCC*********....*************
+; ******....*******.....*..............***
+; *.............***.....*..............***
+; ......................*..............***
+; ..................XXXX*....xxxx.xxxx.***
+; ..................XXXX*....xxxx.xxxx.***
+; ..................XXXX*....xxxx.xxxx.***
+; *.............***.XXXX*....xxxx.xxxx.***
+; ******....******************************
+; ******....******************************
+; ******....******************************
 room_17_definition
-    !byte $47,   0,   1,   0,   1,   6                                ; 2869: 47 00 01... G..            ; room header
-    !byte $42, $28, $8d,   0, $e2, $11, $e7,   1, $e1,   6, $e6,   1  ; 286f: 42 28 8d... B(.            ; room commands
-    !byte $e1,   6, $43, $e2,   6, $9e, $0a, $e2, $1b, $42, $8d, $14  ; 287b: e1 06 43... ..C
-    !byte $e2, $14, $8f, $25, $f1,   3, $8f, $0e, $e6,   3, $c2,   8  ; 2887: e2 14 8f... ...
-    !byte $42,   1, $71,   7, $61, $96, $0a,   7, $97, $0e,   3, $95  ; 2893: 42 01 71... B.q
-    !byte $1b, $0a, $9d, $0a, $1b, $9c, $0e, $e4,   3, $d0, $87,   6  ; 289f: 1b 0a 9d... ...
-    !byte   1, $87, $20,   1,   0, $44, $27,   7,   1, $13,   4,   5  ; 28ab: 01 87 20... ..
-    !byte $1f,   1, $10, $44,   0, $17,   0, $12, $44,   0,   7,   1  ; 28b7: 1f 01 10... ...
-    !byte $12, $60, $16, $0f,   0,   0,   0,   0, $c1,   1, $12, $c2  ; 28c3: 12 60 16... .`.
-    !byte $12, $19, $c0, $20, $11, $c1, $1b, $11, $c3, $1b, $19, $c3  ; 28cf: 12 19 c0... ...
-    !byte $20, $19, $c0, $0a, $12,   0,   0                           ; 28db: 20 19 c0...  ..
-    !text "Computers In The Basemen", $80+'t'                         ; 28e2: 43 6f 6d... Com
+    !byte $47                                                         ; 2869: 47          G              ; offset to start of doors
+    !byte 0, 1, 0, 1, 6                                               ; 286a: 00 01 00... ...            ; room header
+    !byte $42                                                         ; 286f: 42          B              ; set sprite 2, collision byte 128
+    !byte $28                                                         ; 2870: 28          (              ; plot strip at 0,6 of length 40
+    !byte $8d,   0                                                    ; 2871: 8d 00       ..             ; set position to 0,13
+    !byte $e2, $11                                                    ; 2873: e2 11       ..             ; draw rect from 0,13 with size 17x2
+    !byte $e7,   1                                                    ; 2875: e7 01       ..             ; draw rect from 0,15 with size 1x7
+    !byte $e1,   6                                                    ; 2877: e1 06       ..             ; draw rect from 0,22 with size 6x1
+    !byte $e6,   1                                                    ; 2879: e6 01       ..             ; draw rect from 0,23 with size 1x6
+    !byte $e1,   6                                                    ; 287b: e1 06       ..             ; draw rect from 0,29 with size 6x1
+    !byte $43                                                         ; 287d: 43          C              ; set sprite 3, collision byte 128
+    !byte $e2,   6                                                    ; 287e: e2 06       ..             ; draw rect from 0,30 with size 6x2
+    !byte $9e, $0a                                                    ; 2880: 9e 0a       ..             ; set position to 10,30
+    !byte $e2, $1b                                                    ; 2882: e2 1b       ..             ; draw rect from 10,30 with size 27x2
+    !byte $42                                                         ; 2884: 42          B              ; set sprite 2, collision byte 128
+    !byte $8d, $14                                                    ; 2885: 8d 14       ..             ; set position to 20,13
+    !byte $e2, $14                                                    ; 2887: e2 14       ..             ; draw rect from 20,13 with size 20x2
+    !byte $8f, $25                                                    ; 2889: 8f 25       .%             ; set position to 37,15
+    !byte $f1,   3                                                    ; 288b: f1 03       ..             ; draw rect from 37,15 with size 3x17
+    !byte $8f, $0e                                                    ; 288d: 8f 0e       ..             ; set position to 14,15
+    !byte $e6,   3                                                    ; 288f: e6 03       ..             ; draw rect from 14,15 with size 3x6
+    !byte $c2                                                         ; 2891: c2          .              ; set sprite 2, collision byte 144
+    !byte 8                                                           ; 2892: 08          .              ; plot strip at 14,21 of length 8
+    !byte $42                                                         ; 2893: 42          B              ; set sprite 2, collision byte 128
+    !byte 1                                                           ; 2894: 01          .              ; plot strip at 21,21 of length 1
+    !byte $71                                                         ; 2895: 71          q              ; set delta to 0,1
+    !byte 7                                                           ; 2896: 07          .              ; plot strip at 22,21 of length 7
+    !byte $61                                                         ; 2897: 61          a              ; set delta to 1,0
+    !byte $96, $0a                                                    ; 2898: 96 0a       ..             ; set position to 10,22
+    !byte 7                                                           ; 289a: 07          .              ; plot strip at 10,22 of length 7
+    !byte $97, $0e                                                    ; 289b: 97 0e       ..             ; set position to 14,23
+    !byte 3                                                           ; 289d: 03          .              ; plot strip at 14,23 of length 3
+    !byte $95, $1b                                                    ; 289e: 95 1b       ..             ; set position to 27,21
+    !byte $0a                                                         ; 28a0: 0a          .              ; plot strip at 27,21 of length 10
+    !byte $9d, $0a                                                    ; 28a1: 9d 0a       ..             ; set position to 10,29
+    !byte $1b                                                         ; 28a3: 1b          .              ; plot strip at 10,29 of length 27
+    !byte $9c, $0e                                                    ; 28a4: 9c 0e       ..             ; set position to 14,28
+    !byte $e4,   3                                                    ; 28a6: e4 03       ..             ; draw rect from 14,28 with size 3x4
+    !byte $d0                                                         ; 28a8: d0          .              ; set sprite 16, collision byte 144
+    !byte $87,   6                                                    ; 28a9: 87 06       ..             ; set position to 6,7
+    !byte 1                                                           ; 28ab: 01          .              ; plot strip at 6,7 of length 1
+    !byte $87, $20                                                    ; 28ac: 87 20       .              ; set position to 32,7
+    !byte 1                                                           ; 28ae: 01          .              ; plot strip at 32,7 of length 1
+    !byte 0                                                           ; 28af: 00          .              ; terminator for commands
+    !byte $44, $27,   7,   1, $13                                     ; 28b0: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 1 in room 19
+    !byte   4,   5, $1f,   1, $10                                     ; 28b5: 04 05 1f... ...            ; invisible horizontal door at 5,31 to door 1 in room 16
+    !byte $44,   0, $17,   0, $12                                     ; 28ba: 44 00 17... D..            ; invisible vertical door at 0,23 to door 0 in room 18
+    !byte $44,   0,   7,   1, $12                                     ; 28bf: 44 00 07... D..            ; invisible vertical door at 0,7 to door 1 in room 18
+    !byte $60, $16, $0f,   0,   0                                     ; 28c4: 60 16 0f... `..            ; visible vertical door at 22,15 to door 0 in room 0
+    !byte 0                                                           ; 28c9: 00          .              ; terminator for doors
+    !byte 0                                                           ; 28ca: 00          .              ; terminator for keys
+    !byte $c1,   1, $12                                               ; 28cb: c1 01 12    ...            ; computer at 1,18
+    !byte $c2, $12, $19                                               ; 28ce: c2 12 19    ...            ; computer at 18,25
+    !byte $c0, $20, $11                                               ; 28d1: c0 20 11    . .            ; computer at 32,17
+    !byte $c1, $1b, $11                                               ; 28d4: c1 1b 11    ...            ; computer at 27,17
+    !byte $c3, $1b, $19                                               ; 28d7: c3 1b 19    ...            ; computer at 27,25
+    !byte $c3, $20, $19                                               ; 28da: c3 20 19    . .            ; computer at 32,25
+    !byte $c0, $0a, $12                                               ; 28dd: c0 0a 12    ...            ; computer at 10,18
+    !byte 0                                                           ; 28e0: 00          .              ; terminator for computers
+    !byte 0                                                           ; 28e1: 00          .              ; terminator for collectibles
+    !text "Computers In The Basemen", $80+'t'                         ; 28e2: 43 6f 6d... Com            ; "Computers In The Basement"
+
+;             Into The Garden
+; ****************************************
+; **................*1*.......**..........
+; ...................D........**..........
+; ...................D....................
+; ...................D....................
+; ...................D....................
+; ..................*1*...................
+; .................***********************
+; ****************************************
+; *********************.......cccccccc...*
+; *********************.......cccccccc...*
+; ***********************.....cccccccc...*
+; *********************.**....cccccccc...*
+; *********************.**....********...*
+; *********************.*................*
+; *********************.*........SS......*
+; *********************.*........SS......*
+; *****........********.*........SS......*
+; *****.OO..OO.********.*.....************
+; *****.OO..OO.********.*.................
+; *****.OO..OO.********.*.................
+; *****........********.*.................
+; *********************.*.................
+; ****************************************
+; ****************************************
+; ****************************************
 room_18_definition
-    !byte $4d,   2,   2,   2,   2,   5                                ; 28fb: 4d 02 02... M..            ; room header
-    !byte $52, $e1, $12,   2, $8e,   0, $e1, $12, $43, $f1, $12, $9e  ; 2901: 52 e1 12... R..            ; room commands
-    !byte $15, $e2, $13, $d5, $97,   5, $e5,   8, $42, $86, $12, $e1  ; 290d: 15 e2 13... ...
-    !byte $16, $e1,   3, $8d, $11, $e2, $17, $8c, $12, $f1,   3, $e1  ; 2919: 16 e1 03... ...
-    !byte $16, $e2,   3, $93, $1c,   8, $98, $1c, $0c, $71, $8f, $27  ; 2925: 16 e2 03... ...
-    !byte   9, $d0, $87, $1c,   1, $c9, $62, $91,   0, $0b, $d6,   1  ; 2931: 09 d0 87... ...
-    !byte $71, $c7,   1, $72, $c8,   6, $cd, $92, $17,   1,   0, $44  ; 293d: 71 c7 01... q..
-    !byte $27, $18,   2, $11, $44, $27,   7,   3, $11, $70, $13,   7  ; 2949: 27 18 02... '..
-    !byte   0,   0, $44,   0,   8,   0, $26, $44,   9, $17,   0,   0  ; 2955: 00 00 44... ..D
-    !byte   0,   0, $c1, $1c, $0f, $c1, $20, $0f,   0, $c1,   6, $18  ; 2961: 00 00 c1... ...
-    !byte $c1, $0a, $18, $c2, $1f, $15,   0                           ; 296d: c1 0a 18... ...
-    !text "Into The Garde", $80+'n'                                   ; 2974: 49 6e 74... Int
+    !byte $4d                                                         ; 28fb: 4d          M              ; offset to start of doors
+    !byte 2, 2, 2, 2, 5                                               ; 28fc: 02 02 02... ...            ; room header
+    !byte $52                                                         ; 2901: 52          R              ; set sprite 18, collision byte 128
+    !byte $e1, $12                                                    ; 2902: e1 12       ..             ; draw rect from 0,6 with size 18x1
+    !byte 2                                                           ; 2904: 02          .              ; plot strip at 0,7 of length 2
+    !byte $8e,   0                                                    ; 2905: 8e 00       ..             ; set position to 0,14
+    !byte $e1, $12                                                    ; 2907: e1 12       ..             ; draw rect from 0,14 with size 18x1
+    !byte $43                                                         ; 2909: 43          C              ; set sprite 3, collision byte 128
+    !byte $f1, $12                                                    ; 290a: f1 12       ..             ; draw rect from 0,15 with size 18x17
+    !byte $9e, $15                                                    ; 290c: 9e 15       ..             ; set position to 21,30
+    !byte $e2, $13                                                    ; 290e: e2 13       ..             ; draw rect from 21,30 with size 19x2
+    !byte $d5                                                         ; 2910: d5          .              ; set sprite 21, collision byte 144
+    !byte $97,   5                                                    ; 2911: 97 05       ..             ; set position to 5,23
+    !byte $e5,   8                                                    ; 2913: e5 08       ..             ; draw rect from 5,23 with size 8x5
+    !byte $42                                                         ; 2915: 42          B              ; set sprite 2, collision byte 128
+    !byte $86, $12                                                    ; 2916: 86 12       ..             ; set position to 18,6
+    !byte $e1, $16                                                    ; 2918: e1 16       ..             ; draw rect from 18,6 with size 22x1
+    !byte $e1,   3                                                    ; 291a: e1 03       ..             ; draw rect from 18,7 with size 3x1
+    !byte $8d, $11                                                    ; 291c: 8d 11       ..             ; set position to 17,13
+    !byte $e2, $17                                                    ; 291e: e2 17       ..             ; draw rect from 17,13 with size 23x2
+    !byte $8c, $12                                                    ; 2920: 8c 12       ..             ; set position to 18,12
+    !byte $f1,   3                                                    ; 2922: f1 03       ..             ; draw rect from 18,12 with size 3x17
+    !byte $e1, $16                                                    ; 2924: e1 16       ..             ; draw rect from 18,29 with size 22x1
+    !byte $e2,   3                                                    ; 2926: e2 03       ..             ; draw rect from 18,30 with size 3x2
+    !byte $93, $1c                                                    ; 2928: 93 1c       ..             ; set position to 28,19
+    !byte 8                                                           ; 292a: 08          .              ; plot strip at 28,19 of length 8
+    !byte $98, $1c                                                    ; 292b: 98 1c       ..             ; set position to 28,24
+    !byte $0c                                                         ; 292d: 0c          .              ; plot strip at 28,24 of length 12
+    !byte $71                                                         ; 292e: 71          q              ; set delta to 0,1
+    !byte $8f, $27                                                    ; 292f: 8f 27       .'             ; set position to 39,15
+    !byte 9                                                           ; 2931: 09          .              ; plot strip at 39,15 of length 9
+    !byte $d0                                                         ; 2932: d0          .              ; set sprite 16, collision byte 144
+    !byte $87, $1c                                                    ; 2933: 87 1c       ..             ; set position to 28,7
+    !byte 1                                                           ; 2935: 01          .              ; plot strip at 28,7 of length 1
+    !byte $c9                                                         ; 2936: c9          .              ; set sprite 9, collision byte 144
+    !byte $62                                                         ; 2937: 62          b              ; set delta to 2,0
+    !byte $91,   0                                                    ; 2938: 91 00       ..             ; set position to 0,17
+    !byte $0b                                                         ; 293a: 0b          .              ; plot strip at 0,17 of length 11
+    !byte $d6                                                         ; 293b: d6          .              ; set sprite 22, collision byte 144
+    !byte 1                                                           ; 293c: 01          .              ; plot strip at 20,17 of length 1
+    !byte $71                                                         ; 293d: 71          q              ; set delta to 0,1
+    !byte $c7                                                         ; 293e: c7          .              ; set sprite 7, collision byte 144
+    !byte 1                                                           ; 293f: 01          .              ; plot strip at 22,17 of length 1
+    !byte $72                                                         ; 2940: 72          r              ; set delta to 0,2
+    !byte $c8                                                         ; 2941: c8          .              ; set sprite 8, collision byte 144
+    !byte 6                                                           ; 2942: 06          .              ; plot strip at 22,18 of length 6
+    !byte $cd                                                         ; 2943: cd          .              ; set sprite 13, collision byte 144
+    !byte $92, $17                                                    ; 2944: 92 17       ..             ; set position to 23,18
+    !byte 1                                                           ; 2946: 01          .              ; plot strip at 23,18 of length 1
+    !byte 0                                                           ; 2947: 00          .              ; terminator for commands
+    !byte $44, $27, $18,   2, $11                                     ; 2948: 44 27 18... D'.            ; invisible vertical door at 39,24 to door 2 in room 17
+    !byte $44, $27,   7,   3, $11                                     ; 294d: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 3 in room 17
+    !byte $70, $13,   7,   0,   0                                     ; 2952: 70 13 07... p..            ; visible vertical door at 19,7 to door 0 in room 0
+    !byte $44,   0,   8,   0, $26                                     ; 2957: 44 00 08... D..            ; invisible vertical door at 0,8 to door 0 in room 38
+    !byte $44,   9, $17,   0,   0                                     ; 295c: 44 09 17... D..            ; invisible vertical door at 9,23 to door 0 in room 0
+    !byte 0                                                           ; 2961: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2962: 00          .              ; terminator for keys
+    !byte $c1, $1c, $0f                                               ; 2963: c1 1c 0f    ...            ; computer at 28,15
+    !byte $c1, $20, $0f                                               ; 2966: c1 20 0f    . .            ; computer at 32,15
+    !byte 0                                                           ; 2969: 00          .              ; terminator for computers
+    !byte $c1,   6, $18                                               ; 296a: c1 06 18    ...            ; collectible at 6,24
+    !byte $c1, $0a, $18                                               ; 296d: c1 0a 18    ...            ; collectible at 10,24
+    !byte $c2, $1f, $15                                               ; 2970: c2 1f 15    ...            ; collectible at 31,21
+    !byte 0                                                           ; 2973: 00          .              ; terminator for collectibles
+    !text "Into The Garde", $80+'n'                                   ; 2974: 49 6e 74... Int            ; "Into The Garden"
+
+;            The Return Route
+; ****************************************
+; .......**.....................**........
+; .......**.....................**........
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ******....*******.....*******....*******
+; *****1DDDD1******.....******1DDDD1******
+; ******....*******.....*******....*******
+; **............***.....***.............**
+; **............***.....***.............**
+; **...........************.............**
+; **............***.....***.............**
+; **............***.....***.............**
+; **............************....OO......**
+; **............***.....***.....OO......**
+; **............***.....***.....OO......**
+; **............***.....******************
+; **............***.....*****************1
+; **............***.........**......**...D
+; **.....SS.....***.........**......**...D
+; **.....SS.....***......................D
+; **.....SS.....***......................D
+; ***************************************1
+; ****************************************
 room_19_definition
-    !byte $3d,   3,   1,   1,   3,   8                                ; 2983: 3d 03 01... =..            ; room header
-    !byte $42, $28, $8d,   0, $e3,   6, $ee,   2, $e2, $28, $8d, $0a  ; 2989: 42 28 8d... B(.            ; room commands
-    !byte $e3,   7, $90, $0e, $ee,   3, $8d, $16, $e3,   7, $e8,   3  ; 2995: e3 07 90... ...
-    !byte $e2, $12, $8d, $21, $e3,   7, $90, $26, $e8,   2, $c4, $92  ; 29a1: e2 12 8d... ...
-    !byte $0d, $0b, $95, $0f, $0b, $d0, $87,   7,   1, $87, $1e,   1  ; 29ad: 0d 0b 95... ...
-    !byte $9a, $1a,   1, $9a, $22,   1,   0, $44, $27,   7,   4, $14  ; 29b9: 9a 1a 01... ...
-    !byte $44,   0,   7,   0, $11, $68, $27, $19,   3, $14, $20,   5  ; 29c5: 44 00 07... D..
-    !byte $0e,   0,   0, $20, $1c, $0e,   0,   0,   0,   0,   0, $c1  ; 29d1: 0e 00 00... ...
-    !byte $1e, $15, $c2,   7, $1b,   0                                ; 29dd: 1e 15 c2... ...
-    !text "The Return Rout", $80+'e'                                  ; 29e3: 54 68 65... The
+    !byte $3d                                                         ; 2983: 3d          =              ; offset to start of doors
+    !byte 3, 1, 1, 3, 8                                               ; 2984: 03 01 01... ...            ; room header
+    !byte $42                                                         ; 2989: 42          B              ; set sprite 2, collision byte 128
+    !byte $28                                                         ; 298a: 28          (              ; plot strip at 0,6 of length 40
+    !byte $8d,   0                                                    ; 298b: 8d 00       ..             ; set position to 0,13
+    !byte $e3,   6                                                    ; 298d: e3 06       ..             ; draw rect from 0,13 with size 6x3
+    !byte $ee,   2                                                    ; 298f: ee 02       ..             ; draw rect from 0,16 with size 2x14
+    !byte $e2, $28                                                    ; 2991: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $8d, $0a                                                    ; 2993: 8d 0a       ..             ; set position to 10,13
+    !byte $e3,   7                                                    ; 2995: e3 07       ..             ; draw rect from 10,13 with size 7x3
+    !byte $90, $0e                                                    ; 2997: 90 0e       ..             ; set position to 14,16
+    !byte $ee,   3                                                    ; 2999: ee 03       ..             ; draw rect from 14,16 with size 3x14
+    !byte $8d, $16                                                    ; 299b: 8d 16       ..             ; set position to 22,13
+    !byte $e3,   7                                                    ; 299d: e3 07       ..             ; draw rect from 22,13 with size 7x3
+    !byte $e8,   3                                                    ; 299f: e8 03       ..             ; draw rect from 22,16 with size 3x8
+    !byte $e2, $12                                                    ; 29a1: e2 12       ..             ; draw rect from 22,24 with size 18x2
+    !byte $8d, $21                                                    ; 29a3: 8d 21       .!             ; set position to 33,13
+    !byte $e3,   7                                                    ; 29a5: e3 07       ..             ; draw rect from 33,13 with size 7x3
+    !byte $90, $26                                                    ; 29a7: 90 26       .&             ; set position to 38,16
+    !byte $e8,   2                                                    ; 29a9: e8 02       ..             ; draw rect from 38,16 with size 2x8
+    !byte $c4                                                         ; 29ab: c4          .              ; set sprite 4, collision byte 144
+    !byte $92, $0d                                                    ; 29ac: 92 0d       ..             ; set position to 13,18
+    !byte $0b                                                         ; 29ae: 0b          .              ; plot strip at 13,18 of length 11
+    !byte $95, $0f                                                    ; 29af: 95 0f       ..             ; set position to 15,21
+    !byte $0b                                                         ; 29b1: 0b          .              ; plot strip at 15,21 of length 11
+    !byte $d0                                                         ; 29b2: d0          .              ; set sprite 16, collision byte 144
+    !byte $87,   7                                                    ; 29b3: 87 07       ..             ; set position to 7,7
+    !byte 1                                                           ; 29b5: 01          .              ; plot strip at 7,7 of length 1
+    !byte $87, $1e                                                    ; 29b6: 87 1e       ..             ; set position to 30,7
+    !byte 1                                                           ; 29b8: 01          .              ; plot strip at 30,7 of length 1
+    !byte $9a, $1a                                                    ; 29b9: 9a 1a       ..             ; set position to 26,26
+    !byte 1                                                           ; 29bb: 01          .              ; plot strip at 26,26 of length 1
+    !byte $9a, $22                                                    ; 29bc: 9a 22       ."             ; set position to 34,26
+    !byte 1                                                           ; 29be: 01          .              ; plot strip at 34,26 of length 1
+    !byte 0                                                           ; 29bf: 00          .              ; terminator for commands
+    !byte $44, $27,   7,   4, $14                                     ; 29c0: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 4 in room 20
+    !byte $44,   0,   7,   0, $11                                     ; 29c5: 44 00 07... D..            ; invisible vertical door at 0,7 to door 0 in room 17
+    !byte $68, $27, $19,   3, $14                                     ; 29ca: 68 27 19... h'.            ; visible vertical door at 39,25 to door 3 in room 20
+    !byte $20,   5, $0e,   0,   0                                     ; 29cf: 20 05 0e...  ..            ; visible horizontal door at 5,14 to door 0 in room 0
+    !byte $20, $1c, $0e,   0,   0                                     ; 29d4: 20 1c 0e...  ..            ; visible horizontal door at 28,14 to door 0 in room 0
+    !byte 0                                                           ; 29d9: 00          .              ; terminator for doors
+    !byte 0                                                           ; 29da: 00          .              ; terminator for keys
+    !byte 0                                                           ; 29db: 00          .              ; terminator for computers
+    !byte $c1, $1e, $15                                               ; 29dc: c1 1e 15    ...            ; collectible at 30,21
+    !byte $c2,   7, $1b                                               ; 29df: c2 07 1b    ...            ; collectible at 7,27
+    !byte 0                                                           ; 29e2: 00          .              ; terminator for collectibles
+    !text "The Return Rout", $80+'e'                                  ; 29e3: 54 68 65... The            ; "The Return Route"
+
+;                    
+; *......*********************************
+; .......*1*.............................*
+; ........D...............................
+; ........D...............................
+; ........D...............................
+; ........D...............................
+; .......*1*..............................
+; **********..............................
+; *SS..SS***.............................*
+; *SS..SS*********************************
+; *SS..SS***.............................*
+; *.......................................
+; *.......................................
+; *.......................................
+; *....XXXX*.cccc.cccc.cccc.cccc..........
+; *KAAKXXXX*.cccc.cccc.cccc.cccc..........
+; *1AA4XXXX*.cccc.cccc.cccc.cccc..........
+; *.AA.XXXX*.cccc.cccc.cccc.cccc.........*
+; ****************************************
+; 1***************************************
+; D.....**........................**......
+; D.....**........................**......
+; D.......................................
+; D.......................................
+; 1***************************************
+; ****************************************
 room_20_definition
-    !byte $34,   0,   0,   0,   0, $14                                ; 29f3: 34 00 00... 4..            ; room header
-    !byte $42,   1, $a6, $21, $71,   1, $a6,   3, $a6,   1, $69, $8d  ; 29f9: 42 01 a6... B..            ; room commands
-    !byte   6,   7, $71, $0a, $94,   9,   4, $8f, $0a, $61, $1d, $87  ; 2a05: 06 07 71... ..q
-    !byte   7,   3, $8c,   7, $e5,   3, $98,   0, $e2, $28, $9e,   0  ; 2a11: 07 03 8c... ...
-    !byte $e2, $28, $d0, $9a,   6,   1, $9a, $20,   1,   0, $44, $27  ; 2a1d: e2 28 d0... .(.
-    !byte   8,   3, $15, $44, $27, $11,   4, $15, $44, $27, $19,   5  ; 2a29: 08 03 15... ...
-    !byte $15, $68,   0, $19,   2, $13, $44,   0,   7,   0, $13, $60  ; 2a35: 15 68 00... .h.
-    !byte   8,   7,   0,   0,   4,   1,   6,   1, $1e,   0, $c0,   1  ; 2a41: 08 07 00... ...
-    !byte $15, $c3,   4, $15,   0, $c2,   5, $14, $c1, $0b, $14, $c1  ; 2a4d: 15 c3 04... ...
-    !byte $10, $14, $c1, $15, $14, $c1, $1a, $14,   0, $c2,   1, $0e  ; 2a59: 10 14 c1... ...
-    !byte $c2,   5, $0e, $c3,   2, $15,   0,   0                      ; 2a65: c2 05 0e... ...
+    !byte $34                                                         ; 29f3: 34          4              ; offset to start of doors
+    !byte   0,   0,   0,   0, $14                                     ; 29f4: 00 00 00... ...            ; room header
+    !byte $42                                                         ; 29f9: 42          B              ; set sprite 2, collision byte 128
+    !byte 1                                                           ; 29fa: 01          .              ; plot strip at 0,6 of length 1
+    !byte $a6                                                         ; 29fb: a6          .              ; move by 6*delta to 6,6
+    !byte $21                                                         ; 29fc: 21          !              ; plot strip at 6,6 of length 33
+    !byte $71                                                         ; 29fd: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 29fe: 01          .              ; plot strip at 39,6 of length 1
+    !byte $a6                                                         ; 29ff: a6          .              ; move by 6*delta to 39,13
+    !byte 3                                                           ; 2a00: 03          .              ; plot strip at 39,13 of length 3
+    !byte $a6                                                         ; 2a01: a6          .              ; move by 6*delta to 39,22
+    !byte 1                                                           ; 2a02: 01          .              ; plot strip at 39,22 of length 1
+    !byte $69                                                         ; 2a03: 69          i              ; set delta to -1,0
+    !byte $8d,   6                                                    ; 2a04: 8d 06       ..             ; set position to 6,13
+    !byte 7                                                           ; 2a06: 07          .              ; plot strip at 6,13 of length 7
+    !byte $71                                                         ; 2a07: 71          q              ; set delta to 0,1
+    !byte $0a                                                         ; 2a08: 0a          .              ; plot strip at 0,13 of length 10
+    !byte $94,   9                                                    ; 2a09: 94 09       ..             ; set position to 9,20
+    !byte 4                                                           ; 2a0b: 04          .              ; plot strip at 9,20 of length 4
+    !byte $8f, $0a                                                    ; 2a0c: 8f 0a       ..             ; set position to 10,15
+    !byte $61                                                         ; 2a0e: 61          a              ; set delta to 1,0
+    !byte $1d                                                         ; 2a0f: 1d          .              ; plot strip at 10,15 of length 29
+    !byte $87,   7                                                    ; 2a10: 87 07       ..             ; set position to 7,7
+    !byte 3                                                           ; 2a12: 03          .              ; plot strip at 7,7 of length 3
+    !byte $8c,   7                                                    ; 2a13: 8c 07       ..             ; set position to 7,12
+    !byte $e5,   3                                                    ; 2a15: e5 03       ..             ; draw rect from 7,12 with size 3x5
+    !byte $98,   0                                                    ; 2a17: 98 00       ..             ; set position to 0,24
+    !byte $e2, $28                                                    ; 2a19: e2 28       .(             ; draw rect from 0,24 with size 40x2
+    !byte $9e,   0                                                    ; 2a1b: 9e 00       ..             ; set position to 0,30
+    !byte $e2, $28                                                    ; 2a1d: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $d0                                                         ; 2a1f: d0          .              ; set sprite 16, collision byte 144
+    !byte $9a,   6                                                    ; 2a20: 9a 06       ..             ; set position to 6,26
+    !byte 1                                                           ; 2a22: 01          .              ; plot strip at 6,26 of length 1
+    !byte $9a, $20                                                    ; 2a23: 9a 20       .              ; set position to 32,26
+    !byte 1                                                           ; 2a25: 01          .              ; plot strip at 32,26 of length 1
+    !byte 0                                                           ; 2a26: 00          .              ; terminator for commands
+    !byte $44, $27,   8,   3, $15                                     ; 2a27: 44 27 08... D'.            ; invisible vertical door at 39,8 to door 3 in room 21
+    !byte $44, $27, $11,   4, $15                                     ; 2a2c: 44 27 11... D'.            ; invisible vertical door at 39,17 to door 4 in room 21
+    !byte $44, $27, $19,   5, $15                                     ; 2a31: 44 27 19... D'.            ; invisible vertical door at 39,25 to door 5 in room 21
+    !byte $68,   0, $19,   2, $13                                     ; 2a36: 68 00 19... h..            ; visible vertical door at 0,25 to door 2 in room 19
+    !byte $44,   0,   7,   0, $13                                     ; 2a3b: 44 00 07... D..            ; invisible vertical door at 0,7 to door 0 in room 19
+    !byte $60,   8,   7,   0,   0                                     ; 2a40: 60 08 07... `..            ; visible vertical door at 8,7 to door 0 in room 0
+    !byte   4,   1,   6,   1, $1e                                     ; 2a45: 04 01 06... ...            ; invisible horizontal door at 1,6 to door 1 in room 30
+    !byte 0                                                           ; 2a4a: 00          .              ; terminator for doors
+    !byte $c0,   1, $15                                               ; 2a4b: c0 01 15    ...            ; key at 1,21
+    !byte $c3,   4, $15                                               ; 2a4e: c3 04 15    ...            ; key at 4,21
+    !byte 0                                                           ; 2a51: 00          .              ; terminator for keys
+    !byte $c2,   5, $14                                               ; 2a52: c2 05 14    ...            ; computer at 5,20
+    !byte $c1, $0b, $14                                               ; 2a55: c1 0b 14    ...            ; computer at 11,20
+    !byte $c1, $10, $14                                               ; 2a58: c1 10 14    ...            ; computer at 16,20
+    !byte $c1, $15, $14                                               ; 2a5b: c1 15 14    ...            ; computer at 21,20
+    !byte $c1, $1a, $14                                               ; 2a5e: c1 1a 14    ...            ; computer at 26,20
+    !byte 0                                                           ; 2a61: 00          .              ; terminator for computers
+    !byte $c2,   1, $0e                                               ; 2a62: c2 01 0e    ...            ; collectible at 1,14
+    !byte $c2,   5, $0e                                               ; 2a65: c2 05 0e    ...            ; collectible at 5,14
+    !byte $c3,   2, $15                                               ; 2a68: c3 02 15    ...            ; collectible at 2,21
+    !byte 0                                                           ; 2a6b: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2a6c: 00          .              ; terminator for title
+
+;              The Long Dash
+; ****************************************
+; *......................................*
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; *......................................*
+; *..==..==..==..==..==..==..==..==..==..*
+; *......................................*
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; *......................................*
+; ****************************************
+; ****************************************
+; ......**........................**......
+; ......**........................**......
+; ........................................
+; ........................................
+; ****************************************
+; ****************************************
 room_21_definition
-    !byte $2a,   0,   0,   0,   0, $14                                ; 2a6d: 2a 00 00... *..            ; room header
-    !text "B(q"                                                       ; 2a73: 42 28 71    B(q            ; room commands
-    !byte   1, $a6,   3, $a6,   1, $87,   0,   1, $a6,   3, $a6,   1  ; 2a76: 01 a6 03... ...
-    !byte $98,   0, $e2, $28, $9e,   0, $e2                           ; 2a82: 98 00 e2... ...
-    !text "(dZ"                                                       ; 2a89: 28 64 5a    (dZ
-    !byte $8f,   3,   9, $d0, $9a,   6,   1, $9a, $20,   1,   0, $44  ; 2a8c: 8f 03 09... ...
-    !byte $27,   8,   0, $16, $44, $27, $11,   1, $16, $44, $27, $19  ; 2a98: 27 08 00... '..
-    !byte   2, $16, $44,   0,   8,   0, $14, $44,   0, $11,   1, $14  ; 2aa4: 02 16 44... ..D
-    !byte $44,   0, $19,   2, $14,   0,   0,   0,   0                 ; 2ab0: 44 00 19... D..
-    !text "The Long Das", $80+'h'                                     ; 2ab9: 54 68 65... The
+    !byte $2a                                                         ; 2a6d: 2a          *              ; offset to start of doors
+    !byte   0,   0,   0,   0, $14                                     ; 2a6e: 00 00 00... ...            ; room header
+    !byte $42                                                         ; 2a73: 42          B              ; set sprite 2, collision byte 128
+    !byte $28                                                         ; 2a74: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2a75: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 2a76: 01          .              ; plot strip at 39,6 of length 1
+    !byte $a6                                                         ; 2a77: a6          .              ; move by 6*delta to 39,13
+    !byte 3                                                           ; 2a78: 03          .              ; plot strip at 39,13 of length 3
+    !byte $a6                                                         ; 2a79: a6          .              ; move by 6*delta to 39,22
+    !byte 1                                                           ; 2a7a: 01          .              ; plot strip at 39,22 of length 1
+    !byte $87,   0                                                    ; 2a7b: 87 00       ..             ; set position to 0,7
+    !byte 1                                                           ; 2a7d: 01          .              ; plot strip at 0,7 of length 1
+    !byte $a6                                                         ; 2a7e: a6          .              ; move by 6*delta to 0,13
+    !byte 3                                                           ; 2a7f: 03          .              ; plot strip at 0,13 of length 3
+    !byte $a6                                                         ; 2a80: a6          .              ; move by 6*delta to 0,22
+    !byte 1                                                           ; 2a81: 01          .              ; plot strip at 0,22 of length 1
+    !byte $98,   0                                                    ; 2a82: 98 00       ..             ; set position to 0,24
+    !byte $e2, $28                                                    ; 2a84: e2 28       .(             ; draw rect from 0,24 with size 40x2
+    !byte $9e,   0                                                    ; 2a86: 9e 00       ..             ; set position to 0,30
+    !byte $e2, $28                                                    ; 2a88: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $64                                                         ; 2a8a: 64          d              ; set delta to 4,0
+    !byte $5a                                                         ; 2a8b: 5a          Z              ; set sprite 26, collision byte 128
+    !byte $8f,   3                                                    ; 2a8c: 8f 03       ..             ; set position to 3,15
+    !byte 9                                                           ; 2a8e: 09          .              ; plot strip at 3,15 of length 9
+    !byte $d0                                                         ; 2a8f: d0          .              ; set sprite 16, collision byte 144
+    !byte $9a,   6                                                    ; 2a90: 9a 06       ..             ; set position to 6,26
+    !byte 1                                                           ; 2a92: 01          .              ; plot strip at 6,26 of length 1
+    !byte $9a, $20                                                    ; 2a93: 9a 20       .              ; set position to 32,26
+    !byte 1                                                           ; 2a95: 01          .              ; plot strip at 32,26 of length 1
+    !byte 0                                                           ; 2a96: 00          .              ; terminator for commands
+    !byte $44, $27,   8,   0, $16                                     ; 2a97: 44 27 08... D'.            ; invisible vertical door at 39,8 to door 0 in room 22
+    !byte $44, $27, $11,   1, $16                                     ; 2a9c: 44 27 11... D'.            ; invisible vertical door at 39,17 to door 1 in room 22
+    !byte $44, $27, $19,   2, $16                                     ; 2aa1: 44 27 19... D'.            ; invisible vertical door at 39,25 to door 2 in room 22
+    !byte $44,   0,   8,   0, $14                                     ; 2aa6: 44 00 08... D..            ; invisible vertical door at 0,8 to door 0 in room 20
+    !byte $44,   0, $11,   1, $14                                     ; 2aab: 44 00 11... D..            ; invisible vertical door at 0,17 to door 1 in room 20
+    !byte $44,   0, $19,   2, $14                                     ; 2ab0: 44 00 19... D..            ; invisible vertical door at 0,25 to door 2 in room 20
+    !byte 0                                                           ; 2ab5: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2ab6: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2ab7: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2ab8: 00          .              ; terminator for collectibles
+    !text "The Long Das", $80+'h'                                     ; 2ab9: 54 68 65... The            ; "The Long Dash"
+
+;                    
+; ****************************************
+; *......................................*
+; .......................................*
+; .......................................*
+; ....==..==..==..==..==..==.............*
+; .......................................*
+; .......................................*
+; ..............................**....****
+; **..**..**..**..**..**..**..***1DDDD1***
+; **..**..**..**..**..**..**..***1DDDD1***
+; **..**..**..**..**..**..**..***1DDDD1***
+; ..............................**....****
+; .......................................*
+; .......................................*
+; ....==..==..==..==..==..==.............*
+; .......................................*
+; .......................................*
+; *......................................*
+; ****************************************
+; ****************************************
+; ......**........................**......
+; ......**........................**......
+; ........................................
+; ........................................
+; ****************************************
+; ****************************************
 room_22_definition
-    !byte $4c,   0,   0,   0,   0, $14                                ; 2ac6: 4c 00 00... L..            ; room header
-    !text "B(q"                                                       ; 2acc: 42 28 71    B(q            ; room commands
-    !byte $11, $87,   0,   1, $a7, $e3,   2, $a6,   2, $e2, $28, $9e  ; 2acf: 11 87 00... ...
-    !byte   0, $e2, $28, $8e,   4, $e3,   2, $8e,   8, $e3,   2, $8e  ; 2adb: 00 e2 28... ..(
-    !byte $0c, $e3,   2, $8e, $10, $e3,   2, $8e, $14, $e3,   2, $8e  ; 2ae7: 0c e3 02... ...
-    !byte $18, $e3,   2, $8e, $1c, $e3,   2, $8d, $1e, $e5,   2, $8d  ; 2af3: 18 e3 02... ...
-    !byte $24, $e5,   3, $64, $5a, $8a,   4,   6, $94,   4,   6, $d0  ; 2aff: 24 e5 03... $..
-    !byte $9a,   6,   1, $9a, $20,   1,   0, $44,   0,   8,   0, $15  ; 2b0b: 9a 06 01... ...
-    !byte $44,   0, $11,   1, $15, $44,   0, $19,   2, $15, $44, $27  ; 2b17: 44 00 11... D..
-    !byte $19,   2, $17, $20, $1f, $0e,   0,   0, $20, $1f, $0f,   0  ; 2b23: 19 02 17... ...
-    !byte   0, $20, $1f, $10,   0,   0,   0,   0,   0,   0,   0       ; 2b2f: 00 20 1f... . .
+    !byte $4c                                                         ; 2ac6: 4c          L              ; offset to start of doors
+    !byte   0,   0,   0,   0, $14                                     ; 2ac7: 00 00 00... ...            ; room header
+    !byte $42                                                         ; 2acc: 42          B              ; set sprite 2, collision byte 128
+    !byte $28                                                         ; 2acd: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2ace: 71          q              ; set delta to 0,1
+    !byte $11                                                         ; 2acf: 11          .              ; plot strip at 39,6 of length 17
+    !byte $87,   0                                                    ; 2ad0: 87 00       ..             ; set position to 0,7
+    !byte 1                                                           ; 2ad2: 01          .              ; plot strip at 0,7 of length 1
+    !byte $a7                                                         ; 2ad3: a7          .              ; move by 7*delta to 0,14
+    !byte $e3,   2                                                    ; 2ad4: e3 02       ..             ; draw rect from 0,14 with size 2x3
+    !byte $a6                                                         ; 2ad6: a6          .              ; move by 6*delta to 0,23
+    !byte 2                                                           ; 2ad7: 02          .              ; plot strip at 0,23 of length 2
+    !byte $e2, $28                                                    ; 2ad8: e2 28       .(             ; draw rect from 0,24 with size 40x2
+    !byte $9e,   0                                                    ; 2ada: 9e 00       ..             ; set position to 0,30
+    !byte $e2, $28                                                    ; 2adc: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $8e,   4                                                    ; 2ade: 8e 04       ..             ; set position to 4,14
+    !byte $e3,   2                                                    ; 2ae0: e3 02       ..             ; draw rect from 4,14 with size 2x3
+    !byte $8e,   8                                                    ; 2ae2: 8e 08       ..             ; set position to 8,14
+    !byte $e3,   2                                                    ; 2ae4: e3 02       ..             ; draw rect from 8,14 with size 2x3
+    !byte $8e, $0c                                                    ; 2ae6: 8e 0c       ..             ; set position to 12,14
+    !byte $e3,   2                                                    ; 2ae8: e3 02       ..             ; draw rect from 12,14 with size 2x3
+    !byte $8e, $10                                                    ; 2aea: 8e 10       ..             ; set position to 16,14
+    !byte $e3,   2                                                    ; 2aec: e3 02       ..             ; draw rect from 16,14 with size 2x3
+    !byte $8e, $14                                                    ; 2aee: 8e 14       ..             ; set position to 20,14
+    !byte $e3,   2                                                    ; 2af0: e3 02       ..             ; draw rect from 20,14 with size 2x3
+    !byte $8e, $18                                                    ; 2af2: 8e 18       ..             ; set position to 24,14
+    !byte $e3,   2                                                    ; 2af4: e3 02       ..             ; draw rect from 24,14 with size 2x3
+    !byte $8e, $1c                                                    ; 2af6: 8e 1c       ..             ; set position to 28,14
+    !byte $e3,   2                                                    ; 2af8: e3 02       ..             ; draw rect from 28,14 with size 2x3
+    !byte $8d, $1e                                                    ; 2afa: 8d 1e       ..             ; set position to 30,13
+    !byte $e5,   2                                                    ; 2afc: e5 02       ..             ; draw rect from 30,13 with size 2x5
+    !byte $8d, $24                                                    ; 2afe: 8d 24       .$             ; set position to 36,13
+    !byte $e5,   3                                                    ; 2b00: e5 03       ..             ; draw rect from 36,13 with size 3x5
+    !byte $64                                                         ; 2b02: 64          d              ; set delta to 4,0
+    !byte $5a                                                         ; 2b03: 5a          Z              ; set sprite 26, collision byte 128
+    !byte $8a,   4                                                    ; 2b04: 8a 04       ..             ; set position to 4,10
+    !byte 6                                                           ; 2b06: 06          .              ; plot strip at 4,10 of length 6
+    !byte $94,   4                                                    ; 2b07: 94 04       ..             ; set position to 4,20
+    !byte 6                                                           ; 2b09: 06          .              ; plot strip at 4,20 of length 6
+    !byte $d0                                                         ; 2b0a: d0          .              ; set sprite 16, collision byte 144
+    !byte $9a,   6                                                    ; 2b0b: 9a 06       ..             ; set position to 6,26
+    !byte 1                                                           ; 2b0d: 01          .              ; plot strip at 6,26 of length 1
+    !byte $9a, $20                                                    ; 2b0e: 9a 20       .              ; set position to 32,26
+    !byte 1                                                           ; 2b10: 01          .              ; plot strip at 32,26 of length 1
+    !byte 0                                                           ; 2b11: 00          .              ; terminator for commands
+    !byte $44,   0,   8,   0, $15                                     ; 2b12: 44 00 08... D..            ; invisible vertical door at 0,8 to door 0 in room 21
+    !byte $44,   0, $11,   1, $15                                     ; 2b17: 44 00 11... D..            ; invisible vertical door at 0,17 to door 1 in room 21
+    !byte $44,   0, $19,   2, $15                                     ; 2b1c: 44 00 19... D..            ; invisible vertical door at 0,25 to door 2 in room 21
+    !byte $44, $27, $19,   2, $17                                     ; 2b21: 44 27 19... D'.            ; invisible vertical door at 39,25 to door 2 in room 23
+    !byte $20, $1f, $0e,   0,   0                                     ; 2b26: 20 1f 0e...  ..            ; visible horizontal door at 31,14 to door 0 in room 0
+    !byte $20, $1f, $0f,   0,   0                                     ; 2b2b: 20 1f 0f...  ..            ; visible horizontal door at 31,15 to door 0 in room 0
+    !byte $20, $1f, $10,   0,   0                                     ; 2b30: 20 1f 10...  ..            ; visible horizontal door at 31,16 to door 0 in room 0
+    !byte 0                                                           ; 2b35: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2b36: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2b37: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2b38: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2b39: 00          .              ; terminator for title
+
+;                    
+; ************....************************
+; *..................................*****
+; *.........**....**.................*****
+; *..................................*****
+; *OO.OO....**.......................*****
+; *OO.OO..............................*...
+; *OO.OO....**........................*...
+; ******..............................*...
+; *.........**........................*...
+; *xxxx...............................*...
+; *xxxx.....**........................*...
+; *xxxx..............................*****
+; *xxxx.....**.......................*****
+; ******..............................*...
+; *.........**........................*...
+; *XXXX...............................*...
+; *XXXX.....**........................*...
+; *XXXX...............................*...
+; *XXXX.....**........................*...
+; *******...******************************
+; ......*...******************************
+; ......*.............................****
+; ......*.............................****
+; ......*.............................****
+; **....**************************....****
+; **....**************************....****
 room_23_definition
-    !byte $4c,   0,   3,   0,   3,   6                                ; 2b3a: 4c 00 03... L..            ; room header
-    !byte $42, $0c, $a4, $14, $e5,   5, $91, $23, $e2,   5, $71, $8b  ; 2b40: 42 0c a4... B..            ; room commands
-    !byte $24,   1, $a4,   4, $a4,   1, $87,   0,   7, $e1,   6,   6  ; 2b4c: 24 01 a4... $..
-    !byte $e1,   6,   6, $61,   6, $71,   5, $e2, $1a, $9e,   0, $e2  ; 2b58: e1 06 06... ...
-    !byte   2, $88, $0a, $61,   2, $a4,   2, $c2, $8a, $0a,   2, $72  ; 2b64: 02 88 0a... ...
-    !byte $42, $8c, $0a,   7, $8c, $0b,   7, $99, $0a, $e2, $1e, $9b  ; 2b70: 42 8c 0a... B..
-    !byte $24, $e5,   4, $c8, $8c, $24,   2, $a2,   2,   0,   4,   1  ; 2b7c: 24 e5 04... $..
-    !byte $1f,   1,   3,   4, $1f, $1f,   0,   3, $44,   0, $19,   3  ; 2b88: 1f 01 03... ...
-    !byte $16,   4, $0b,   6,   0, $18, $44, $27, $0b,   0, $1c, $44  ; 2b94: 16 04 0b... ...
-    !byte $27, $13,   1, $1c,   0,   0, $c3,   1, $0f, $c2,   1, $15  ; 2ba0: 27 13 01... '..
-    !byte   0, $c1,   1, $0a, $c1,   4, $0a,   0,   0                 ; 2bac: 00 c1 01... ...
+    !byte $4c                                                         ; 2b3a: 4c          L              ; offset to start of doors
+    !byte 0, 3, 0, 3, 6                                               ; 2b3b: 00 03 00... ...            ; room header
+    !byte $42                                                         ; 2b40: 42          B              ; set sprite 2, collision byte 128
+    !byte $0c                                                         ; 2b41: 0c          .              ; plot strip at 0,6 of length 12
+    !byte $a4                                                         ; 2b42: a4          .              ; move by 4*delta to 15,6
+    !byte $14                                                         ; 2b43: 14          .              ; plot strip at 15,6 of length 20
+    !byte $e5,   5                                                    ; 2b44: e5 05       ..             ; draw rect from 35,6 with size 5x5
+    !byte $91, $23                                                    ; 2b46: 91 23       .#             ; set position to 35,17
+    !byte $e2,   5                                                    ; 2b48: e2 05       ..             ; draw rect from 35,17 with size 5x2
+    !byte $71                                                         ; 2b4a: 71          q              ; set delta to 0,1
+    !byte $8b, $24                                                    ; 2b4b: 8b 24       .$             ; set position to 36,11
+    !byte 1                                                           ; 2b4d: 01          .              ; plot strip at 36,11 of length 1
+    !byte $a4                                                         ; 2b4e: a4          .              ; move by 4*delta to 36,15
+    !byte 4                                                           ; 2b4f: 04          .              ; plot strip at 36,15 of length 4
+    !byte $a4                                                         ; 2b50: a4          .              ; move by 4*delta to 36,23
+    !byte 1                                                           ; 2b51: 01          .              ; plot strip at 36,23 of length 1
+    !byte $87,   0                                                    ; 2b52: 87 00       ..             ; set position to 0,7
+    !byte 7                                                           ; 2b54: 07          .              ; plot strip at 0,7 of length 7
+    !byte $e1,   6                                                    ; 2b55: e1 06       ..             ; draw rect from 0,13 with size 6x1
+    !byte 6                                                           ; 2b57: 06          .              ; plot strip at 0,14 of length 6
+    !byte $e1,   6                                                    ; 2b58: e1 06       ..             ; draw rect from 0,19 with size 6x1
+    !byte 6                                                           ; 2b5a: 06          .              ; plot strip at 0,20 of length 6
+    !byte $61                                                         ; 2b5b: 61          a              ; set delta to 1,0
+    !byte 6                                                           ; 2b5c: 06          .              ; plot strip at 0,25 of length 6
+    !byte $71                                                         ; 2b5d: 71          q              ; set delta to 0,1
+    !byte 5                                                           ; 2b5e: 05          .              ; plot strip at 6,25 of length 5
+    !byte $e2, $1a                                                    ; 2b5f: e2 1a       ..             ; draw rect from 6,30 with size 26x2
+    !byte $9e,   0                                                    ; 2b61: 9e 00       ..             ; set position to 0,30
+    !byte $e2,   2                                                    ; 2b63: e2 02       ..             ; draw rect from 0,30 with size 2x2
+    !byte $88, $0a                                                    ; 2b65: 88 0a       ..             ; set position to 10,8
+    !byte $61                                                         ; 2b67: 61          a              ; set delta to 1,0
+    !byte 2                                                           ; 2b68: 02          .              ; plot strip at 10,8 of length 2
+    !byte $a4                                                         ; 2b69: a4          .              ; move by 4*delta to 15,8
+    !byte 2                                                           ; 2b6a: 02          .              ; plot strip at 15,8 of length 2
+    !byte $c2                                                         ; 2b6b: c2          .              ; set sprite 2, collision byte 144
+    !byte $8a, $0a                                                    ; 2b6c: 8a 0a       ..             ; set position to 10,10
+    !byte 2                                                           ; 2b6e: 02          .              ; plot strip at 10,10 of length 2
+    !byte $72                                                         ; 2b6f: 72          r              ; set delta to 0,2
+    !byte $42                                                         ; 2b70: 42          B              ; set sprite 2, collision byte 128
+    !byte $8c, $0a                                                    ; 2b71: 8c 0a       ..             ; set position to 10,12
+    !byte 7                                                           ; 2b73: 07          .              ; plot strip at 10,12 of length 7
+    !byte $8c, $0b                                                    ; 2b74: 8c 0b       ..             ; set position to 11,12
+    !byte 7                                                           ; 2b76: 07          .              ; plot strip at 11,12 of length 7
+    !byte $99, $0a                                                    ; 2b77: 99 0a       ..             ; set position to 10,25
+    !byte $e2, $1e                                                    ; 2b79: e2 1e       ..             ; draw rect from 10,25 with size 30x2
+    !byte $9b, $24                                                    ; 2b7b: 9b 24       .$             ; set position to 36,27
+    !byte $e5,   4                                                    ; 2b7d: e5 04       ..             ; draw rect from 36,27 with size 4x5
+    !byte $c8                                                         ; 2b7f: c8          .              ; set sprite 8, collision byte 144
+    !byte $8c, $24                                                    ; 2b80: 8c 24       .$             ; set position to 36,12
+    !byte 2                                                           ; 2b82: 02          .              ; plot strip at 36,12 of length 2
+    !byte $a2                                                         ; 2b83: a2          .              ; move by 2*delta to 36,18
+    !byte 2                                                           ; 2b84: 02          .              ; plot strip at 36,18 of length 2
+    !byte 0                                                           ; 2b85: 00          .              ; terminator for commands
+    !byte   4,   1, $1f,   1,   3                                     ; 2b86: 04 01 1f... ...            ; invisible horizontal door at 1,31 to door 1 in room 3
+    !byte   4, $1f, $1f,   0,   3                                     ; 2b8b: 04 1f 1f... ...            ; invisible horizontal door at 31,31 to door 0 in room 3
+    !byte $44,   0, $19,   3, $16                                     ; 2b90: 44 00 19... D..            ; invisible vertical door at 0,25 to door 3 in room 22
+    !byte   4, $0b,   6,   0, $18                                     ; 2b95: 04 0b 06... ...            ; invisible horizontal door at 11,6 to door 0 in room 24
+    !byte $44, $27, $0b,   0, $1c                                     ; 2b9a: 44 27 0b... D'.            ; invisible vertical door at 39,11 to door 0 in room 28
+    !byte $44, $27, $13,   1, $1c                                     ; 2b9f: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 1 in room 28
+    !byte 0                                                           ; 2ba4: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2ba5: 00          .              ; terminator for keys
+    !byte $c3,   1, $0f                                               ; 2ba6: c3 01 0f    ...            ; computer at 1,15
+    !byte $c2,   1, $15                                               ; 2ba9: c2 01 15    ...            ; computer at 1,21
+    !byte 0                                                           ; 2bac: 00          .              ; terminator for computers
+    !byte $c1,   1, $0a                                               ; 2bad: c1 01 0a    ...            ; collectible at 1,10
+    !byte $c1,   4, $0a                                               ; 2bb0: c1 04 0a    ...            ; collectible at 4,10
+    !byte 0                                                           ; 2bb3: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2bb4: 00          .              ; terminator for title
+
+;                    
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==...........==....==...........==***
+; ***==cccc...XXXX==....==XXXX...xxxx==***
+; ***==cccc...XXXX==....==XXXX...xxxx==***
+; ***==cccc...XXXX==....==XXXX...xxxx==***
+; ***==cccc...XXXX==....==XXXX...xxxx==***
+; ***==****...****==....==****...****==***
+; ***==****...****==....==****...****==***
+; ...==...........==....==...........==...
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ************....************************
+; ...*......*......*......*......*......*.
+; ...*......*......*......*......*......*.
+; ...*......*......*......*......*......*.
+; ...*......*......*......*......*......*.
+; ************....************************
+; ************...........................*
+; ************.........................K.*
+; ************.........................1.*
+; ************...........................*
+; ************....************************
 room_24_definition
-    !byte $56,   2,   2,   2,   2,   5                                ; 2bb5: 56 02 02... V..            ; room header
-    !byte $44, $e9,   3, $86,   5, $e2, $0b, $86, $18, $e2, $0b, $86  ; 2bbb: 44 e9 03... D..            ; room commands
-    !byte $25, $e9,   3, $8d,   5, $e2,   4, $8d, $0c, $e2,   4, $8d  ; 2bc7: 25 e9 03... %..
-    !byte $18, $e2,   4, $8d, $1f, $e2,   4, $42, $95,   0, $0c, $a4  ; 2bd3: 18 e2 04... ...
-    !byte $18, $9a, $10, $18, $71,   5, $69, $17, $9a,   0, $e6, $0c  ; 2bdf: 18 9a 10... ...
-    !byte $71, $5b, $86,   3, $0a, $86, $10, $0a, $86, $16, $0a, $86  ; 2beb: 71 5b 86... q[.
-    !byte $23, $0a, $55, $96,   0, $e4, $0a, $96, $12, $e4, $16, $67  ; 2bf7: 23 0a 55... #.U
-    !byte $48, $96,   3,   6, $98,   3,   6,   0,   4, $0b, $1f,   3  ; 2c03: 48 96 03... H..
-    !byte $17, $44,   0, $0f,   0, $19, $44, $27, $0f,   0, $1d,   4  ; 2c0f: 17 44 00... .D.
-    !byte $11,   6,   1, $1a,   0, $c0, $25, $1c,   0, $c1,   5,   9  ; 2c1b: 11 06 01... ...
-    !byte $c2, $0c,   9, $c2, $18,   9, $c3, $1f,   9,   0,   0,   0  ; 2c27: c2 0c 09... ...
+    !byte $56                                                         ; 2bb5: 56          V              ; offset to start of doors
+    !byte 2, 2, 2, 2, 5                                               ; 2bb6: 02 02 02... ...            ; room header
+    !byte $44                                                         ; 2bbb: 44          D              ; set sprite 4, collision byte 128
+    !byte $e9,   3                                                    ; 2bbc: e9 03       ..             ; draw rect from 0,6 with size 3x9
+    !byte $86,   5                                                    ; 2bbe: 86 05       ..             ; set position to 5,6
+    !byte $e2, $0b                                                    ; 2bc0: e2 0b       ..             ; draw rect from 5,6 with size 11x2
+    !byte $86, $18                                                    ; 2bc2: 86 18       ..             ; set position to 24,6
+    !byte $e2, $0b                                                    ; 2bc4: e2 0b       ..             ; draw rect from 24,6 with size 11x2
+    !byte $86, $25                                                    ; 2bc6: 86 25       .%             ; set position to 37,6
+    !byte $e9,   3                                                    ; 2bc8: e9 03       ..             ; draw rect from 37,6 with size 3x9
+    !byte $8d,   5                                                    ; 2bca: 8d 05       ..             ; set position to 5,13
+    !byte $e2,   4                                                    ; 2bcc: e2 04       ..             ; draw rect from 5,13 with size 4x2
+    !byte $8d, $0c                                                    ; 2bce: 8d 0c       ..             ; set position to 12,13
+    !byte $e2,   4                                                    ; 2bd0: e2 04       ..             ; draw rect from 12,13 with size 4x2
+    !byte $8d, $18                                                    ; 2bd2: 8d 18       ..             ; set position to 24,13
+    !byte $e2,   4                                                    ; 2bd4: e2 04       ..             ; draw rect from 24,13 with size 4x2
+    !byte $8d, $1f                                                    ; 2bd6: 8d 1f       ..             ; set position to 31,13
+    !byte $e2,   4                                                    ; 2bd8: e2 04       ..             ; draw rect from 31,13 with size 4x2
+    !byte $42                                                         ; 2bda: 42          B              ; set sprite 2, collision byte 128
+    !byte $95,   0                                                    ; 2bdb: 95 00       ..             ; set position to 0,21
+    !byte $0c                                                         ; 2bdd: 0c          .              ; plot strip at 0,21 of length 12
+    !byte $a4                                                         ; 2bde: a4          .              ; move by 4*delta to 15,21
+    !byte $18                                                         ; 2bdf: 18          .              ; plot strip at 15,21 of length 24
+    !byte $9a, $10                                                    ; 2be0: 9a 10       ..             ; set position to 16,26
+    !byte $18                                                         ; 2be2: 18          .              ; plot strip at 16,26 of length 24
+    !byte $71                                                         ; 2be3: 71          q              ; set delta to 0,1
+    !byte 5                                                           ; 2be4: 05          .              ; plot strip at 39,26 of length 5
+    !byte $69                                                         ; 2be5: 69          i              ; set delta to -1,0
+    !byte $17                                                         ; 2be6: 17          .              ; plot strip at 39,31 of length 23
+    !byte $9a,   0                                                    ; 2be7: 9a 00       ..             ; set position to 0,26
+    !byte $e6, $0c                                                    ; 2be9: e6 0c       ..             ; draw rect from 0,26 with size 12x6
+    !byte $71                                                         ; 2beb: 71          q              ; set delta to 0,1
+    !byte $5b                                                         ; 2bec: 5b          [              ; set sprite 27, collision byte 128
+    !byte $86,   3                                                    ; 2bed: 86 03       ..             ; set position to 3,6
+    !byte $0a                                                         ; 2bef: 0a          .              ; plot strip at 3,6 of length 10
+    !byte $86, $10                                                    ; 2bf0: 86 10       ..             ; set position to 16,6
+    !byte $0a                                                         ; 2bf2: 0a          .              ; plot strip at 16,6 of length 10
+    !byte $86, $16                                                    ; 2bf3: 86 16       ..             ; set position to 22,6
+    !byte $0a                                                         ; 2bf5: 0a          .              ; plot strip at 22,6 of length 10
+    !byte $86, $23                                                    ; 2bf6: 86 23       .#             ; set position to 35,6
+    !byte $0a                                                         ; 2bf8: 0a          .              ; plot strip at 35,6 of length 10
+    !byte $55                                                         ; 2bf9: 55          U              ; set sprite 21, collision byte 128
+    !byte $96,   0                                                    ; 2bfa: 96 00       ..             ; set position to 0,22
+    !byte $e4, $0a                                                    ; 2bfc: e4 0a       ..             ; draw rect from 0,22 with size 10x4
+    !byte $96, $12                                                    ; 2bfe: 96 12       ..             ; set position to 18,22
+    !byte $e4, $16                                                    ; 2c00: e4 16       ..             ; draw rect from 18,22 with size 22x4
+    !byte $67                                                         ; 2c02: 67          g              ; set delta to 7,0
+    !byte $48                                                         ; 2c03: 48          H              ; set sprite 8, collision byte 128
+    !byte $96,   3                                                    ; 2c04: 96 03       ..             ; set position to 3,22
+    !byte 6                                                           ; 2c06: 06          .              ; plot strip at 3,22 of length 6
+    !byte $98,   3                                                    ; 2c07: 98 03       ..             ; set position to 3,24
+    !byte 6                                                           ; 2c09: 06          .              ; plot strip at 3,24 of length 6
+    !byte 0                                                           ; 2c0a: 00          .              ; terminator for commands
+    !byte   4, $0b, $1f,   3, $17                                     ; 2c0b: 04 0b 1f... ...            ; invisible horizontal door at 11,31 to door 3 in room 23
+    !byte $44,   0, $0f,   0, $19                                     ; 2c10: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 0 in room 25
+    !byte $44, $27, $0f,   0, $1d                                     ; 2c15: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 0 in room 29
+    !byte   4, $11,   6,   1, $1a                                     ; 2c1a: 04 11 06... ...            ; invisible horizontal door at 17,6 to door 1 in room 26
+    !byte 0                                                           ; 2c1f: 00          .              ; terminator for doors
+    !byte $c0, $25, $1c                                               ; 2c20: c0 25 1c    .%.            ; key at 37,28
+    !byte 0                                                           ; 2c23: 00          .              ; terminator for keys
+    !byte $c1,   5,   9                                               ; 2c24: c1 05 09    ...            ; computer at 5,9
+    !byte $c2, $0c,   9                                               ; 2c27: c2 0c 09    ...            ; computer at 12,9
+    !byte $c2, $18,   9                                               ; 2c2a: c2 18 09    ...            ; computer at 24,9
+    !byte $c3, $1f,   9                                               ; 2c2d: c3 1f 09    ...            ; computer at 31,9
+    !byte 0                                                           ; 2c30: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2c31: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2c32: 00          .              ; terminator for title
+
+;            The Terminal Room
+; ****************************************
+; ****************************************
+; ***..................................***
+; ***..................................***
+; ***.CCCCCCCC................CCCCCCCC.***
+; ***.CCCCCCCC................CCCCCCCC.***
+; ***.CCCCCCCC................CCCCCCCC.***
+; ***.CCCCCCCC................CCCCCCCC.***
+; *************..............*************
+; *.......................................
+; *.......................................
+; *.SS....................................
+; *.SS....................................
+; *.SS....................................
+; *.......................................
+; *************..............*************
+; *************..............*************
+; *************..............*************
+; *************..............*************
+; *************..............*************
+; ***.....XXXX................XXXX.....***
+; ***.AA..XXXX................XXXX..AA.***
+; ***.AA..XXXX................XXXX..AA.***
+; ***.AA..XXXX................XXXX..AA.***
+; ****************************************
+; ****************************************
 room_25_definition
-    !byte $2b,   3,   2,   1,   0,   6                                ; 2c33: 2b 03 02... +..            ; room header
-    !byte $e2, $28, $e6,   3, $0d, $ae, $0d, $8f,   0, $71,   7, $61  ; 2c39: e2 28 e6... .(.            ; room commands
-    !byte $0c, $ae, $0d, $88, $25, $e6,   3, $42, $96,   0, $e4, $0d  ; 2c45: 0c ae 0d... ...
-    !byte $e4,   3, $e2, $28, $96, $1b, $e4, $0d, $9a, $25, $e4,   3  ; 2c51: e4 03 e2... ...
-    !byte   0, $44, $27, $0f,   1, $18,   0,   0, $c0,   4, $0a, $c0  ; 2c5d: 00 44 27... .D'
-    !byte   8, $0a, $c0, $1c, $0a, $c0, $20, $0a, $c2,   8, $1a, $c2  ; 2c69: 08 0a c0... ...
-    !byte $1c, $1a,   0, $c2,   2, $11, $c3,   4, $1b, $c3, $22, $1b  ; 2c75: 1c 1a 00... ...
-    !byte   0                                                         ; 2c81: 00          .
-    !text "The Terminal Roo", $80+'m'                                 ; 2c82: 54 68 65... The
+    !byte $2b                                                         ; 2c33: 2b          +              ; offset to start of doors
+    !byte 3, 2, 1, 0, 6                                               ; 2c34: 03 02 01... ...            ; room header
+    !byte $e2, $28                                                    ; 2c39: e2 28       .(             ; draw rect from 0,6 with size 40x2
+    !byte $e6,   3                                                    ; 2c3b: e6 03       ..             ; draw rect from 0,8 with size 3x6
+    !byte $0d                                                         ; 2c3d: 0d          .              ; plot strip at 0,14 of length 13
+    !byte $ae                                                         ; 2c3e: ae          .              ; move by 14*delta to 26,14
+    !byte $0d                                                         ; 2c3f: 0d          .              ; plot strip at 26,14 of length 13
+    !byte $8f,   0                                                    ; 2c40: 8f 00       ..             ; set position to 0,15
+    !byte $71                                                         ; 2c42: 71          q              ; set delta to 0,1
+    !byte 7                                                           ; 2c43: 07          .              ; plot strip at 0,15 of length 7
+    !byte $61                                                         ; 2c44: 61          a              ; set delta to 1,0
+    !byte $0c                                                         ; 2c45: 0c          .              ; plot strip at 0,21 of length 12
+    !byte $ae                                                         ; 2c46: ae          .              ; move by 14*delta to 26,21
+    !byte $0d                                                         ; 2c47: 0d          .              ; plot strip at 26,21 of length 13
+    !byte $88, $25                                                    ; 2c48: 88 25       .%             ; set position to 37,8
+    !byte $e6,   3                                                    ; 2c4a: e6 03       ..             ; draw rect from 37,8 with size 3x6
+    !byte $42                                                         ; 2c4c: 42          B              ; set sprite 2, collision byte 128
+    !byte $96,   0                                                    ; 2c4d: 96 00       ..             ; set position to 0,22
+    !byte $e4, $0d                                                    ; 2c4f: e4 0d       ..             ; draw rect from 0,22 with size 13x4
+    !byte $e4,   3                                                    ; 2c51: e4 03       ..             ; draw rect from 0,26 with size 3x4
+    !byte $e2, $28                                                    ; 2c53: e2 28       .(             ; draw rect from 0,30 with size 40x2
+    !byte $96, $1b                                                    ; 2c55: 96 1b       ..             ; set position to 27,22
+    !byte $e4, $0d                                                    ; 2c57: e4 0d       ..             ; draw rect from 27,22 with size 13x4
+    !byte $9a, $25                                                    ; 2c59: 9a 25       .%             ; set position to 37,26
+    !byte $e4,   3                                                    ; 2c5b: e4 03       ..             ; draw rect from 37,26 with size 3x4
+    !byte 0                                                           ; 2c5d: 00          .              ; terminator for commands
+    !byte $44, $27, $0f,   1, $18                                     ; 2c5e: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 1 in room 24
+    !byte 0                                                           ; 2c63: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2c64: 00          .              ; terminator for keys
+    !byte $c0,   4, $0a                                               ; 2c65: c0 04 0a    ...            ; computer at 4,10
+    !byte $c0,   8, $0a                                               ; 2c68: c0 08 0a    ...            ; computer at 8,10
+    !byte $c0, $1c, $0a                                               ; 2c6b: c0 1c 0a    ...            ; computer at 28,10
+    !byte $c0, $20, $0a                                               ; 2c6e: c0 20 0a    . .            ; computer at 32,10
+    !byte $c2,   8, $1a                                               ; 2c71: c2 08 1a    ...            ; computer at 8,26
+    !byte $c2, $1c, $1a                                               ; 2c74: c2 1c 1a    ...            ; computer at 28,26
+    !byte 0                                                           ; 2c77: 00          .              ; terminator for computers
+    !byte $c2,   2, $11                                               ; 2c78: c2 02 11    ...            ; collectible at 2,17
+    !byte $c3,   4, $1b                                               ; 2c7b: c3 04 1b    ...            ; collectible at 4,27
+    !byte $c3, $22, $1b                                               ; 2c7e: c3 22 1b    .".            ; collectible at 34,27
+    !byte 0                                                           ; 2c81: 00          .              ; terminator for collectibles
+    !text "The Terminal Roo", $80+'m'                                 ; 2c82: 54 68 65... The            ; "The Terminal Room"
+
+;                    
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==...........==....==...........==...
+; ***==.K.................................
+; ***==.1.................................
+; ***==......................****.........
+; ***==.xxxx.xxxx............****.........
+; ***==.xxxx.xxxx.==....==...|..|....==...
+; ***==.xxxx.xxxx.==....==***********==***
+; ***==.xxxx.xxxx.==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==...........==....==***********==***
+; ......................==***********==***
+; ......................==***********==***
+; ......................==***********==***
+; ......................==***********==***
+; ***==***********==....==***********==***
 room_26_definition
-    !byte $3e,   1,   1,   1,   1, $0a                                ; 2c93: 3e 01 01... >..            ; room header
-    !byte $44, $f5,   3, $9f,   0, $11, $86,   5, $ea, $0b, $98,   5  ; 2c99: 44 f5 03... D..            ; room commands
-    !byte $e2, $0b, $86, $18, $ea, $10, $96, $18, $ea, $10, $5b, $71  ; 2ca5: e2 0b 86... ...
-    !byte $86,   3, $15, $a4,   1, $86, $10, $0b, $a4,   6, $a4,   1  ; 2cb1: 86 03 15... ...
-    !byte $86, $16, $0b, $a4, $0b, $86, $23, $0b, $a4, $0b, $d1, $93  ; 2cbd: 86 16 0b... ...
-    !byte $1b,   1, $63, $d4, $95, $1b,   2,   0, $44, $27, $10,   3  ; 2cc9: 1b 01 63... ..c
-    !byte   1,   4, $11, $1f,   3, $18, $44,   0, $1a,   0,   0,   4  ; 2cd5: 01 04 11... ...
-    !byte $11,   6,   2, $32,   0, $c0,   6, $11,   0, $c3,   6, $14  ; 2ce1: 11 06 02... ...
-    !byte $c3, $0b, $14,   0,   0,   0                                ; 2ced: c3 0b 14... ...
+    !byte $3e                                                         ; 2c93: 3e          >              ; offset to start of doors
+    !byte   1,   1,   1,   1, $0a                                     ; 2c94: 01 01 01... ...            ; room header
+    !byte $44                                                         ; 2c99: 44          D              ; set sprite 4, collision byte 128
+    !byte $f5,   3                                                    ; 2c9a: f5 03       ..             ; draw rect from 0,6 with size 3x21
+    !byte $9f,   0                                                    ; 2c9c: 9f 00       ..             ; set position to 0,31
+    !byte $11                                                         ; 2c9e: 11          .              ; plot strip at 0,31 of length 17
+    !byte $86,   5                                                    ; 2c9f: 86 05       ..             ; set position to 5,6
+    !byte $ea, $0b                                                    ; 2ca1: ea 0b       ..             ; draw rect from 5,6 with size 11x10
+    !byte $98,   5                                                    ; 2ca3: 98 05       ..             ; set position to 5,24
+    !byte $e2, $0b                                                    ; 2ca5: e2 0b       ..             ; draw rect from 5,24 with size 11x2
+    !byte $86, $18                                                    ; 2ca7: 86 18       ..             ; set position to 24,6
+    !byte $ea, $10                                                    ; 2ca9: ea 10       ..             ; draw rect from 24,6 with size 16x10
+    !byte $96, $18                                                    ; 2cab: 96 18       ..             ; set position to 24,22
+    !byte $ea, $10                                                    ; 2cad: ea 10       ..             ; draw rect from 24,22 with size 16x10
+    !byte $5b                                                         ; 2caf: 5b          [              ; set sprite 27, collision byte 128
+    !byte $71                                                         ; 2cb0: 71          q              ; set delta to 0,1
+    !byte $86,   3                                                    ; 2cb1: 86 03       ..             ; set position to 3,6
+    !byte $15                                                         ; 2cb3: 15          .              ; plot strip at 3,6 of length 21
+    !byte $a4                                                         ; 2cb4: a4          .              ; move by 4*delta to 3,30
+    !byte 1                                                           ; 2cb5: 01          .              ; plot strip at 3,30 of length 1
+    !byte $86, $10                                                    ; 2cb6: 86 10       ..             ; set position to 16,6
+    !byte $0b                                                         ; 2cb8: 0b          .              ; plot strip at 16,6 of length 11
+    !byte $a4                                                         ; 2cb9: a4          .              ; move by 4*delta to 16,20
+    !byte 6                                                           ; 2cba: 06          .              ; plot strip at 16,20 of length 6
+    !byte $a4                                                         ; 2cbb: a4          .              ; move by 4*delta to 16,30
+    !byte 1                                                           ; 2cbc: 01          .              ; plot strip at 16,30 of length 1
+    !byte $86, $16                                                    ; 2cbd: 86 16       ..             ; set position to 22,6
+    !byte $0b                                                         ; 2cbf: 0b          .              ; plot strip at 22,6 of length 11
+    !byte $a4                                                         ; 2cc0: a4          .              ; move by 4*delta to 22,20
+    !byte $0b                                                         ; 2cc1: 0b          .              ; plot strip at 22,20 of length 11
+    !byte $86, $23                                                    ; 2cc2: 86 23       .#             ; set position to 35,6
+    !byte $0b                                                         ; 2cc4: 0b          .              ; plot strip at 35,6 of length 11
+    !byte $a4                                                         ; 2cc5: a4          .              ; move by 4*delta to 35,20
+    !byte $0b                                                         ; 2cc6: 0b          .              ; plot strip at 35,20 of length 11
+    !byte $d1                                                         ; 2cc7: d1          .              ; set sprite 17, collision byte 144
+    !byte $93, $1b                                                    ; 2cc8: 93 1b       ..             ; set position to 27,19
+    !byte 1                                                           ; 2cca: 01          .              ; plot strip at 27,19 of length 1
+    !byte $63                                                         ; 2ccb: 63          c              ; set delta to 3,0
+    !byte $d4                                                         ; 2ccc: d4          .              ; set sprite 20, collision byte 144
+    !byte $95, $1b                                                    ; 2ccd: 95 1b       ..             ; set position to 27,21
+    !byte 2                                                           ; 2ccf: 02          .              ; plot strip at 27,21 of length 2
+    !byte 0                                                           ; 2cd0: 00          .              ; terminator for commands
+    !byte $44, $27, $10,   3,   1                                     ; 2cd1: 44 27 10... D'.            ; invisible vertical door at 39,16 to door 3 in room 1
+    !byte   4, $11, $1f,   3, $18                                     ; 2cd6: 04 11 1f... ...            ; invisible horizontal door at 17,31 to door 3 in room 24
+    !byte $44,   0, $1a,   0,   0                                     ; 2cdb: 44 00 1a... D..            ; invisible vertical door at 0,26 to door 0 in room 0
+    !byte   4, $11,   6,   2, $32                                     ; 2ce0: 04 11 06... ...            ; invisible horizontal door at 17,6 to door 2 in room 50
+    !byte 0                                                           ; 2ce5: 00          .              ; terminator for doors
+    !byte $c0,   6, $11                                               ; 2ce6: c0 06 11    ...            ; key at 6,17
+    !byte 0                                                           ; 2ce9: 00          .              ; terminator for keys
+    !byte $c3,   6, $14                                               ; 2cea: c3 06 14    ...            ; computer at 6,20
+    !byte $c3, $0b, $14                                               ; 2ced: c3 0b 14    ...            ; computer at 11,20
+    !byte 0                                                           ; 2cf0: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2cf1: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2cf2: 00          .              ; terminator for title
+
+;               The Way Out
+; ****************************************
+; ****************************************
+; ****************************************
+; *.....***.....1*1......***.....1*1.....*
+; *......*......D.D.......*......D.D.....*
+; *......*......D.D.......*......D.D.....*
+; *......*......D.D.......*......D.D.....*
+; *......*......D.D.......*......D.D.....*
+; *.....***.....1*1......***.....1*1.....*
+; *.....***.....***......***.....***.....*
+; 1......*.......*........*.......*......1
+; D......*.......*........*.......*......D
+; D......*.......*........*.......*......D
+; D......*.......*........*.......*......D
+; D......*.......*........*.......*......D
+; 1......*.......*........*.......*......1
+; *.....***.....***......***.....***.....*
+; *.....1*1.....***......1*1.....***.....*
+; *.....D.D......*.......D.D......*......*
+; *.....D.D......*.......D.D......*......*
+; *.....D.D......*.......D.D......*......*
+; *.....D.D......*.......D.D......*......*
+; *.....1*1.....***......1*1.....***.....*
+; ****************************************
+; ****************************************
+; ****************************************
 room_27_definition
-    !byte $53,   0,   1,   2,   0,   6                                ; 2cf3: 53 00 01... S..            ; room header
-    !byte $e3, $28, $71, $15, $e3, $28, $89, $27, $14, $8a,   7, $0e  ; 2cf9: e3 28 71... .(q            ; room commands
-    !byte $8f, $0f, $0e, $8a, $18, $0e, $8f, $20, $0e, $61, $89,   6  ; 2d05: 8f 0f 0e... ...
-    !byte   3, $a5,   3, $a6,   3, $a5,   3, $8e,   6,   3, $a5,   3  ; 2d11: 03 a5 03... ...
-    !byte $a6,   3, $a5,   3, $8f,   6,   3, $a5,   3, $a6,   3, $a5  ; 2d1d: a6 03 a5... ...
-    !byte   3, $96,   6,   3, $a5,   3, $a6,   3, $a5,   3, $97,   6  ; 2d29: 03 96 06... ...
-    !byte   3, $a5,   3, $a6,   3, $a5,   3, $9c,   6,   3, $a5,   3  ; 2d35: 03 a5 03... ...
-    !byte $a6,   3, $a5,   3,   0, $78,   0, $10,   0,   1, $78,   6  ; 2d41: a6 03 a5... ...
-    !byte $17,   0,   0, $78,   8, $17,   0,   0, $78, $0e,   9,   0  ; 2d4d: 17 00 00... ...
-    !byte   0, $78, $10,   9,   0,   0, $78, $17, $17,   0,   0, $78  ; 2d59: 00 78 10... .x.
-    !byte $19, $17,   0,   0, $78, $1f,   9,   0,   0, $78, $21,   9  ; 2d65: 19 17 00... ...
-    !byte   0,   0, $78, $27, $10, $ff, $ff,   0,   0,   0,   0       ; 2d71: 00 00 78... ..x
-    !text "The Way Ou", $80+'t'                                       ; 2d7c: 54 68 65... The
+    !byte $53                                                         ; 2cf3: 53          S              ; offset to start of doors
+    !byte 0, 1, 2, 0, 6                                               ; 2cf4: 00 01 02... ...            ; room header
+    !byte $e3, $28                                                    ; 2cf9: e3 28       .(             ; draw rect from 0,6 with size 40x3
+    !byte $71                                                         ; 2cfb: 71          q              ; set delta to 0,1
+    !byte $15                                                         ; 2cfc: 15          .              ; plot strip at 0,9 of length 21
+    !byte $e3, $28                                                    ; 2cfd: e3 28       .(             ; draw rect from 0,29 with size 40x3
+    !byte $89, $27                                                    ; 2cff: 89 27       .'             ; set position to 39,9
+    !byte $14                                                         ; 2d01: 14          .              ; plot strip at 39,9 of length 20
+    !byte $8a,   7                                                    ; 2d02: 8a 07       ..             ; set position to 7,10
+    !byte $0e                                                         ; 2d04: 0e          .              ; plot strip at 7,10 of length 14
+    !byte $8f, $0f                                                    ; 2d05: 8f 0f       ..             ; set position to 15,15
+    !byte $0e                                                         ; 2d07: 0e          .              ; plot strip at 15,15 of length 14
+    !byte $8a, $18                                                    ; 2d08: 8a 18       ..             ; set position to 24,10
+    !byte $0e                                                         ; 2d0a: 0e          .              ; plot strip at 24,10 of length 14
+    !byte $8f, $20                                                    ; 2d0b: 8f 20       .              ; set position to 32,15
+    !byte $0e                                                         ; 2d0d: 0e          .              ; plot strip at 32,15 of length 14
+    !byte $61                                                         ; 2d0e: 61          a              ; set delta to 1,0
+    !byte $89,   6                                                    ; 2d0f: 89 06       ..             ; set position to 6,9
+    !byte 3                                                           ; 2d11: 03          .              ; plot strip at 6,9 of length 3
+    !byte $a5                                                         ; 2d12: a5          .              ; move by 5*delta to 13,9
+    !byte 3                                                           ; 2d13: 03          .              ; plot strip at 13,9 of length 3
+    !byte $a6                                                         ; 2d14: a6          .              ; move by 6*delta to 22,9
+    !byte 3                                                           ; 2d15: 03          .              ; plot strip at 22,9 of length 3
+    !byte $a5                                                         ; 2d16: a5          .              ; move by 5*delta to 30,9
+    !byte 3                                                           ; 2d17: 03          .              ; plot strip at 30,9 of length 3
+    !byte $8e,   6                                                    ; 2d18: 8e 06       ..             ; set position to 6,14
+    !byte 3                                                           ; 2d1a: 03          .              ; plot strip at 6,14 of length 3
+    !byte $a5                                                         ; 2d1b: a5          .              ; move by 5*delta to 13,14
+    !byte 3                                                           ; 2d1c: 03          .              ; plot strip at 13,14 of length 3
+    !byte $a6                                                         ; 2d1d: a6          .              ; move by 6*delta to 22,14
+    !byte 3                                                           ; 2d1e: 03          .              ; plot strip at 22,14 of length 3
+    !byte $a5                                                         ; 2d1f: a5          .              ; move by 5*delta to 30,14
+    !byte 3                                                           ; 2d20: 03          .              ; plot strip at 30,14 of length 3
+    !byte $8f,   6                                                    ; 2d21: 8f 06       ..             ; set position to 6,15
+    !byte 3                                                           ; 2d23: 03          .              ; plot strip at 6,15 of length 3
+    !byte $a5                                                         ; 2d24: a5          .              ; move by 5*delta to 13,15
+    !byte 3                                                           ; 2d25: 03          .              ; plot strip at 13,15 of length 3
+    !byte $a6                                                         ; 2d26: a6          .              ; move by 6*delta to 22,15
+    !byte 3                                                           ; 2d27: 03          .              ; plot strip at 22,15 of length 3
+    !byte $a5                                                         ; 2d28: a5          .              ; move by 5*delta to 30,15
+    !byte 3                                                           ; 2d29: 03          .              ; plot strip at 30,15 of length 3
+    !byte $96,   6                                                    ; 2d2a: 96 06       ..             ; set position to 6,22
+    !byte 3                                                           ; 2d2c: 03          .              ; plot strip at 6,22 of length 3
+    !byte $a5                                                         ; 2d2d: a5          .              ; move by 5*delta to 13,22
+    !byte 3                                                           ; 2d2e: 03          .              ; plot strip at 13,22 of length 3
+    !byte $a6                                                         ; 2d2f: a6          .              ; move by 6*delta to 22,22
+    !byte 3                                                           ; 2d30: 03          .              ; plot strip at 22,22 of length 3
+    !byte $a5                                                         ; 2d31: a5          .              ; move by 5*delta to 30,22
+    !byte 3                                                           ; 2d32: 03          .              ; plot strip at 30,22 of length 3
+    !byte $97,   6                                                    ; 2d33: 97 06       ..             ; set position to 6,23
+    !byte 3                                                           ; 2d35: 03          .              ; plot strip at 6,23 of length 3
+    !byte $a5                                                         ; 2d36: a5          .              ; move by 5*delta to 13,23
+    !byte 3                                                           ; 2d37: 03          .              ; plot strip at 13,23 of length 3
+    !byte $a6                                                         ; 2d38: a6          .              ; move by 6*delta to 22,23
+    !byte 3                                                           ; 2d39: 03          .              ; plot strip at 22,23 of length 3
+    !byte $a5                                                         ; 2d3a: a5          .              ; move by 5*delta to 30,23
+    !byte 3                                                           ; 2d3b: 03          .              ; plot strip at 30,23 of length 3
+    !byte $9c,   6                                                    ; 2d3c: 9c 06       ..             ; set position to 6,28
+    !byte 3                                                           ; 2d3e: 03          .              ; plot strip at 6,28 of length 3
+    !byte $a5                                                         ; 2d3f: a5          .              ; move by 5*delta to 13,28
+    !byte 3                                                           ; 2d40: 03          .              ; plot strip at 13,28 of length 3
+    !byte $a6                                                         ; 2d41: a6          .              ; move by 6*delta to 22,28
+    !byte 3                                                           ; 2d42: 03          .              ; plot strip at 22,28 of length 3
+    !byte $a5                                                         ; 2d43: a5          .              ; move by 5*delta to 30,28
+    !byte 3                                                           ; 2d44: 03          .              ; plot strip at 30,28 of length 3
+    !byte 0                                                           ; 2d45: 00          .              ; terminator for commands
+    !byte $78,   0, $10,   0,   1                                     ; 2d46: 78 00 10... x..            ; visible vertical door at 0,16 to door 0 in room 1
+    !byte $78,   6, $17,   0,   0                                     ; 2d4b: 78 06 17... x..            ; visible vertical door at 6,23 to door 0 in room 0
+    !byte $78,   8, $17,   0,   0                                     ; 2d50: 78 08 17... x..            ; visible vertical door at 8,23 to door 0 in room 0
+    !byte $78, $0e,   9,   0,   0                                     ; 2d55: 78 0e 09... x..            ; visible vertical door at 14,9 to door 0 in room 0
+    !byte $78, $10,   9,   0,   0                                     ; 2d5a: 78 10 09... x..            ; visible vertical door at 16,9 to door 0 in room 0
+    !byte $78, $17, $17,   0,   0                                     ; 2d5f: 78 17 17... x..            ; visible vertical door at 23,23 to door 0 in room 0
+    !byte $78, $19, $17,   0,   0                                     ; 2d64: 78 19 17... x..            ; visible vertical door at 25,23 to door 0 in room 0
+    !byte $78, $1f,   9,   0,   0                                     ; 2d69: 78 1f 09... x..            ; visible vertical door at 31,9 to door 0 in room 0
+    !byte $78, $21,   9,   0,   0                                     ; 2d6e: 78 21 09... x!.            ; visible vertical door at 33,9 to door 0 in room 0
+    !byte $78, $27, $10, $ff, $ff                                     ; 2d73: 78 27 10... x'.            ; visible vertical door at 39,16
+    !byte 0                                                           ; 2d78: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2d79: 00          .              ; terminator for keys
+    !byte 0                                                           ; 2d7a: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2d7b: 00          .              ; terminator for collectibles
+    !text "The Way Ou", $80+'t'                                       ; 2d7c: 54 68 65... The            ; "The Way Out"
+
+;              High Security
+; ****************************************
+; ****************************************
+; ****************************************
+; ******...............................***
+; ******.CCCC.SS................AA.....***
+; ....**.CCCC.SS.........*....*.AA.....***
+; ....**.CCCC.SS................AA.....***
+; ....**.CCCC..........................***
+; ....********...........*....*........***
+; ....********..........**....**.......***
+; ....*1*******..*..*..**......**..*...***
+; *....D...............................***
+; *....D.............................K.***
+; .....D.............................4.***
+; .....D...............................***
+; ....*1*******..*..*..**......**..*...***
+; ....********..........**....**.......***
+; ....********...........*....*........***
+; ....**...............................***
+; ******.CCCC.SS................AA.....***
+; ******.CCCC.SS.........*....*.AA.....***
+; ******.CCCC.SS................AA.....***
+; ******.CCCC..........................***
+; ****************************************
+; ****************************************
+; ****************************************
 room_28_definition
-    !byte $5f,   1,   1,   1,   2,   8                                ; 2d87: 5f 01 01... _..            ; room header
-    !byte $42, $e5,   4, $71, $a6,   2, $a7, $e6,   4                 ; 2d8d: 42 e5 04... B..            ; room commands
-    !text "a(y"                                                       ; 2d96: 61 28 79    a(y
-    !byte $19                                                         ; 2d99: 19          .
-    !text "i#Fq"                                                      ; 2d9a: 69 23 46... i#F
-    !byte $87,   4, $e2, $23, $e5,   2, $e3,   8, $a4, $e3,   8, $e5  ; 2d9e: 87 04 e2... ...
-    !byte   2, $e2, $23, $89, $25, $f4,   2, $63, $90, $0c,   4, $61  ; 2daa: 02 e2 23... ..#
-    !byte   1, $a6,   2, $a2,   1, $63, $95, $0c,   4, $61,   1, $a6  ; 2db6: 01 a6 02... ...
-    !byte   2, $a2,   1, $8f, $16,   2, $a4,   2, $96, $16,   2, $a4  ; 2dc2: 02 a2 01... ...
-    !byte   2, $71, $8b, $1c,   1, $a2,   2, $a6,   2, $a2,   1, $c6  ; 2dce: 02 71 8b... .q.
-    !byte $8b, $17,   1, $46, $a2,   2, $a6,   2, $c6, $a2,   1,   0  ; 2dda: 8b 17 01... ...
-    !byte $44,   0, $0b,   4, $17, $44,   0, $13,   5, $17, $60,   5  ; 2de6: 44 00 0b... D..
-    !byte $10,   0,   0,   0, $c3, $23, $12,   0, $c0,   7, $0a, $c0  ; 2df2: 10 00 00... ...
-    !byte   7, $19,   0, $c2, $0c, $0a, $c2, $0c, $19, $c3, $1e, $0a  ; 2dfe: 07 19 00... ...
-    !byte $c3, $1e, $19,   0                                          ; 2e0a: c3 1e 19... ...
-    !text "High Securit", $80+'y'                                     ; 2e0e: 48 69 67... Hig
+    !byte $5f                                                         ; 2d87: 5f          _              ; offset to start of doors
+    !byte 1, 1, 1, 2, 8                                               ; 2d88: 01 01 01... ...            ; room header
+    !byte $42                                                         ; 2d8d: 42          B              ; set sprite 2, collision byte 128
+    !byte $e5,   4                                                    ; 2d8e: e5 04       ..             ; draw rect from 0,6 with size 4x5
+    !byte $71                                                         ; 2d90: 71          q              ; set delta to 0,1
+    !byte $a6                                                         ; 2d91: a6          .              ; move by 6*delta to 0,17
+    !byte 2                                                           ; 2d92: 02          .              ; plot strip at 0,17 of length 2
+    !byte $a7                                                         ; 2d93: a7          .              ; move by 7*delta to 0,25
+    !byte $e6,   4                                                    ; 2d94: e6 04       ..             ; draw rect from 0,25 with size 4x6
+    !byte $61                                                         ; 2d96: 61          a              ; set delta to 1,0
+    !byte $28                                                         ; 2d97: 28          (              ; plot strip at 0,31 of length 40
+    !byte $79                                                         ; 2d98: 79          y              ; set delta to 0,-1
+    !byte $19                                                         ; 2d99: 19          .              ; plot strip at 39,31 of length 25
+    !byte $69                                                         ; 2d9a: 69          i              ; set delta to -1,0
+    !byte $23                                                         ; 2d9b: 23          #              ; plot strip at 39,6 of length 35
+    !byte $46                                                         ; 2d9c: 46          F              ; set sprite 6, collision byte 128
+    !byte $71                                                         ; 2d9d: 71          q              ; set delta to 0,1
+    !byte $87,   4                                                    ; 2d9e: 87 04       ..             ; set position to 4,7
+    !byte $e2, $23                                                    ; 2da0: e2 23       .#             ; draw rect from 4,7 with size 35x2
+    !byte $e5,   2                                                    ; 2da2: e5 02       ..             ; draw rect from 4,9 with size 2x5
+    !byte $e3,   8                                                    ; 2da4: e3 08       ..             ; draw rect from 4,14 with size 8x3
+    !byte $a4                                                         ; 2da6: a4          .              ; move by 4*delta to 4,21
+    !byte $e3,   8                                                    ; 2da7: e3 08       ..             ; draw rect from 4,21 with size 8x3
+    !byte $e5,   2                                                    ; 2da9: e5 02       ..             ; draw rect from 4,24 with size 2x5
+    !byte $e2, $23                                                    ; 2dab: e2 23       .#             ; draw rect from 4,29 with size 35x2
+    !byte $89, $25                                                    ; 2dad: 89 25       .%             ; set position to 37,9
+    !byte $f4,   2                                                    ; 2daf: f4 02       ..             ; draw rect from 37,9 with size 2x20
+    !byte $63                                                         ; 2db1: 63          c              ; set delta to 3,0
+    !byte $90, $0c                                                    ; 2db2: 90 0c       ..             ; set position to 12,16
+    !byte 4                                                           ; 2db4: 04          .              ; plot strip at 12,16 of length 4
+    !byte $61                                                         ; 2db5: 61          a              ; set delta to 1,0
+    !byte 1                                                           ; 2db6: 01          .              ; plot strip at 21,16 of length 1
+    !byte $a6                                                         ; 2db7: a6          .              ; move by 6*delta to 28,16
+    !byte 2                                                           ; 2db8: 02          .              ; plot strip at 28,16 of length 2
+    !byte $a2                                                         ; 2db9: a2          .              ; move by 2*delta to 32,16
+    !byte 1                                                           ; 2dba: 01          .              ; plot strip at 32,16 of length 1
+    !byte $63                                                         ; 2dbb: 63          c              ; set delta to 3,0
+    !byte $95, $0c                                                    ; 2dbc: 95 0c       ..             ; set position to 12,21
+    !byte 4                                                           ; 2dbe: 04          .              ; plot strip at 12,21 of length 4
+    !byte $61                                                         ; 2dbf: 61          a              ; set delta to 1,0
+    !byte 1                                                           ; 2dc0: 01          .              ; plot strip at 21,21 of length 1
+    !byte $a6                                                         ; 2dc1: a6          .              ; move by 6*delta to 28,21
+    !byte 2                                                           ; 2dc2: 02          .              ; plot strip at 28,21 of length 2
+    !byte $a2                                                         ; 2dc3: a2          .              ; move by 2*delta to 32,21
+    !byte 1                                                           ; 2dc4: 01          .              ; plot strip at 32,21 of length 1
+    !byte $8f, $16                                                    ; 2dc5: 8f 16       ..             ; set position to 22,15
+    !byte 2                                                           ; 2dc7: 02          .              ; plot strip at 22,15 of length 2
+    !byte $a4                                                         ; 2dc8: a4          .              ; move by 4*delta to 27,15
+    !byte 2                                                           ; 2dc9: 02          .              ; plot strip at 27,15 of length 2
+    !byte $96, $16                                                    ; 2dca: 96 16       ..             ; set position to 22,22
+    !byte 2                                                           ; 2dcc: 02          .              ; plot strip at 22,22 of length 2
+    !byte $a4                                                         ; 2dcd: a4          .              ; move by 4*delta to 27,22
+    !byte 2                                                           ; 2dce: 02          .              ; plot strip at 27,22 of length 2
+    !byte $71                                                         ; 2dcf: 71          q              ; set delta to 0,1
+    !byte $8b, $1c                                                    ; 2dd0: 8b 1c       ..             ; set position to 28,11
+    !byte 1                                                           ; 2dd2: 01          .              ; plot strip at 28,11 of length 1
+    !byte $a2                                                         ; 2dd3: a2          .              ; move by 2*delta to 28,13
+    !byte 2                                                           ; 2dd4: 02          .              ; plot strip at 28,13 of length 2
+    !byte $a6                                                         ; 2dd5: a6          .              ; move by 6*delta to 28,21
+    !byte 2                                                           ; 2dd6: 02          .              ; plot strip at 28,21 of length 2
+    !byte $a2                                                         ; 2dd7: a2          .              ; move by 2*delta to 28,25
+    !byte 1                                                           ; 2dd8: 01          .              ; plot strip at 28,25 of length 1
+    !byte $c6                                                         ; 2dd9: c6          .              ; set sprite 6, collision byte 144
+    !byte $8b, $17                                                    ; 2dda: 8b 17       ..             ; set position to 23,11
+    !byte 1                                                           ; 2ddc: 01          .              ; plot strip at 23,11 of length 1
+    !byte $46, $a2                                                    ; 2ddd: 46 a2       F.             ; set sprite 6, collision byte 128; move by 2*delta to 23,13
+    !byte 2                                                           ; 2ddf: 02          .              ; plot strip at 23,13 of length 2
+    !byte $a6                                                         ; 2de0: a6          .              ; move by 6*delta to 23,21
+    !byte 2                                                           ; 2de1: 02          .              ; plot strip at 23,21 of length 2
+    !byte $c6, $a2                                                    ; 2de2: c6 a2       ..             ; set sprite 6, collision byte 144; move by 2*delta to 23,25
+    !byte 1                                                           ; 2de4: 01          .              ; plot strip at 23,25 of length 1
+    !byte 0                                                           ; 2de5: 00          .              ; terminator for commands
+    !byte $44,   0, $0b,   4, $17                                     ; 2de6: 44 00 0b... D..            ; invisible vertical door at 0,11 to door 4 in room 23
+    !byte $44,   0, $13,   5, $17                                     ; 2deb: 44 00 13... D..            ; invisible vertical door at 0,19 to door 5 in room 23
+    !byte $60,   5, $10,   0,   0                                     ; 2df0: 60 05 10... `..            ; visible vertical door at 5,16 to door 0 in room 0
+    !byte 0                                                           ; 2df5: 00          .              ; terminator for doors
+    !byte $c3, $23, $12                                               ; 2df6: c3 23 12    .#.            ; key at 35,18
+    !byte 0                                                           ; 2df9: 00          .              ; terminator for keys
+    !byte $c0,   7, $0a                                               ; 2dfa: c0 07 0a    ...            ; computer at 7,10
+    !byte $c0,   7, $19                                               ; 2dfd: c0 07 19    ...            ; computer at 7,25
+    !byte 0                                                           ; 2e00: 00          .              ; terminator for computers
+    !byte $c2, $0c, $0a                                               ; 2e01: c2 0c 0a    ...            ; collectible at 12,10
+    !byte $c2, $0c, $19                                               ; 2e04: c2 0c 19    ...            ; collectible at 12,25
+    !byte $c3, $1e, $0a                                               ; 2e07: c3 1e 0a    ...            ; collectible at 30,10
+    !byte $c3, $1e, $19                                               ; 2e0a: c3 1e 19    ...            ; collectible at 30,25
+    !byte 0                                                           ; 2e0d: 00          .              ; terminator for collectibles
+    !text "High Securit", $80+'y'                                     ; 2e0e: 48 69 67... Hig            ; "High Security"
+
+;                    
+; ******************....******************
+; *.............****....********.........*
+; *.............****....********AA.....AA*
+; *.............****....********AA.....AA*
+; *.............**cccccccc....**AA.....AA*
+; *.............**cccccccc....*****...****
+; *.............**cccccccc....**OO.....SS*
+; *.............**cccccccc....**OO.....SS*
+; *.............**********....**OO.....SS*
+; ********....************....*****...****
+; .......................*....**.........*
+; .......................*....**.K.....K.*
+; .......................*....**.4.....3.*
+; .......................*....**.........*
+; ********....************....**.........*
+; *.....XXXXXXXX**********....**.........*
+; *.....XXXXXXXX****..........**.........*
+; *.....XXXXXXXX****..........**.........*
+; *.....XXXXXXXX****..........**.........*
+; *....*************..........**.........*
+; *....*************xxxxxxxxxxxx.........*
+; *.............****xxxxxxxxxxxx.........*
+; *.............****xxxxxxxxxxxx.........*
+; *.............****xxxxxxxxxxxx.........*
+; *.............*********************....*
+; ****************************************
 room_29_definition
-    !byte $57,   2,   2,   2,   2,   3                                ; 2e1b: 57 02 02... W..            ; room header
-    !byte $28, $71, $19                                               ; 2e21: 28 71 19    (q.            ; room commands
-    !text "i'y"                                                       ; 2e24: 69 27 79    i'y
-    !byte $18, $87, $0e, $e3,   4, $e4,   2, $e1, $0a, $8f,   1, $61  ; 2e27: 18 87 0e... ...
-    !byte   7, $a4, $0c, $71,   5, $69, $0b, $a4,   7, $95, $0e, $e1  ; 2e33: 07 a4 0c... ...
-    !byte $0a, $e3,   4, $99,   5, $e1, $0d, $c1, $e1, $0d, $8b, $0f  ; 2e3f: 0a e3 04... ...
-    !byte   2, $96, $11,   4, $41, $9b, $0e, $e3,   4, $61, $15, $87  ; 2e4b: 02 96 11... ...
-    !byte $16, $e3,   8, $8a, $1c, $f0,   2, $4b, $8b, $1e,   2, $a5  ; 2e57: 16 e3 08... ...
-    !byte   2, $8f, $1e,   2, $a5,   2, $64, $4f, $8b, $20,   2, $8f  ; 2e63: 02 8f 1e... ...
-    !byte $20,   2,   0, $44,   0, $0f,   2, $18,   4, $11,   6,   1  ; 2e6f: 20 02 00...  ..
-    !byte   1,   0, $c3, $1f, $11, $c2, $25, $11,   0, $c1, $10, $0a  ; 2e7b: 01 00 c3... ...
-    !byte $c1, $14, $0a, $c2,   6, $15, $c2, $0a, $15, $c3, $12, $1a  ; 2e87: c1 14 0a... ...
-    !byte $c3, $16, $1a, $c3, $1a, $1a,   0, $c3, $1e,   8, $c3, $25  ; 2e93: c3 16 1a... ...
-    !byte   8, $c1, $1e, $0c, $c2, $25, $0c,   0,   0                 ; 2e9f: 08 c1 1e... ...
+    !byte $57                                                         ; 2e1b: 57          W              ; offset to start of doors
+    !byte 2, 2, 2, 2, 3                                               ; 2e1c: 02 02 02... ...            ; room header
+    !byte $28                                                         ; 2e21: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2e22: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 2e23: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 2e24: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 2e25: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 2e26: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 2e27: 18          .              ; plot strip at 0,31 of length 24
+    !byte $87, $0e                                                    ; 2e28: 87 0e       ..             ; set position to 14,7
+    !byte $e3,   4                                                    ; 2e2a: e3 04       ..             ; draw rect from 14,7 with size 4x3
+    !byte $e4,   2                                                    ; 2e2c: e4 02       ..             ; draw rect from 14,10 with size 2x4
+    !byte $e1, $0a                                                    ; 2e2e: e1 0a       ..             ; draw rect from 14,14 with size 10x1
+    !byte $8f,   1                                                    ; 2e30: 8f 01       ..             ; set position to 1,15
+    !byte $61                                                         ; 2e32: 61          a              ; set delta to 1,0
+    !byte 7                                                           ; 2e33: 07          .              ; plot strip at 1,15 of length 7
+    !byte $a4                                                         ; 2e34: a4          .              ; move by 4*delta to 11,15
+    !byte $0c                                                         ; 2e35: 0c          .              ; plot strip at 11,15 of length 12
+    !byte $71                                                         ; 2e36: 71          q              ; set delta to 0,1
+    !byte 5                                                           ; 2e37: 05          .              ; plot strip at 23,15 of length 5
+    !byte $69                                                         ; 2e38: 69          i              ; set delta to -1,0
+    !byte $0b                                                         ; 2e39: 0b          .              ; plot strip at 23,20 of length 11
+    !byte $a4                                                         ; 2e3a: a4          .              ; move by 4*delta to 8,20
+    !byte 7                                                           ; 2e3b: 07          .              ; plot strip at 8,20 of length 7
+    !byte $95, $0e                                                    ; 2e3c: 95 0e       ..             ; set position to 14,21
+    !byte $e1, $0a                                                    ; 2e3e: e1 0a       ..             ; draw rect from 14,21 with size 10x1
+    !byte $e3,   4                                                    ; 2e40: e3 04       ..             ; draw rect from 14,22 with size 4x3
+    !byte $99,   5                                                    ; 2e42: 99 05       ..             ; set position to 5,25
+    !byte $e1, $0d                                                    ; 2e44: e1 0d       ..             ; draw rect from 5,25 with size 13x1
+    !byte $c1                                                         ; 2e46: c1          .              ; set sprite 1, collision byte 144
+    !byte $e1, $0d                                                    ; 2e47: e1 0d       ..             ; draw rect from 5,26 with size 13x1
+    !byte $8b, $0f                                                    ; 2e49: 8b 0f       ..             ; set position to 15,11
+    !byte 2                                                           ; 2e4b: 02          .              ; plot strip at 15,11 of length 2
+    !byte $96, $11                                                    ; 2e4c: 96 11       ..             ; set position to 17,22
+    !byte 4                                                           ; 2e4e: 04          .              ; plot strip at 17,22 of length 4
+    !byte $41                                                         ; 2e4f: 41          A              ; set sprite 1, collision byte 128
+    !byte $9b, $0e                                                    ; 2e50: 9b 0e       ..             ; set position to 14,27
+    !byte $e3,   4                                                    ; 2e52: e3 04       ..             ; draw rect from 14,27 with size 4x3
+    !byte $61                                                         ; 2e54: 61          a              ; set delta to 1,0
+    !byte $15                                                         ; 2e55: 15          .              ; plot strip at 14,30 of length 21
+    !byte $87, $16                                                    ; 2e56: 87 16       ..             ; set position to 22,7
+    !byte $e3,   8                                                    ; 2e58: e3 08       ..             ; draw rect from 22,7 with size 8x3
+    !byte $8a, $1c                                                    ; 2e5a: 8a 1c       ..             ; set position to 28,10
+    !byte $f0,   2                                                    ; 2e5c: f0 02       ..             ; draw rect from 28,10 with size 2x16
+    !byte $4b                                                         ; 2e5e: 4b          K              ; set sprite 11, collision byte 128
+    !byte $8b, $1e                                                    ; 2e5f: 8b 1e       ..             ; set position to 30,11
+    !byte 2                                                           ; 2e61: 02          .              ; plot strip at 30,11 of length 2
+    !byte $a5                                                         ; 2e62: a5          .              ; move by 5*delta to 36,11
+    !byte 2                                                           ; 2e63: 02          .              ; plot strip at 36,11 of length 2
+    !byte $8f, $1e                                                    ; 2e64: 8f 1e       ..             ; set position to 30,15
+    !byte 2                                                           ; 2e66: 02          .              ; plot strip at 30,15 of length 2
+    !byte $a5                                                         ; 2e67: a5          .              ; move by 5*delta to 36,15
+    !byte 2                                                           ; 2e68: 02          .              ; plot strip at 36,15 of length 2
+    !byte $64                                                         ; 2e69: 64          d              ; set delta to 4,0
+    !byte $4f                                                         ; 2e6a: 4f          O              ; set sprite 15, collision byte 128
+    !byte $8b, $20                                                    ; 2e6b: 8b 20       .              ; set position to 32,11
+    !byte 2                                                           ; 2e6d: 02          .              ; plot strip at 32,11 of length 2
+    !byte $8f, $20                                                    ; 2e6e: 8f 20       .              ; set position to 32,15
+    !byte 2                                                           ; 2e70: 02          .              ; plot strip at 32,15 of length 2
+    !byte 0                                                           ; 2e71: 00          .              ; terminator for commands
+    !byte $44,   0, $0f,   2, $18                                     ; 2e72: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 2 in room 24
+    !byte   4, $11,   6,   1,   1                                     ; 2e77: 04 11 06... ...            ; invisible horizontal door at 17,6 to door 1 in room 1
+    !byte 0                                                           ; 2e7c: 00          .              ; terminator for doors
+    !byte $c3, $1f, $11                                               ; 2e7d: c3 1f 11    ...            ; key at 31,17
+    !byte $c2, $25, $11                                               ; 2e80: c2 25 11    .%.            ; key at 37,17
+    !byte 0                                                           ; 2e83: 00          .              ; terminator for keys
+    !byte $c1, $10, $0a                                               ; 2e84: c1 10 0a    ...            ; computer at 16,10
+    !byte $c1, $14, $0a                                               ; 2e87: c1 14 0a    ...            ; computer at 20,10
+    !byte $c2,   6, $15                                               ; 2e8a: c2 06 15    ...            ; computer at 6,21
+    !byte $c2, $0a, $15                                               ; 2e8d: c2 0a 15    ...            ; computer at 10,21
+    !byte $c3, $12, $1a                                               ; 2e90: c3 12 1a    ...            ; computer at 18,26
+    !byte $c3, $16, $1a                                               ; 2e93: c3 16 1a    ...            ; computer at 22,26
+    !byte $c3, $1a, $1a                                               ; 2e96: c3 1a 1a    ...            ; computer at 26,26
+    !byte 0                                                           ; 2e99: 00          .              ; terminator for computers
+    !byte $c3, $1e,   8                                               ; 2e9a: c3 1e 08    ...            ; collectible at 30,8
+    !byte $c3, $25,   8                                               ; 2e9d: c3 25 08    .%.            ; collectible at 37,8
+    !byte $c1, $1e, $0c                                               ; 2ea0: c1 1e 0c    ...            ; collectible at 30,12
+    !byte $c2, $25, $0c                                               ; 2ea3: c2 25 0c    .%.            ; collectible at 37,12
+    !byte 0                                                           ; 2ea6: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2ea7: 00          .              ; terminator for title
+
+;                    
+; *......*********************************
+; *......*...............................*
+; *......*...............................*
+; *......*...............................*
+; *......*...............................*
+; *......*.....**********************....*
+; *......*.....*....*.......cccc....*....*
+; *......*.....*....*.......cccc..K.*....*
+; *......*.....*....*.......cccc..4.*....*
+; *.....***....*....*.......cccc....*....*
+; *.....*1*....*....*****************....*
+; .......D.....*....*...............*....*
+; .......D.....*....*...............*....*
+; .......D.....*....*...............*....*
+; .......D.....*....*...............*....*
+; *.....*1*....*....*****************....*
+; *.....***....*....*.......cccc....*....*
+; *......*.....*....*.......cccc..K.*....*
+; *......*.....*....*.......cccc..1.*....*
+; *......*.....*....*.......cccc....*....*
+; *......*.....**********************....*
+; *......*...............................*
+; *......*...............................*
+; *......*...............................*
+; *......*...............................*
+; *......*********************************
 room_30_definition
-    !byte $3b,   3,   2,   3,   2,   6                                ; 2ea8: 3b 03 02... ;..            ; room header
-    !byte $71, $1a, $97,   7,   9                                     ; 2eae: 71 1a 97... q..            ; room commands
-    !text "a y"                                                       ; 2eb3: 61 20 79    a y
-    !byte $19                                                         ; 2eb6: 19          .
-    !text "i q"                                                       ; 2eb7: 69 20 71    i q
-    !byte   9, $8f,   6, $e2,   3, $a4, $e2,   3, $8b, $0d, $10, $61  ; 2eba: 09 8f 06... ...
-    !byte $15, $79, $0f, $69, $14, $71, $90, $12,   6, $cc, $8c, $12  ; 2ec6: 15 79 0f... .y.
-    !byte   4, $a1,   4, $a1,   4, $91, $22,   4, $61, $4b, $90, $13  ; 2ed2: 04 a1 04... ...
-    !byte $0f, $95, $13, $0f,   0,   4,   1,   6,   0, $1f,   4,   1  ; 2ede: 0f 95 13... ...
-    !byte $1f,   6, $14, $44,   0, $10,   0,   2, $60,   7, $10,   0  ; 2eea: 1f 06 14... ...
-    !byte   0,   0, $c3, $20, $0d, $c0, $20, $17,   0, $c1, $1a, $0c  ; 2ef6: 00 00 c3... ...
-    !byte $c1, $1a, $16,   0,   0,   0                                ; 2f02: c1 1a 16... ...
+    !byte $3b                                                         ; 2ea8: 3b          ;              ; offset to start of doors
+    !byte 3, 2, 3, 2, 6                                               ; 2ea9: 03 02 03... ...            ; room header
+    !byte $71                                                         ; 2eae: 71          q              ; set delta to 0,1
+    !byte $1a                                                         ; 2eaf: 1a          .              ; plot strip at 0,6 of length 26
+    !byte $97,   7                                                    ; 2eb0: 97 07       ..             ; set position to 7,23
+    !byte 9                                                           ; 2eb2: 09          .              ; plot strip at 7,23 of length 9
+    !byte $61                                                         ; 2eb3: 61          a              ; set delta to 1,0
+    !byte $20                                                         ; 2eb4: 20                         ; plot strip at 7,31 of length 32
+    !byte $79                                                         ; 2eb5: 79          y              ; set delta to 0,-1
+    !byte $19                                                         ; 2eb6: 19          .              ; plot strip at 39,31 of length 25
+    !byte $69                                                         ; 2eb7: 69          i              ; set delta to -1,0
+    !byte $20                                                         ; 2eb8: 20                         ; plot strip at 39,6 of length 32
+    !byte $71                                                         ; 2eb9: 71          q              ; set delta to 0,1
+    !byte 9                                                           ; 2eba: 09          .              ; plot strip at 7,6 of length 9
+    !byte $8f,   6                                                    ; 2ebb: 8f 06       ..             ; set position to 6,15
+    !byte $e2,   3                                                    ; 2ebd: e2 03       ..             ; draw rect from 6,15 with size 3x2
+    !byte $a4                                                         ; 2ebf: a4          .              ; move by 4*delta to 6,21
+    !byte $e2,   3                                                    ; 2ec0: e2 03       ..             ; draw rect from 6,21 with size 3x2
+    !byte $8b, $0d                                                    ; 2ec2: 8b 0d       ..             ; set position to 13,11
+    !byte $10                                                         ; 2ec4: 10          .              ; plot strip at 13,11 of length 16
+    !byte $61                                                         ; 2ec5: 61          a              ; set delta to 1,0
+    !byte $15                                                         ; 2ec6: 15          .              ; plot strip at 13,26 of length 21
+    !byte $79                                                         ; 2ec7: 79          y              ; set delta to 0,-1
+    !byte $0f                                                         ; 2ec8: 0f          .              ; plot strip at 34,26 of length 15
+    !byte $69                                                         ; 2ec9: 69          i              ; set delta to -1,0
+    !byte $14                                                         ; 2eca: 14          .              ; plot strip at 34,11 of length 20
+    !byte $71                                                         ; 2ecb: 71          q              ; set delta to 0,1
+    !byte $90, $12                                                    ; 2ecc: 90 12       ..             ; set position to 18,16
+    !byte 6                                                           ; 2ece: 06          .              ; plot strip at 18,16 of length 6
+    !byte $cc                                                         ; 2ecf: cc          .              ; set sprite 12, collision byte 144
+    !byte $8c, $12                                                    ; 2ed0: 8c 12       ..             ; set position to 18,12
+    !byte 4                                                           ; 2ed2: 04          .              ; plot strip at 18,12 of length 4
+    !byte $a1                                                         ; 2ed3: a1          .              ; move by 1*delta to 18,16
+    !byte 4                                                           ; 2ed4: 04          .              ; plot strip at 18,16 of length 4
+    !byte $a1                                                         ; 2ed5: a1          .              ; move by 1*delta to 18,21
+    !byte 4                                                           ; 2ed6: 04          .              ; plot strip at 18,21 of length 4
+    !byte $91, $22                                                    ; 2ed7: 91 22       ."             ; set position to 34,17
+    !byte 4                                                           ; 2ed9: 04          .              ; plot strip at 34,17 of length 4
+    !byte $61                                                         ; 2eda: 61          a              ; set delta to 1,0
+    !byte $4b                                                         ; 2edb: 4b          K              ; set sprite 11, collision byte 128
+    !byte $90, $13                                                    ; 2edc: 90 13       ..             ; set position to 19,16
+    !byte $0f                                                         ; 2ede: 0f          .              ; plot strip at 19,16 of length 15
+    !byte $95, $13                                                    ; 2edf: 95 13       ..             ; set position to 19,21
+    !byte $0f                                                         ; 2ee1: 0f          .              ; plot strip at 19,21 of length 15
+    !byte 0                                                           ; 2ee2: 00          .              ; terminator for commands
+    !byte   4,   1,   6,   0, $1f                                     ; 2ee3: 04 01 06... ...            ; invisible horizontal door at 1,6 to door 0 in room 31
+    !byte   4,   1, $1f,   6, $14                                     ; 2ee8: 04 01 1f... ...            ; invisible horizontal door at 1,31 to door 6 in room 20
+    !byte $44,   0, $10,   0,   2                                     ; 2eed: 44 00 10... D..            ; invisible vertical door at 0,16 to door 0 in room 2
+    !byte $60,   7, $10,   0,   0                                     ; 2ef2: 60 07 10... `..            ; visible vertical door at 7,16 to door 0 in room 0
+    !byte 0                                                           ; 2ef7: 00          .              ; terminator for doors
+    !byte $c3, $20, $0d                                               ; 2ef8: c3 20 0d    . .            ; key at 32,13
+    !byte $c0, $20, $17                                               ; 2efb: c0 20 17    . .            ; key at 32,23
+    !byte 0                                                           ; 2efe: 00          .              ; terminator for keys
+    !byte $c1, $1a, $0c                                               ; 2eff: c1 1a 0c    ...            ; computer at 26,12
+    !byte $c1, $1a, $16                                               ; 2f02: c1 1a 16    ...            ; computer at 26,22
+    !byte 0                                                           ; 2f05: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2f06: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2f07: 00          .              ; terminator for title
+
+;                    
+; ****************************************
+; *................................*......
+; *................................*......
+; *................................*......
+; *................................*......
+; *....*********************.......*......
+; *........................*.......*......
+; *........................*...***********
+; *........................*...*...*......
+; *........................*...*...*......
+; *.....***************....*...*...*......
+; ......*XXXXXXXX.....*....*...*...*......
+; ......*XXXXXXXX.....*....*...*...*......
+; ......*XXXXXXXX.....*....*...***********
+; ......*XXXXXXXX.....*....*.......*......
+; *.....***************....*.......*......
+; *.....*cccccccc.....*....*.......*......
+; *.....*cccccccc.....*....*.......*......
+; *.....*cccccccc.....*....*.......*......
+; *.....*cccccccc.....*....*.......*......
+; *.....**********************************
+; *.......................................
+; *.......................................
+; *.......................................
+; *.......................................
+; *......*********************************
 room_31_definition
-    !byte $35,   3,   1,   1,   3,   6                                ; 2f08: 35 03 01... 5..            ; room header
-    !byte $28, $8d, $1d, $0b, $93, $1d, $0b, $8b,   5, $15, $71, $0e  ; 2f0e: 28 8d 1d... (..            ; room commands
-    !byte $87,   0, $19, $61, $a6, $21, $95,   7, $0e, $90, $14, $69  ; 2f1a: 87 00 19... ...
-    !byte $0f, $71, $0a                                               ; 2f26: 0f 71 0a    .q.
-    !text "a!q"                                                       ; 2f29: 61 21 71    a!q
-    !byte $cc, $91, $14,   4, $a1,   4, $87, $21,   6, $a1,   5, $a1  ; 2f2c: cc 91 14... ...
-    !byte   6, $8e, $1d,   5,   0,   4,   1, $1f,   0, $1e, $44, $27  ; 2f38: 06 8e 1d... ...
-    !byte $1a,   1                                                    ; 2f44: 1a 01       ..
-    !text " D'"                                                       ; 2f46: 20 44 27     D'
-    !byte $14,   2                                                    ; 2f49: 14 02       ..
-    !text " D'"                                                       ; 2f4b: 20 44 27     D'
-    !byte $0d,   3                                                    ; 2f4e: 0d 03       ..
-    !text " D'"                                                       ; 2f50: 20 44 27     D'
-    !byte   7,   4, $20, $44,   0, $10,   0, $24,   0,   0, $c2,   7  ; 2f53: 07 04 20... ..
-    !byte $11, $c2, $0b, $11, $c1,   7, $16, $c1, $0b, $16,   0,   0  ; 2f5f: 11 c2 0b... ...
-    !byte   0                                                         ; 2f6b: 00          .
+    !byte $35                                                         ; 2f08: 35          5              ; offset to start of doors
+    !byte 3, 1, 1, 3, 6                                               ; 2f09: 03 01 01... ...            ; room header
+    !byte $28                                                         ; 2f0e: 28          (              ; plot strip at 0,6 of length 40
+    !byte $8d, $1d                                                    ; 2f0f: 8d 1d       ..             ; set position to 29,13
+    !byte $0b                                                         ; 2f11: 0b          .              ; plot strip at 29,13 of length 11
+    !byte $93, $1d                                                    ; 2f12: 93 1d       ..             ; set position to 29,19
+    !byte $0b                                                         ; 2f14: 0b          .              ; plot strip at 29,19 of length 11
+    !byte $8b,   5                                                    ; 2f15: 8b 05       ..             ; set position to 5,11
+    !byte $15                                                         ; 2f17: 15          .              ; plot strip at 5,11 of length 21
+    !byte $71                                                         ; 2f18: 71          q              ; set delta to 0,1
+    !byte $0e                                                         ; 2f19: 0e          .              ; plot strip at 25,11 of length 14
+    !byte $87,   0                                                    ; 2f1a: 87 00       ..             ; set position to 0,7
+    !byte $19                                                         ; 2f1c: 19          .              ; plot strip at 0,7 of length 25
+    !byte $61                                                         ; 2f1d: 61          a              ; set delta to 1,0
+    !byte $a6                                                         ; 2f1e: a6          .              ; move by 6*delta to 6,31
+    !byte $21                                                         ; 2f1f: 21          !              ; plot strip at 6,31 of length 33
+    !byte $95,   7                                                    ; 2f20: 95 07       ..             ; set position to 7,21
+    !byte $0e                                                         ; 2f22: 0e          .              ; plot strip at 7,21 of length 14
+    !byte $90, $14                                                    ; 2f23: 90 14       ..             ; set position to 20,16
+    !byte $69                                                         ; 2f25: 69          i              ; set delta to -1,0
+    !byte $0f                                                         ; 2f26: 0f          .              ; plot strip at 20,16 of length 15
+    !byte $71                                                         ; 2f27: 71          q              ; set delta to 0,1
+    !byte $0a                                                         ; 2f28: 0a          .              ; plot strip at 6,16 of length 10
+    !byte $61                                                         ; 2f29: 61          a              ; set delta to 1,0
+    !byte $21                                                         ; 2f2a: 21          !              ; plot strip at 6,26 of length 33
+    !byte $71                                                         ; 2f2b: 71          q              ; set delta to 0,1
+    !byte $cc                                                         ; 2f2c: cc          .              ; set sprite 12, collision byte 144
+    !byte $91, $14                                                    ; 2f2d: 91 14       ..             ; set position to 20,17
+    !byte 4                                                           ; 2f2f: 04          .              ; plot strip at 20,17 of length 4
+    !byte $a1                                                         ; 2f30: a1          .              ; move by 1*delta to 20,21
+    !byte 4                                                           ; 2f31: 04          .              ; plot strip at 20,21 of length 4
+    !byte $87, $21                                                    ; 2f32: 87 21       .!             ; set position to 33,7
+    !byte 6                                                           ; 2f34: 06          .              ; plot strip at 33,7 of length 6
+    !byte $a1                                                         ; 2f35: a1          .              ; move by 1*delta to 33,13
+    !byte 5                                                           ; 2f36: 05          .              ; plot strip at 33,13 of length 5
+    !byte $a1                                                         ; 2f37: a1          .              ; move by 1*delta to 33,19
+    !byte 6                                                           ; 2f38: 06          .              ; plot strip at 33,19 of length 6
+    !byte $8e, $1d                                                    ; 2f39: 8e 1d       ..             ; set position to 29,14
+    !byte 5                                                           ; 2f3b: 05          .              ; plot strip at 29,14 of length 5
+    !byte 0                                                           ; 2f3c: 00          .              ; terminator for commands
+    !byte   4,   1, $1f,   0, $1e                                     ; 2f3d: 04 01 1f... ...            ; invisible horizontal door at 1,31 to door 0 in room 30
+    !byte $44, $27, $1a,   1, $20                                     ; 2f42: 44 27 1a... D'.            ; invisible vertical door at 39,26 to door 1 in room 32
+    !byte $44, $27, $14,   2, $20                                     ; 2f47: 44 27 14... D'.            ; invisible vertical door at 39,20 to door 2 in room 32
+    !byte $44, $27, $0d,   3, $20                                     ; 2f4c: 44 27 0d... D'.            ; invisible vertical door at 39,13 to door 3 in room 32
+    !byte $44, $27,   7,   4, $20                                     ; 2f51: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 4 in room 32
+    !byte $44,   0, $10,   0, $24                                     ; 2f56: 44 00 10... D..            ; invisible vertical door at 0,16 to door 0 in room 36
+    !byte 0                                                           ; 2f5b: 00          .              ; terminator for doors
+    !byte 0                                                           ; 2f5c: 00          .              ; terminator for keys
+    !byte $c2,   7, $11                                               ; 2f5d: c2 07 11    ...            ; computer at 7,17
+    !byte $c2, $0b, $11                                               ; 2f60: c2 0b 11    ...            ; computer at 11,17
+    !byte $c1,   7, $16                                               ; 2f63: c1 07 16    ...            ; computer at 7,22
+    !byte $c1, $0b, $16                                               ; 2f66: c1 0b 16    ...            ; computer at 11,22
+    !byte 0                                                           ; 2f69: 00          .              ; terminator for computers
+    !byte 0                                                           ; 2f6a: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2f6b: 00          .              ; terminator for title
+
+;                    
+; ****************************************
+; ......*.........*XXXX......xxxx*cccc...*
+; ......*.......K.*XXXX......xxxx*cccc...*
+; ......*.......1.*XXXX......xxxx*cccc...*
+; ......*.........*XXXX......xxxx*cccc...*
+; ......*.......*******......*********...*
+; ......*.........*..............*.......*
+; ***********.....*..............*.......*
+; ......*...*.....*..............*.......*
+; ......*.AA*.....*..............*.......*
+; ......*.AA******************************
+; ......*.AA*.....*..............*.......*
+; ......*...*.....*..............*.....K.*
+; ***********.....*..............*.....1.*
+; ......*.........*..............*.......*
+; ......*.........*..............*.......*
+; ......*.......********************.....*
+; ......*.......OO*.........*....*SS.....*
+; ......*.......OO*.........*....*SS.....*
+; ......*.......OO*.........*....*SS.....*
+; *****************....******....********1
+; .....................*.................D
+; .....................*.................D
+; .....................*.................D
+; .....................*.................D
+; **********************....*************1
 room_32_definition
-    !byte $4c,   0,   0,   1,   1,   8                                ; 2f6c: 4c 00 00... L..            ; room header
-    !byte $28, $71, $19, $69, $27, $8b, $23,   9, $a6,   7, $96, $21  ; 2f72: 28 71 19... (q.            ; room commands
-    !byte $14, $90, $26, $1c, $61, $8d,   0, $0b, $71,   6, $69, $0a  ; 2f7e: 14 90 26... ..&
-    !byte $61, $9a,   0, $11, $79,   4, $aa,   5, $9e, $15,   5, $99  ; 2f8a: 61 9a 00... a..
-    !byte $1a,   3, $9a, $26, $69,   8, $79,   3, $ac,   4, $cc, $99  ; 2f96: 1a 03 9a... ...
-    !byte   6,   6, $a1,   5, $a1,   6, $95, $10,   5, $a1,   4, $95  ; 2fa2: 06 06 a1... ...
-    !byte $1f,   5, $a1,   4, $61, $c5, $9a, $16,   5,   0, $70, $27  ; 2fae: 1f 05 a1... ...
-    !byte $1a,   1,   0, $44,   0, $1a,   1, $1f, $44,   0, $14,   2  ; 2fba: 1a 01 00... ...
-    !byte $1f, $44,   0, $0d,   3, $1f, $44,   0,   7,   4, $1f,   4  ; 2fc6: 1f 44 00... .D.
-    !byte $15, $1f,   0, $21,   0, $c0, $25, $12, $c0, $0e,   8,   0  ; 2fd2: 15 1f 00... ...
-    !byte $c2, $11,   7, $c3, $1b,   7, $c1, $20,   7,   0, $c1, $0e  ; 2fde: c2 11 07... ...
-    !byte $17, $c2, $20, $17, $c3,   8, $0f,   0,   0                 ; 2fea: 17 c2 20... ..
+    !byte $4c                                                         ; 2f6c: 4c          L              ; offset to start of doors
+    !byte 0, 0, 1, 1, 8                                               ; 2f6d: 00 00 01... ...            ; room header
+    !byte $28                                                         ; 2f72: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 2f73: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 2f74: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 2f75: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 2f76: 27          '              ; plot strip at 39,31 of length 39
+    !byte $8b, $23                                                    ; 2f77: 8b 23       .#             ; set position to 35,11
+    !byte 9                                                           ; 2f79: 09          .              ; plot strip at 35,11 of length 9
+    !byte $a6                                                         ; 2f7a: a6          .              ; move by 6*delta to 21,11
+    !byte 7                                                           ; 2f7b: 07          .              ; plot strip at 21,11 of length 7
+    !byte $96, $21                                                    ; 2f7c: 96 21       .!             ; set position to 33,22
+    !byte $14                                                         ; 2f7e: 14          .              ; plot strip at 33,22 of length 20
+    !byte $90, $26                                                    ; 2f7f: 90 26       .&             ; set position to 38,16
+    !byte $1c                                                         ; 2f81: 1c          .              ; plot strip at 38,16 of length 28
+    !byte $61                                                         ; 2f82: 61          a              ; set delta to 1,0
+    !byte $8d,   0                                                    ; 2f83: 8d 00       ..             ; set position to 0,13
+    !byte $0b                                                         ; 2f85: 0b          .              ; plot strip at 0,13 of length 11
+    !byte $71                                                         ; 2f86: 71          q              ; set delta to 0,1
+    !byte 6                                                           ; 2f87: 06          .              ; plot strip at 10,13 of length 6
+    !byte $69                                                         ; 2f88: 69          i              ; set delta to -1,0
+    !byte $0a                                                         ; 2f89: 0a          .              ; plot strip at 10,19 of length 10
+    !byte $61                                                         ; 2f8a: 61          a              ; set delta to 1,0
+    !byte $9a,   0                                                    ; 2f8b: 9a 00       ..             ; set position to 0,26
+    !byte $11                                                         ; 2f8d: 11          .              ; plot strip at 0,26 of length 17
+    !byte $79                                                         ; 2f8e: 79          y              ; set delta to 0,-1
+    !byte 4                                                           ; 2f8f: 04          .              ; plot strip at 16,26 of length 4
+    !byte $aa                                                         ; 2f90: aa          .              ; move by 10*delta to 16,12
+    !byte 5                                                           ; 2f91: 05          .              ; plot strip at 16,12 of length 5
+    !byte $9e, $15                                                    ; 2f92: 9e 15       ..             ; set position to 21,30
+    !byte 5                                                           ; 2f94: 05          .              ; plot strip at 21,30 of length 5
+    !byte $99, $1a                                                    ; 2f95: 99 1a       ..             ; set position to 26,25
+    !byte 3                                                           ; 2f97: 03          .              ; plot strip at 26,25 of length 3
+    !byte $9a, $26                                                    ; 2f98: 9a 26       .&             ; set position to 38,26
+    !byte $69                                                         ; 2f9a: 69          i              ; set delta to -1,0
+    !byte 8                                                           ; 2f9b: 08          .              ; plot strip at 38,26 of length 8
+    !byte $79                                                         ; 2f9c: 79          y              ; set delta to 0,-1
+    !byte 3                                                           ; 2f9d: 03          .              ; plot strip at 31,26 of length 3
+    !byte $ac                                                         ; 2f9e: ac          .              ; move by 12*delta to 31,11
+    !byte 4                                                           ; 2f9f: 04          .              ; plot strip at 31,11 of length 4
+    !byte $cc                                                         ; 2fa0: cc          .              ; set sprite 12, collision byte 144
+    !byte $99,   6                                                    ; 2fa1: 99 06       ..             ; set position to 6,25
+    !byte 6                                                           ; 2fa3: 06          .              ; plot strip at 6,25 of length 6
+    !byte $a1                                                         ; 2fa4: a1          .              ; move by 1*delta to 6,19
+    !byte 5                                                           ; 2fa5: 05          .              ; plot strip at 6,19 of length 5
+    !byte $a1                                                         ; 2fa6: a1          .              ; move by 1*delta to 6,13
+    !byte 6                                                           ; 2fa7: 06          .              ; plot strip at 6,13 of length 6
+    !byte $95, $10                                                    ; 2fa8: 95 10       ..             ; set position to 16,21
+    !byte 5                                                           ; 2faa: 05          .              ; plot strip at 16,21 of length 5
+    !byte $a1                                                         ; 2fab: a1          .              ; move by 1*delta to 16,16
+    !byte 4                                                           ; 2fac: 04          .              ; plot strip at 16,16 of length 4
+    !byte $95, $1f                                                    ; 2fad: 95 1f       ..             ; set position to 31,21
+    !byte 5                                                           ; 2faf: 05          .              ; plot strip at 31,21 of length 5
+    !byte $a1                                                         ; 2fb0: a1          .              ; move by 1*delta to 31,16
+    !byte 4                                                           ; 2fb1: 04          .              ; plot strip at 31,16 of length 4
+    !byte $61                                                         ; 2fb2: 61          a              ; set delta to 1,0
+    !byte $c5                                                         ; 2fb3: c5          .              ; set sprite 5, collision byte 144
+    !byte $9a, $16                                                    ; 2fb4: 9a 16       ..             ; set position to 22,26
+    !byte 5                                                           ; 2fb6: 05          .              ; plot strip at 22,26 of length 5
+    !byte 0                                                           ; 2fb7: 00          .              ; terminator for commands
+    !byte $70, $27, $1a,   1,   0                                     ; 2fb8: 70 27 1a... p'.            ; visible vertical door at 39,26 to door 1 in room 0
+    !byte $44,   0, $1a,   1, $1f                                     ; 2fbd: 44 00 1a... D..            ; invisible vertical door at 0,26 to door 1 in room 31
+    !byte $44,   0, $14,   2, $1f                                     ; 2fc2: 44 00 14... D..            ; invisible vertical door at 0,20 to door 2 in room 31
+    !byte $44,   0, $0d,   3, $1f                                     ; 2fc7: 44 00 0d... D..            ; invisible vertical door at 0,13 to door 3 in room 31
+    !byte $44,   0,   7,   4, $1f                                     ; 2fcc: 44 00 07... D..            ; invisible vertical door at 0,7 to door 4 in room 31
+    !byte   4, $15, $1f,   0, $21                                     ; 2fd1: 04 15 1f... ...            ; invisible horizontal door at 21,31 to door 0 in room 33
+    !byte 0                                                           ; 2fd6: 00          .              ; terminator for doors
+    !byte $c0, $25, $12                                               ; 2fd7: c0 25 12    .%.            ; key at 37,18
+    !byte $c0, $0e,   8                                               ; 2fda: c0 0e 08    ...            ; key at 14,8
+    !byte 0                                                           ; 2fdd: 00          .              ; terminator for keys
+    !byte $c2, $11,   7                                               ; 2fde: c2 11 07    ...            ; computer at 17,7
+    !byte $c3, $1b,   7                                               ; 2fe1: c3 1b 07    ...            ; computer at 27,7
+    !byte $c1, $20,   7                                               ; 2fe4: c1 20 07    . .            ; computer at 32,7
+    !byte 0                                                           ; 2fe7: 00          .              ; terminator for computers
+    !byte $c1, $0e, $17                                               ; 2fe8: c1 0e 17    ...            ; collectible at 14,23
+    !byte $c2, $20, $17                                               ; 2feb: c2 20 17    . .            ; collectible at 32,23
+    !byte $c3,   8, $0f                                               ; 2fee: c3 08 0f    ...            ; collectible at 8,15
+    !byte 0                                                           ; 2ff1: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 2ff2: 00          .              ; terminator for title
+
+;                    
+; **********************....**************
+; **********************....**************
+; **********************....**************
+; *......................................*
+; *......................................*
+; *......................................*
+; *......................................*
+; *......................................*
+; *......................................*
+; *......................................*
+; *...*******...****....****...*******...*
+; *...*******...****....****...*******...*
+; *...*******...****....****...*******...*
+; *...*******...****....****...*******...*
+; *...*******...****....****...*******...*
+; *...*******...****....****...*******...*
+; *...*******...*..........*...*******...*
+; *...*******...*OO......OO*...*******...*
+; *...*******...*OO......OO*...*******...*
+; *...*******...*OO......OO*...*******...*
+; *...*******...************...*******...*
+; *.....*cccc...XXXX****XXXX...cccc*.....*
+; *...K.*cccc...XXXX****XXXX...cccc*.K...*
+; *...1.*cccc...XXXX****XXXX...cccc*.2...*
+; *.....*cccc...XXXX****XXXX...cccc*.....*
+; ****************************************
 room_33_definition
-    !byte $44,   0,   2,   0,   2,   5                                ; 2ff3: 44 00 02... D..            ; room header
-    !byte $e3, $16, $71, $0d, $86, $1a, $e3, $0e, $89, $27, $0d, $90  ; 2ff9: e3 16 71... ..q            ; room commands
-    !byte   4, $e6,   7, $90, $0e, $e6,   4, $90, $16, $e6,   4, $90  ; 3005: 04 e6 07... ...
-    !byte $1d, $e6,   7, $42, $96,   0, $0a                           ; 3011: 1d e6 07... ...
-    !text "a'y"                                                       ; 3018: 61 27 79    a'y
-    !byte   9, $96,   4, $e5,   7, $9b,   6, $71,   4, $96, $0e,   5  ; 301b: 09 96 04... ...
-    !byte $61, $0b, $79,   4, $9e, $21,   4, $9b, $12, $e4,   4, $96  ; 3027: 61 0b 79... a.y
-    !byte $1d, $e5,   7,   0,   4, $15,   6,   5, $20,   0, $c0,   4  ; 3033: 1d e5 07... ...
-    !byte $1c, $c1, $23, $1c,   0, $c1,   7, $1b, $c2, $0e, $1b, $c2  ; 303f: 1c c1 23... ..#
-    !byte $16, $1b, $c1, $1d, $1b,   0, $c1, $0f, $17, $c1, $17, $17  ; 304b: 16 1b c1... ...
-    !byte   0,   0                                                    ; 3057: 00 00       ..
+    !byte $44                                                         ; 2ff3: 44          D              ; offset to start of doors
+    !byte 0, 2, 0, 2, 5                                               ; 2ff4: 00 02 00... ...            ; room header
+    !byte $e3, $16                                                    ; 2ff9: e3 16       ..             ; draw rect from 0,6 with size 22x3
+    !byte $71                                                         ; 2ffb: 71          q              ; set delta to 0,1
+    !byte $0d                                                         ; 2ffc: 0d          .              ; plot strip at 0,9 of length 13
+    !byte $86, $1a                                                    ; 2ffd: 86 1a       ..             ; set position to 26,6
+    !byte $e3, $0e                                                    ; 2fff: e3 0e       ..             ; draw rect from 26,6 with size 14x3
+    !byte $89, $27                                                    ; 3001: 89 27       .'             ; set position to 39,9
+    !byte $0d                                                         ; 3003: 0d          .              ; plot strip at 39,9 of length 13
+    !byte $90,   4                                                    ; 3004: 90 04       ..             ; set position to 4,16
+    !byte $e6,   7                                                    ; 3006: e6 07       ..             ; draw rect from 4,16 with size 7x6
+    !byte $90, $0e                                                    ; 3008: 90 0e       ..             ; set position to 14,16
+    !byte $e6,   4                                                    ; 300a: e6 04       ..             ; draw rect from 14,16 with size 4x6
+    !byte $90, $16                                                    ; 300c: 90 16       ..             ; set position to 22,16
+    !byte $e6,   4                                                    ; 300e: e6 04       ..             ; draw rect from 22,16 with size 4x6
+    !byte $90, $1d                                                    ; 3010: 90 1d       ..             ; set position to 29,16
+    !byte $e6,   7                                                    ; 3012: e6 07       ..             ; draw rect from 29,16 with size 7x6
+    !byte $42                                                         ; 3014: 42          B              ; set sprite 2, collision byte 128
+    !byte $96,   0                                                    ; 3015: 96 00       ..             ; set position to 0,22
+    !byte $0a                                                         ; 3017: 0a          .              ; plot strip at 0,22 of length 10
+    !byte $61                                                         ; 3018: 61          a              ; set delta to 1,0
+    !byte $27                                                         ; 3019: 27          '              ; plot strip at 0,31 of length 39
+    !byte $79                                                         ; 301a: 79          y              ; set delta to 0,-1
+    !byte 9                                                           ; 301b: 09          .              ; plot strip at 39,31 of length 9
+    !byte $96,   4                                                    ; 301c: 96 04       ..             ; set position to 4,22
+    !byte $e5,   7                                                    ; 301e: e5 07       ..             ; draw rect from 4,22 with size 7x5
+    !byte $9b,   6                                                    ; 3020: 9b 06       ..             ; set position to 6,27
+    !byte $71                                                         ; 3022: 71          q              ; set delta to 0,1
+    !byte 4                                                           ; 3023: 04          .              ; plot strip at 6,27 of length 4
+    !byte $96, $0e                                                    ; 3024: 96 0e       ..             ; set position to 14,22
+    !byte 5                                                           ; 3026: 05          .              ; plot strip at 14,22 of length 5
+    !byte $61                                                         ; 3027: 61          a              ; set delta to 1,0
+    !byte $0b                                                         ; 3028: 0b          .              ; plot strip at 14,26 of length 11
+    !byte $79                                                         ; 3029: 79          y              ; set delta to 0,-1
+    !byte 4                                                           ; 302a: 04          .              ; plot strip at 25,26 of length 4
+    !byte $9e, $21                                                    ; 302b: 9e 21       .!             ; set position to 33,30
+    !byte 4                                                           ; 302d: 04          .              ; plot strip at 33,30 of length 4
+    !byte $9b, $12                                                    ; 302e: 9b 12       ..             ; set position to 18,27
+    !byte $e4,   4                                                    ; 3030: e4 04       ..             ; draw rect from 18,27 with size 4x4
+    !byte $96, $1d                                                    ; 3032: 96 1d       ..             ; set position to 29,22
+    !byte $e5,   7                                                    ; 3034: e5 07       ..             ; draw rect from 29,22 with size 7x5
+    !byte 0                                                           ; 3036: 00          .              ; terminator for commands
+    !byte   4, $15,   6,   5, $20                                     ; 3037: 04 15 06... ...            ; invisible horizontal door at 21,6 to door 5 in room 32
+    !byte 0                                                           ; 303c: 00          .              ; terminator for doors
+    !byte $c0,   4, $1c                                               ; 303d: c0 04 1c    ...            ; key at 4,28
+    !byte $c1, $23, $1c                                               ; 3040: c1 23 1c    .#.            ; key at 35,28
+    !byte 0                                                           ; 3043: 00          .              ; terminator for keys
+    !byte $c1,   7, $1b                                               ; 3044: c1 07 1b    ...            ; computer at 7,27
+    !byte $c2, $0e, $1b                                               ; 3047: c2 0e 1b    ...            ; computer at 14,27
+    !byte $c2, $16, $1b                                               ; 304a: c2 16 1b    ...            ; computer at 22,27
+    !byte $c1, $1d, $1b                                               ; 304d: c1 1d 1b    ...            ; computer at 29,27
+    !byte 0                                                           ; 3050: 00          .              ; terminator for computers
+    !byte $c1, $0f, $17                                               ; 3051: c1 0f 17    ...            ; collectible at 15,23
+    !byte $c1, $17, $17                                               ; 3054: c1 17 17    ...            ; collectible at 23,23
+    !byte 0                                                           ; 3057: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 3058: 00          .              ; terminator for title
+
+;                    
+; **......***......1DDDD1......***......**
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*.........
+; *........*.......*....*.......*.........
+; *........*.......*....*.......*.........
+; *........*.......*....*.......*.........
+; *.......***.....********.....***.......*
+; *........*......XXXXXXXX......*........*
+; *........*......XXXXXXXX......*........*
+; *........*......XXXXXXXX......*........*
+; *........*......XXXXXXXX......*........*
+; *.......************************.......*
+; *......................................*
+; *......................................*
+; *......................................*
+; *......................................*
+; ****************************************
 room_34_definition
-    !byte $35,   3,   4,   3,   4,   5                                ; 3059: 35 03 04... 5..            ; room header
-    !byte   2, $a6,   3, $b2,   3, $a6,   2, $71, $19                 ; 305f: 02 a6 03... ...            ; room commands
-    !text "i'y"                                                       ; 3068: 69 27 79    i'y
-    !byte $18, $4c, $99,   9, $13, $99, $1e, $13, $94, $11, $0e, $94  ; 306b: 18 4c 99... .L.
-    !byte $16, $0e, $61, $41, $95,   8,   3, $a5,   8, $a5,   3, $9a  ; 3077: 16 0e 61... ..a
-    !byte   8,   3, $4b,   5, $41,   8, $4b,   5, $41,   3,   0, $44  ; 3083: 08 03 4b... ..K
-    !byte $27, $10,   1,   2,   4,   2,   6,   1, $23,   4, $0b,   6  ; 308f: 27 10 01... '..
-    !byte   2, $23, $28, $11,   6,   0, $25,   4, $17,   6,   4, $23  ; 309b: 02 23 28... .#(
-    !byte   4, $20,   6,   5, $23,   0,   0, $c2, $10, $16, $c2, $14  ; 30a7: 04 20 06... . .
-    !byte $16,   0,   0,   0                                          ; 30b3: 16 00 00... ...
+    !byte $35                                                         ; 3059: 35          5              ; offset to start of doors
+    !byte 3, 4, 3, 4, 5                                               ; 305a: 03 04 03... ...            ; room header
+    !byte 2                                                           ; 305f: 02          .              ; plot strip at 0,6 of length 2
+    !byte $a6                                                         ; 3060: a6          .              ; move by 6*delta to 7,6
+    !byte 3                                                           ; 3061: 03          .              ; plot strip at 7,6 of length 3
+    !byte $b2                                                         ; 3062: b2          .              ; move by 18*delta to 28,6
+    !byte 3                                                           ; 3063: 03          .              ; plot strip at 28,6 of length 3
+    !byte $a6                                                         ; 3064: a6          .              ; move by 6*delta to 37,6
+    !byte 2                                                           ; 3065: 02          .              ; plot strip at 37,6 of length 2
+    !byte $71                                                         ; 3066: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 3067: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 3068: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 3069: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 306a: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 306b: 18          .              ; plot strip at 0,31 of length 24
+    !byte $4c                                                         ; 306c: 4c          L              ; set sprite 12, collision byte 128
+    !byte $99,   9                                                    ; 306d: 99 09       ..             ; set position to 9,25
+    !byte $13                                                         ; 306f: 13          .              ; plot strip at 9,25 of length 19
+    !byte $99, $1e                                                    ; 3070: 99 1e       ..             ; set position to 30,25
+    !byte $13                                                         ; 3072: 13          .              ; plot strip at 30,25 of length 19
+    !byte $94, $11                                                    ; 3073: 94 11       ..             ; set position to 17,20
+    !byte $0e                                                         ; 3075: 0e          .              ; plot strip at 17,20 of length 14
+    !byte $94, $16                                                    ; 3076: 94 16       ..             ; set position to 22,20
+    !byte $0e                                                         ; 3078: 0e          .              ; plot strip at 22,20 of length 14
+    !byte $61                                                         ; 3079: 61          a              ; set delta to 1,0
+    !byte $41                                                         ; 307a: 41          A              ; set sprite 1, collision byte 128
+    !byte $95,   8                                                    ; 307b: 95 08       ..             ; set position to 8,21
+    !byte 3                                                           ; 307d: 03          .              ; plot strip at 8,21 of length 3
+    !byte $a5                                                         ; 307e: a5          .              ; move by 5*delta to 15,21
+    !byte 8                                                           ; 307f: 08          .              ; plot strip at 15,21 of length 8
+    !byte $a5                                                         ; 3080: a5          .              ; move by 5*delta to 28,21
+    !byte 3                                                           ; 3081: 03          .              ; plot strip at 28,21 of length 3
+    !byte $9a,   8                                                    ; 3082: 9a 08       ..             ; set position to 8,26
+    !byte 3                                                           ; 3084: 03          .              ; plot strip at 8,26 of length 3
+    !byte $4b                                                         ; 3085: 4b          K              ; set sprite 11, collision byte 128
+    !byte 5                                                           ; 3086: 05          .              ; plot strip at 10,26 of length 5
+    !byte $41                                                         ; 3087: 41          A              ; set sprite 1, collision byte 128
+    !byte 8                                                           ; 3088: 08          .              ; plot strip at 15,26 of length 8
+    !byte $4b                                                         ; 3089: 4b          K              ; set sprite 11, collision byte 128
+    !byte 5                                                           ; 308a: 05          .              ; plot strip at 23,26 of length 5
+    !byte $41                                                         ; 308b: 41          A              ; set sprite 1, collision byte 128
+    !byte 3                                                           ; 308c: 03          .              ; plot strip at 28,26 of length 3
+    !byte 0                                                           ; 308d: 00          .              ; terminator for commands
+    !byte $44, $27, $10,   1,   2                                     ; 308e: 44 27 10... D'.            ; invisible vertical door at 39,16 to door 1 in room 2
+    !byte   4,   2,   6,   1, $23                                     ; 3093: 04 02 06... ...            ; invisible horizontal door at 2,6 to door 1 in room 35
+    !byte   4, $0b,   6,   2, $23                                     ; 3098: 04 0b 06... ...            ; invisible horizontal door at 11,6 to door 2 in room 35
+    !byte $28, $11,   6,   0, $25                                     ; 309d: 28 11 06... (..            ; visible horizontal door at 17,6 to door 0 in room 37
+    !byte   4, $17,   6,   4, $23                                     ; 30a2: 04 17 06... ...            ; invisible horizontal door at 23,6 to door 4 in room 35
+    !byte   4, $20,   6,   5, $23                                     ; 30a7: 04 20 06... . .            ; invisible horizontal door at 32,6 to door 5 in room 35
+    !byte 0                                                           ; 30ac: 00          .              ; terminator for doors
+    !byte 0                                                           ; 30ad: 00          .              ; terminator for keys
+    !byte $c2, $10, $16                                               ; 30ae: c2 10 16    ...            ; computer at 16,22
+    !byte $c2, $14, $16                                               ; 30b1: c2 14 16    ...            ; computer at 20,22
+    !byte 0                                                           ; 30b4: 00          .              ; terminator for computers
+    !byte 0                                                           ; 30b5: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 30b6: 00          .              ; terminator for title
+
+;             Up In The Roof
+; ****************************************
+; ................cccccccc................
+; ................cccccccc................
+; ................cccccccc................
+; ................cccccccc................
+; ****************************************
+; *...............XXXXXXXX...............*
+; *AAAA...........XXXXXXXX...............*
+; *AAAA...........XXXXXXXX...............*
+; *AAAA...........XXXXXXXX...............*
+; ********************************.......*
+; *...............xxxxxxxx......*........*
+; *...............xxxxxxxx..OOOO*........*
+; *...............xxxxxxxx..OOOO*........*
+; *...............xxxxxxxx..OOOO*........*
+; *.......************************.......*
+; *................*....*.......*........*
+; *................*.K..*.......*........*
+; *................*.1..*.......*........*
+; *................*....*.......*........*
+; *.......***......*....*......***.......*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; *........*.......*....*.......*........*
+; **......***......1DDDD1......***......**
 room_35_definition
-    !byte $4e,   3,   4,   3,   4,   6                                ; 30b7: 4e 03 04... N..            ; room header
-    !byte $28, $71, $19, $69,   1, $a6,   3, $b2,   3, $a6,   2, $79  ; 30bd: 28 71 19... (q.            ; room commands
-    !byte $18, $61, $8b,   8, $18, $90,   8, $18, $95,   8, $18, $9a  ; 30c9: 18 61 8b... .a.
-    !byte   8,   3, $b2,   3, $4b, $8b,   1,   7, $a3,   5, $a8,   5  ; 30d5: 08 03 b2... ...
-    !byte $a3,   7, $90,   1,   7, $a3,   5, $a8,   5, $95, $0b,   5  ; 30e1: a3 07 90... ...
-    !byte $a8,   5, $71, $4c, $9b,   9,   4, $96, $16, $cc,   4, $4c  ; 30ed: a8 05 71... ..q
-    !byte   5, $96, $11,   9, $91, $1e,   4, $a1,   4, $a1,   4,   0  ; 30f9: 05 96 11... ...
-    !byte $44, $27,   6,   1, $24,   4,   2, $1f,   1, $22,   4, $0b  ; 3105: 44 27 06... D'.
-    !byte $1f,   2, $22, $28, $11, $1f,   3, $22,   4, $17, $1f,   4  ; 3111: 1f 02 22... .."
-    !byte $22,   4, $20, $1f,   5, $22, $44,   0,   6,   3, $29,   0  ; 311d: 22 04 20... ".
-    !byte $c0, $13, $17,   0, $c1, $10,   7, $c1, $14,   7, $c2, $10  ; 3129: c0 13 17... ...
-    !byte $0c, $c2, $14, $0c, $c3, $10, $11, $c3, $14, $11,   0, $c3  ; 3135: 0c c2 14... ...
-    !byte   1, $0d, $c3,   3, $0d, $c1, $1a, $12, $c1, $1c, $12,   0  ; 3141: 01 0d c3... ...
-    !text "Up In The Roo", $80+'f'                                    ; 314d: 55 70 20... Up
+    !byte $4e                                                         ; 30b7: 4e          N              ; offset to start of doors
+    !byte 3, 4, 3, 4, 6                                               ; 30b8: 03 04 03... ...            ; room header
+    !byte $28                                                         ; 30bd: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 30be: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 30bf: 19          .              ; plot strip at 39,6 of length 25
+    !byte $69                                                         ; 30c0: 69          i              ; set delta to -1,0
+    !byte 1                                                           ; 30c1: 01          .              ; plot strip at 39,31 of length 1
+    !byte $a6                                                         ; 30c2: a6          .              ; move by 6*delta to 32,31
+    !byte 3                                                           ; 30c3: 03          .              ; plot strip at 32,31 of length 3
+    !byte $b2                                                         ; 30c4: b2          .              ; move by 18*delta to 11,31
+    !byte 3                                                           ; 30c5: 03          .              ; plot strip at 11,31 of length 3
+    !byte $a6                                                         ; 30c6: a6          .              ; move by 6*delta to 2,31
+    !byte 2                                                           ; 30c7: 02          .              ; plot strip at 2,31 of length 2
+    !byte $79                                                         ; 30c8: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 30c9: 18          .              ; plot strip at 0,31 of length 24
+    !byte $61                                                         ; 30ca: 61          a              ; set delta to 1,0
+    !byte $8b,   8                                                    ; 30cb: 8b 08       ..             ; set position to 8,11
+    !byte $18                                                         ; 30cd: 18          .              ; plot strip at 8,11 of length 24
+    !byte $90,   8                                                    ; 30ce: 90 08       ..             ; set position to 8,16
+    !byte $18                                                         ; 30d0: 18          .              ; plot strip at 8,16 of length 24
+    !byte $95,   8                                                    ; 30d1: 95 08       ..             ; set position to 8,21
+    !byte $18                                                         ; 30d3: 18          .              ; plot strip at 8,21 of length 24
+    !byte $9a,   8                                                    ; 30d4: 9a 08       ..             ; set position to 8,26
+    !byte 3                                                           ; 30d6: 03          .              ; plot strip at 8,26 of length 3
+    !byte $b2                                                         ; 30d7: b2          .              ; move by 18*delta to 28,26
+    !byte 3                                                           ; 30d8: 03          .              ; plot strip at 28,26 of length 3
+    !byte $4b                                                         ; 30d9: 4b          K              ; set sprite 11, collision byte 128
+    !byte $8b,   1                                                    ; 30da: 8b 01       ..             ; set position to 1,11
+    !byte 7                                                           ; 30dc: 07          .              ; plot strip at 1,11 of length 7
+    !byte $a3                                                         ; 30dd: a3          .              ; move by 3*delta to 10,11
+    !byte 5                                                           ; 30de: 05          .              ; plot strip at 10,11 of length 5
+    !byte $a8                                                         ; 30df: a8          .              ; move by 8*delta to 23,11
+    !byte 5                                                           ; 30e0: 05          .              ; plot strip at 23,11 of length 5
+    !byte $a3                                                         ; 30e1: a3          .              ; move by 3*delta to 31,11
+    !byte 7                                                           ; 30e2: 07          .              ; plot strip at 31,11 of length 7
+    !byte $90,   1                                                    ; 30e3: 90 01       ..             ; set position to 1,16
+    !byte 7                                                           ; 30e5: 07          .              ; plot strip at 1,16 of length 7
+    !byte $a3                                                         ; 30e6: a3          .              ; move by 3*delta to 10,16
+    !byte 5                                                           ; 30e7: 05          .              ; plot strip at 10,16 of length 5
+    !byte $a8                                                         ; 30e8: a8          .              ; move by 8*delta to 23,16
+    !byte 5                                                           ; 30e9: 05          .              ; plot strip at 23,16 of length 5
+    !byte $95, $0b                                                    ; 30ea: 95 0b       ..             ; set position to 11,21
+    !byte 5                                                           ; 30ec: 05          .              ; plot strip at 11,21 of length 5
+    !byte $a8                                                         ; 30ed: a8          .              ; move by 8*delta to 23,21
+    !byte 5                                                           ; 30ee: 05          .              ; plot strip at 23,21 of length 5
+    !byte $71                                                         ; 30ef: 71          q              ; set delta to 0,1
+    !byte $4c                                                         ; 30f0: 4c          L              ; set sprite 12, collision byte 128
+    !byte $9b,   9                                                    ; 30f1: 9b 09       ..             ; set position to 9,27
+    !byte 4                                                           ; 30f3: 04          .              ; plot strip at 9,27 of length 4
+    !byte $96, $16                                                    ; 30f4: 96 16       ..             ; set position to 22,22
+    !byte $cc                                                         ; 30f6: cc          .              ; set sprite 12, collision byte 144
+    !byte 4                                                           ; 30f7: 04          .              ; plot strip at 22,22 of length 4
+    !byte $4c                                                         ; 30f8: 4c          L              ; set sprite 12, collision byte 128
+    !byte 5                                                           ; 30f9: 05          .              ; plot strip at 22,25 of length 5
+    !byte $96, $11                                                    ; 30fa: 96 11       ..             ; set position to 17,22
+    !byte 9                                                           ; 30fc: 09          .              ; plot strip at 17,22 of length 9
+    !byte $91, $1e                                                    ; 30fd: 91 1e       ..             ; set position to 30,17
+    !byte 4                                                           ; 30ff: 04          .              ; plot strip at 30,17 of length 4
+    !byte $a1                                                         ; 3100: a1          .              ; move by 1*delta to 30,21
+    !byte 4                                                           ; 3101: 04          .              ; plot strip at 30,21 of length 4
+    !byte $a1                                                         ; 3102: a1          .              ; move by 1*delta to 30,26
+    !byte 4                                                           ; 3103: 04          .              ; plot strip at 30,26 of length 4
+    !byte 0                                                           ; 3104: 00          .              ; terminator for commands
+    !byte $44, $27,   6,   1, $24                                     ; 3105: 44 27 06... D'.            ; invisible vertical door at 39,6 to door 1 in room 36
+    !byte   4,   2, $1f,   1, $22                                     ; 310a: 04 02 1f... ...            ; invisible horizontal door at 2,31 to door 1 in room 34
+    !byte   4, $0b, $1f,   2, $22                                     ; 310f: 04 0b 1f... ...            ; invisible horizontal door at 11,31 to door 2 in room 34
+    !byte $28, $11, $1f,   3, $22                                     ; 3114: 28 11 1f... (..            ; visible horizontal door at 17,31 to door 3 in room 34
+    !byte   4, $17, $1f,   4, $22                                     ; 3119: 04 17 1f... ...            ; invisible horizontal door at 23,31 to door 4 in room 34
+    !byte   4, $20, $1f,   5, $22                                     ; 311e: 04 20 1f... . .            ; invisible horizontal door at 32,31 to door 5 in room 34
+    !byte $44,   0,   6,   3, $29                                     ; 3123: 44 00 06... D..            ; invisible vertical door at 0,6 to door 3 in room 41
+    !byte 0                                                           ; 3128: 00          .              ; terminator for doors
+    !byte $c0, $13, $17                                               ; 3129: c0 13 17    ...            ; key at 19,23
+    !byte 0                                                           ; 312c: 00          .              ; terminator for keys
+    !byte $c1, $10,   7                                               ; 312d: c1 10 07    ...            ; computer at 16,7
+    !byte $c1, $14,   7                                               ; 3130: c1 14 07    ...            ; computer at 20,7
+    !byte $c2, $10, $0c                                               ; 3133: c2 10 0c    ...            ; computer at 16,12
+    !byte $c2, $14, $0c                                               ; 3136: c2 14 0c    ...            ; computer at 20,12
+    !byte $c3, $10, $11                                               ; 3139: c3 10 11    ...            ; computer at 16,17
+    !byte $c3, $14, $11                                               ; 313c: c3 14 11    ...            ; computer at 20,17
+    !byte 0                                                           ; 313f: 00          .              ; terminator for computers
+    !byte $c3,   1, $0d                                               ; 3140: c3 01 0d    ...            ; collectible at 1,13
+    !byte $c3,   3, $0d                                               ; 3143: c3 03 0d    ...            ; collectible at 3,13
+    !byte $c1, $1a, $12                                               ; 3146: c1 1a 12    ...            ; collectible at 26,18
+    !byte $c1, $1c, $12                                               ; 3149: c1 1c 12    ...            ; collectible at 28,18
+    !byte 0                                                           ; 314c: 00          .              ; terminator for collectibles
+    !text "Up In The Roo", $80+'f'                                    ; 314d: 55 70 20... Up             ; "Up In The Roof"
+
+;              The Dark Room
+; *
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; ...........K...........................*
+; ...........1...........................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
+; .......................................*
 room_36_definition
-    !byte $85,   2,   2,   2,   2,   1                                ; 315b: 85 02 02... ...            ; room header
-    !byte $86, $27, $71, $1a                                          ; 3161: 86 27 71... .'q            ; room commands
-    !text "Ui'y"                                                      ; 3165: 55 69 27... Ui'
-    !byte $19, $61, $26, $8a,   1,   1, $a7, $1b, $8b,   1,   2, $b0  ; 3169: 19 61 26... .a&
-    !byte $0b, $93,   5,   9, $a3,   1, $a3,   1, $8f, $10, $0a, $71  ; 3175: 0b 93 05... ...
-    !byte   1, $a1,   1, $a4,   2, $a1,   2, $61, $0a, $79,   1, $a3  ; 3181: 01 a1 01... ...
-    !byte   3, $a1,   5, $72, $87, $0a,   2, $90,   5,   2, $8d, $1d  ; 318d: 03 a1 05... ...
-    !byte   2, $96, $11, $61,   1, $a3,   3, $a3,   1, $a6,   1, $71  ; 3199: 02 96 11... ...
-    !byte $94,   4,   5, $a3,   3, $8b,   6,   3, $8e,   7,   2, $8b  ; 31a5: 94 04 05... ...
-    !byte $0b,   1, $a1,   3, $8e, $0f,   1, $90, $11,   1, $90,   1  ; 31b1: 0b 01 a1... ...
-    !byte   1, $95, $15,   4, $a5,   1, $92, $1e,   1, $91, $22,   1  ; 31bd: 01 95 15... ...
-    !byte $98,   5,   1, $9e,   9, $79,   1, $a2,   2, $a1,   2, $61  ; 31c9: 98 05 01... ...
-    !byte   8, $71,   1, $61, $9b, $0d,   5, $97, $1d,   3,   0, $44  ; 31d5: 08 71 01... .q.
-    !byte $27, $10,   5, $1f, $44,   0,   6,   0, $23,   0, $c0, $0b  ; 31e1: 27 10 05... '..
-    !byte $19,   0,   0,   0                                          ; 31ed: 19 00 00... ...
-    !text "The Dark Roo", $80+'m'                                     ; 31f1: 54 68 65... The
+    !byte $85                                                         ; 315b: 85          .              ; offset to start of doors
+    !byte 2, 2, 2, 2, 1                                               ; 315c: 02 02 02... ...            ; room header
+    !byte $86, $27                                                    ; 3161: 86 27       .'             ; set position to 39,6
+    !byte $71                                                         ; 3163: 71          q              ; set delta to 0,1
+    !byte $1a                                                         ; 3164: 1a          .              ; plot strip at 39,6 of length 26
+    !byte $55                                                         ; 3165: 55          U              ; set sprite 21, collision byte 128
+    !byte $69                                                         ; 3166: 69          i              ; set delta to -1,0
+    !byte $27                                                         ; 3167: 27          '              ; plot strip at 39,31 of length 39
+    !byte $79                                                         ; 3168: 79          y              ; set delta to 0,-1
+    !byte $19                                                         ; 3169: 19          .              ; plot strip at 0,31 of length 25
+    !byte $61                                                         ; 316a: 61          a              ; set delta to 1,0
+    !byte $26                                                         ; 316b: 26          &              ; plot strip at 0,6 of length 38
+    !byte $8a,   1                                                    ; 316c: 8a 01       ..             ; set position to 1,10
+    !byte 1                                                           ; 316e: 01          .              ; plot strip at 1,10 of length 1
+    !byte $a7                                                         ; 316f: a7          .              ; move by 7*delta to 8,10
+    !byte $1b                                                         ; 3170: 1b          .              ; plot strip at 8,10 of length 27
+    !byte $8b,   1                                                    ; 3171: 8b 01       ..             ; set position to 1,11
+    !byte 2                                                           ; 3173: 02          .              ; plot strip at 1,11 of length 2
+    !byte $b0                                                         ; 3174: b0          .              ; move by 16*delta to 18,11
+    !byte $0b                                                         ; 3175: 0b          .              ; plot strip at 18,11 of length 11
+    !byte $93,   5                                                    ; 3176: 93 05       ..             ; set position to 5,19
+    !byte 9                                                           ; 3178: 09          .              ; plot strip at 5,19 of length 9
+    !byte $a3                                                         ; 3179: a3          .              ; move by 3*delta to 16,19
+    !byte 1                                                           ; 317a: 01          .              ; plot strip at 16,19 of length 1
+    !byte $a3                                                         ; 317b: a3          .              ; move by 3*delta to 20,19
+    !byte 1                                                           ; 317c: 01          .              ; plot strip at 20,19 of length 1
+    !byte $8f, $10                                                    ; 317d: 8f 10       ..             ; set position to 16,15
+    !byte $0a                                                         ; 317f: 0a          .              ; plot strip at 16,15 of length 10
+    !byte $71                                                         ; 3180: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 3181: 01          .              ; plot strip at 25,15 of length 1
+    !byte $a1                                                         ; 3182: a1          .              ; move by 1*delta to 25,17
+    !byte 1                                                           ; 3183: 01          .              ; plot strip at 25,17 of length 1
+    !byte $a4                                                         ; 3184: a4          .              ; move by 4*delta to 25,22
+    !byte 2                                                           ; 3185: 02          .              ; plot strip at 25,22 of length 2
+    !byte $a1                                                         ; 3186: a1          .              ; move by 1*delta to 25,25
+    !byte 2                                                           ; 3187: 02          .              ; plot strip at 25,25 of length 2
+    !byte $61                                                         ; 3188: 61          a              ; set delta to 1,0
+    !byte $0a                                                         ; 3189: 0a          .              ; plot strip at 25,27 of length 10
+    !byte $79                                                         ; 318a: 79          y              ; set delta to 0,-1
+    !byte 1                                                           ; 318b: 01          .              ; plot strip at 35,27 of length 1
+    !byte $a3                                                         ; 318c: a3          .              ; move by 3*delta to 35,23
+    !byte 3                                                           ; 318d: 03          .              ; plot strip at 35,23 of length 3
+    !byte $a1                                                         ; 318e: a1          .              ; move by 1*delta to 35,19
+    !byte 5                                                           ; 318f: 05          .              ; plot strip at 35,19 of length 5
+    !byte $72                                                         ; 3190: 72          r              ; set delta to 0,2
+    !byte $87, $0a                                                    ; 3191: 87 0a       ..             ; set position to 10,7
+    !byte 2                                                           ; 3193: 02          .              ; plot strip at 10,7 of length 2
+    !byte $90,   5                                                    ; 3194: 90 05       ..             ; set position to 5,16
+    !byte 2                                                           ; 3196: 02          .              ; plot strip at 5,16 of length 2
+    !byte $8d, $1d                                                    ; 3197: 8d 1d       ..             ; set position to 29,13
+    !byte 2                                                           ; 3199: 02          .              ; plot strip at 29,13 of length 2
+    !byte $96, $11                                                    ; 319a: 96 11       ..             ; set position to 17,22
+    !byte $61                                                         ; 319c: 61          a              ; set delta to 1,0
+    !byte 1                                                           ; 319d: 01          .              ; plot strip at 17,22 of length 1
+    !byte $a3                                                         ; 319e: a3          .              ; move by 3*delta to 20,22
+    !byte 3                                                           ; 319f: 03          .              ; plot strip at 20,22 of length 3
+    !byte $a3                                                         ; 31a0: a3          .              ; move by 3*delta to 26,22
+    !byte 1                                                           ; 31a1: 01          .              ; plot strip at 26,22 of length 1
+    !byte $a6                                                         ; 31a2: a6          .              ; move by 6*delta to 33,22
+    !byte 1                                                           ; 31a3: 01          .              ; plot strip at 33,22 of length 1
+    !byte $71                                                         ; 31a4: 71          q              ; set delta to 0,1
+    !byte $94,   4                                                    ; 31a5: 94 04       ..             ; set position to 4,20
+    !byte 5                                                           ; 31a7: 05          .              ; plot strip at 4,20 of length 5
+    !byte $a3                                                         ; 31a8: a3          .              ; move by 3*delta to 4,27
+    !byte 3                                                           ; 31a9: 03          .              ; plot strip at 4,27 of length 3
+    !byte $8b,   6                                                    ; 31aa: 8b 06       ..             ; set position to 6,11
+    !byte 3                                                           ; 31ac: 03          .              ; plot strip at 6,11 of length 3
+    !byte $8e,   7                                                    ; 31ad: 8e 07       ..             ; set position to 7,14
+    !byte 2                                                           ; 31af: 02          .              ; plot strip at 7,14 of length 2
+    !byte $8b, $0b                                                    ; 31b0: 8b 0b       ..             ; set position to 11,11
+    !byte 1                                                           ; 31b2: 01          .              ; plot strip at 11,11 of length 1
+    !byte $a1                                                         ; 31b3: a1          .              ; move by 1*delta to 11,12
+    !byte 3                                                           ; 31b4: 03          .              ; plot strip at 11,12 of length 3
+    !byte $8e, $0f                                                    ; 31b5: 8e 0f       ..             ; set position to 15,14
+    !byte 1                                                           ; 31b7: 01          .              ; plot strip at 15,14 of length 1
+    !byte $90, $11                                                    ; 31b8: 90 11       ..             ; set position to 17,16
+    !byte 1                                                           ; 31ba: 01          .              ; plot strip at 17,16 of length 1
+    !byte $90,   1                                                    ; 31bb: 90 01       ..             ; set position to 1,16
+    !byte 1                                                           ; 31bd: 01          .              ; plot strip at 1,16 of length 1
+    !byte $95, $15                                                    ; 31be: 95 15       ..             ; set position to 21,21
+    !byte 4                                                           ; 31c0: 04          .              ; plot strip at 21,21 of length 4
+    !byte $a5                                                         ; 31c1: a5          .              ; move by 5*delta to 21,29
+    !byte 1                                                           ; 31c2: 01          .              ; plot strip at 21,29 of length 1
+    !byte $92, $1e                                                    ; 31c3: 92 1e       ..             ; set position to 30,18
+    !byte 1                                                           ; 31c5: 01          .              ; plot strip at 30,18 of length 1
+    !byte $91, $22                                                    ; 31c6: 91 22       ."             ; set position to 34,17
+    !byte 1                                                           ; 31c8: 01          .              ; plot strip at 34,17 of length 1
+    !byte $98,   5                                                    ; 31c9: 98 05       ..             ; set position to 5,24
+    !byte 1                                                           ; 31cb: 01          .              ; plot strip at 5,24 of length 1
+    !byte $9e,   9                                                    ; 31cc: 9e 09       ..             ; set position to 9,30
+    !byte $79                                                         ; 31ce: 79          y              ; set delta to 0,-1
+    !byte 1                                                           ; 31cf: 01          .              ; plot strip at 9,30 of length 1
+    !byte $a2                                                         ; 31d0: a2          .              ; move by 2*delta to 9,28
+    !byte 2                                                           ; 31d1: 02          .              ; plot strip at 9,28 of length 2
+    !byte $a1                                                         ; 31d2: a1          .              ; move by 1*delta to 9,25
+    !byte 2                                                           ; 31d3: 02          .              ; plot strip at 9,25 of length 2
+    !byte $61                                                         ; 31d4: 61          a              ; set delta to 1,0
+    !byte 8                                                           ; 31d5: 08          .              ; plot strip at 9,23 of length 8
+    !byte $71                                                         ; 31d6: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 31d7: 01          .              ; plot strip at 17,23 of length 1
+    !byte $61                                                         ; 31d8: 61          a              ; set delta to 1,0
+    !byte $9b, $0d                                                    ; 31d9: 9b 0d       ..             ; set position to 13,27
+    !byte 5                                                           ; 31db: 05          .              ; plot strip at 13,27 of length 5
+    !byte $97, $1d                                                    ; 31dc: 97 1d       ..             ; set position to 29,23
+    !byte 3                                                           ; 31de: 03          .              ; plot strip at 29,23 of length 3
+    !byte 0                                                           ; 31df: 00          .              ; terminator for commands
+    !byte $44, $27, $10,   5, $1f                                     ; 31e0: 44 27 10... D'.            ; invisible vertical door at 39,16 to door 5 in room 31
+    !byte $44,   0,   6,   0, $23                                     ; 31e5: 44 00 06... D..            ; invisible vertical door at 0,6 to door 0 in room 35
+    !byte 0                                                           ; 31ea: 00          .              ; terminator for doors
+    !byte $c0, $0b, $19                                               ; 31eb: c0 0b 19    ...            ; key at 11,25
+    !byte 0                                                           ; 31ee: 00          .              ; terminator for keys
+    !byte 0                                                           ; 31ef: 00          .              ; terminator for computers
+    !byte 0                                                           ; 31f0: 00          .              ; terminator for collectibles
+    !text "The Dark Roo", $80+'m'                                     ; 31f1: 54 68 65... The            ; "The Dark Room"
+
+;             The Secret Room
+; ****************************************
+; ************..............**************
+; **......****.CCCC....CCCC.**************
+; **.K....****.CCCC....CCCC.**************
+; **.3....****.CCCC....CCCC.********....**
+; **......****.CCCC....CCCC.********....**
+; *****...*********....*************....**
+; *****...********1DDDD1************....**
+; *****...*********....*************....**
+; *****..........................***....**
+; *.SS...........................***....**
+; *.SS..................................**
+; *.SS..................................**
+; *.AA..................................**
+; *.AA..................................**
+; *.AA...........................***....**
+; *****..........................***....**
+; *****...*********....*************....**
+; *****...********1DDDD1************....**
+; *****...*********....*************....**
+; **......****..............********....**
+; **.K....****.CCCC....CCCC.********....**
+; **.4....****.CCCC....CCCC.**************
+; **......****.CCCC....CCCC.**************
+; ************.CCCC....CCCC.**************
+; ****************************************
 room_37_definition
-    !byte $48,   2,   2,   2,   2,   5                                ; 31fe: 48 02 02... H..            ; room header
-    !byte $42, $e1, $28, $e1, $0c, $e4,   2, $e4,   5, $e6,   1, $e4  ; 3204: 42 e1 28... B.(            ; room commands
-    !byte   5, $c2, $e4,   2, $42, $e1, $0c, $e1, $28, $88,   8, $e4  ; 3210: 05 c2 e4... ...
-    !byte   4, $e3,   9, $97,   8, $e3,   9, $e4,   4, $87, $1a, $e3  ; 321c: 04 e3 09... ...
-    !byte $0e, $e2,   8, $8c, $15, $e3, $0d, $8f, $1f, $e2,   3, $95  ; 3228: 0e e2 08... ...
-    !byte $1f, $e2,   3, $97, $15, $e3, $0d, $9a, $1a, $e2,   8, $e3  ; 3234: 1f e2 03... ...
-    !byte $0e, $8a, $26, $f2,   2,   0, $44, $20, $10,   0,   0, $20  ; 3240: 0e 8a 26... ..&
-    !byte $10, $0d,   0,   0, $20, $10, $18,   0,   0, $44,   2, $19  ; 324c: 10 0d 00... ...
-    !byte   0, $22,   0, $c2,   3,   9, $c3,   3, $1b,   0, $c0, $0d  ; 3258: 00 22 00... .".
-    !byte   8, $c0, $15,   8, $c0, $0d, $1b, $c0, $15, $1b,   0, $c2  ; 3264: 08 c0 15... ...
-    !byte   2, $10, $c3,   2, $13,   0                                ; 3270: 02 10 c3... ...
-    !text "The Secret Roo", $80+'m'                                   ; 3276: 54 68 65... The
+    !byte $48                                                         ; 31fe: 48          H              ; offset to start of doors
+    !byte 2, 2, 2, 2, 5                                               ; 31ff: 02 02 02... ...            ; room header
+    !byte $42                                                         ; 3204: 42          B              ; set sprite 2, collision byte 128
+    !byte $e1, $28                                                    ; 3205: e1 28       .(             ; draw rect from 0,6 with size 40x1
+    !byte $e1, $0c                                                    ; 3207: e1 0c       ..             ; draw rect from 0,7 with size 12x1
+    !byte $e4,   2                                                    ; 3209: e4 02       ..             ; draw rect from 0,8 with size 2x4
+    !byte $e4,   5                                                    ; 320b: e4 05       ..             ; draw rect from 0,12 with size 5x4
+    !byte $e6,   1                                                    ; 320d: e6 01       ..             ; draw rect from 0,16 with size 1x6
+    !byte $e4,   5                                                    ; 320f: e4 05       ..             ; draw rect from 0,22 with size 5x4
+    !byte $c2                                                         ; 3211: c2          .              ; set sprite 2, collision byte 144
+    !byte $e4,   2                                                    ; 3212: e4 02       ..             ; draw rect from 0,26 with size 2x4
+    !byte $42                                                         ; 3214: 42          B              ; set sprite 2, collision byte 128
+    !byte $e1, $0c                                                    ; 3215: e1 0c       ..             ; draw rect from 0,30 with size 12x1
+    !byte $e1, $28                                                    ; 3217: e1 28       .(             ; draw rect from 0,31 with size 40x1
+    !byte $88,   8                                                    ; 3219: 88 08       ..             ; set position to 8,8
+    !byte $e4,   4                                                    ; 321b: e4 04       ..             ; draw rect from 8,8 with size 4x4
+    !byte $e3,   9                                                    ; 321d: e3 09       ..             ; draw rect from 8,12 with size 9x3
+    !byte $97,   8                                                    ; 321f: 97 08       ..             ; set position to 8,23
+    !byte $e3,   9                                                    ; 3221: e3 09       ..             ; draw rect from 8,23 with size 9x3
+    !byte $e4,   4                                                    ; 3223: e4 04       ..             ; draw rect from 8,26 with size 4x4
+    !byte $87, $1a                                                    ; 3225: 87 1a       ..             ; set position to 26,7
+    !byte $e3, $0e                                                    ; 3227: e3 0e       ..             ; draw rect from 26,7 with size 14x3
+    !byte $e2,   8                                                    ; 3229: e2 08       ..             ; draw rect from 26,10 with size 8x2
+    !byte $8c, $15                                                    ; 322b: 8c 15       ..             ; set position to 21,12
+    !byte $e3, $0d                                                    ; 322d: e3 0d       ..             ; draw rect from 21,12 with size 13x3
+    !byte $8f, $1f                                                    ; 322f: 8f 1f       ..             ; set position to 31,15
+    !byte $e2,   3                                                    ; 3231: e2 03       ..             ; draw rect from 31,15 with size 3x2
+    !byte $95, $1f                                                    ; 3233: 95 1f       ..             ; set position to 31,21
+    !byte $e2,   3                                                    ; 3235: e2 03       ..             ; draw rect from 31,21 with size 3x2
+    !byte $97, $15                                                    ; 3237: 97 15       ..             ; set position to 21,23
+    !byte $e3, $0d                                                    ; 3239: e3 0d       ..             ; draw rect from 21,23 with size 13x3
+    !byte $9a, $1a                                                    ; 323b: 9a 1a       ..             ; set position to 26,26
+    !byte $e2,   8                                                    ; 323d: e2 08       ..             ; draw rect from 26,26 with size 8x2
+    !byte $e3, $0e                                                    ; 323f: e3 0e       ..             ; draw rect from 26,28 with size 14x3
+    !byte $8a, $26                                                    ; 3241: 8a 26       .&             ; set position to 38,10
+    !byte $f2,   2                                                    ; 3243: f2 02       ..             ; draw rect from 38,10 with size 2x18
+    !byte 0                                                           ; 3245: 00          .              ; terminator for commands
+    !byte $44, $20, $10,   0,   0                                     ; 3246: 44 20 10... D .            ; invisible vertical door at 32,16 to door 0 in room 0
+    !byte $20, $10, $0d,   0,   0                                     ; 324b: 20 10 0d...  ..            ; visible horizontal door at 16,13 to door 0 in room 0
+    !byte $20, $10, $18,   0,   0                                     ; 3250: 20 10 18...  ..            ; visible horizontal door at 16,24 to door 0 in room 0
+    !byte $44,   2, $19,   0, $22                                     ; 3255: 44 02 19... D..            ; invisible vertical door at 2,25 to door 0 in room 34
+    !byte 0                                                           ; 325a: 00          .              ; terminator for doors
+    !byte $c2,   3,   9                                               ; 325b: c2 03 09    ...            ; key at 3,9
+    !byte $c3,   3, $1b                                               ; 325e: c3 03 1b    ...            ; key at 3,27
+    !byte 0                                                           ; 3261: 00          .              ; terminator for keys
+    !byte $c0, $0d,   8                                               ; 3262: c0 0d 08    ...            ; computer at 13,8
+    !byte $c0, $15,   8                                               ; 3265: c0 15 08    ...            ; computer at 21,8
+    !byte $c0, $0d, $1b                                               ; 3268: c0 0d 1b    ...            ; computer at 13,27
+    !byte $c0, $15, $1b                                               ; 326b: c0 15 1b    ...            ; computer at 21,27
+    !byte 0                                                           ; 326e: 00          .              ; terminator for computers
+    !byte $c2,   2, $10                                               ; 326f: c2 02 10    ...            ; collectible at 2,16
+    !byte $c3,   2, $13                                               ; 3272: c3 02 13    ...            ; collectible at 2,19
+    !byte 0                                                           ; 3275: 00          .              ; terminator for collectibles
+    !text "The Secret Roo", $80+'m'                                   ; 3276: 54 68 65... The            ; "The Secret Room"
+
+;               The Cesspit
+; *....******......***....********......**
+; *...********......*......***..*........*
+; *..**********...........................
+; *.......................................
+; *.......................................
+; *.......................................
+; **..*......*............................
+; *****......*............................
+; *****......*****************************
+; *****......*****************************
+; *****......*****************************
+; *****....*******************************
+; *****......*****************************
+; *****......*****************************
+; *****......*****************************
+; *****......*****************************
+; *****......*****************************
+; *****......*............................
+; *****......*............................
+; *****......*............................
+; *****......*............................
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_38_definition
-    !byte $57,   0,   2,   0,   2,   5                                ; 3285: 57 00 02... W..            ; room header
-    !byte $52, $71,   7, $e1,   2, $e2,   4, $86, $11, $61,   3, $a4  ; 328b: 52 71 07... Rq.            ; room commands
-    !byte   8, $a6,   2, $87, $12,   1, $a6,   3, $a2,   1, $a8,   1  ; 3297: 08 a6 02... ...
-    !byte $8e, $0c, $1c, $42, $86,   5,   6, $87,   4,   8, $88,   3  ; 32a3: 8e 0c 1c... ...
-    !byte $0a, $71, $8c,   4, $13, $61,   7, $79,   3, $c2,   4, $42  ; 32af: 0a 71 8c... .q.
-    !byte $0b, $43, $8f,   0, $f0,   4, $e1, $28, $8f, $0c, $e8, $1c  ; 32bb: 0b 43 8f... .C.
-    !byte $9b, $0c, $e5, $1c, $4e, $9b,   5, $e1,   6, $4a, $e2,   6  ; 32c7: 9b 0c e5... ...
-    !byte $91, $26, $6a, $c9, $0f, $69, $d7,   1,   0, $44, $27,   8  ; 32d3: 91 26 6a... .&j
-    !byte   3, $12,   4, $20,   6,   1, $27,   4, $13,   6,   2, $27  ; 32df: 03 12 04... ...
-    !byte   4, $0b,   6,   3                                          ; 32eb: 04 0b 06... ...
-    !text "'D'"                                                       ; 32ef: 27 44 27    'D'
-    !byte $16,   4, $12,   0,   0,   0,   0                           ; 32f2: 16 04 12... ...
-    !text "The Cesspi", $80+'t'                                       ; 32f9: 54 68 65... The
+    !byte $57                                                         ; 3285: 57          W              ; offset to start of doors
+    !byte 0, 2, 0, 2, 5                                               ; 3286: 00 02 00... ...            ; room header
+    !byte $52                                                         ; 328b: 52          R              ; set sprite 18, collision byte 128
+    !byte $71                                                         ; 328c: 71          q              ; set delta to 0,1
+    !byte 7                                                           ; 328d: 07          .              ; plot strip at 0,6 of length 7
+    !byte $e1,   2                                                    ; 328e: e1 02       ..             ; draw rect from 0,12 with size 2x1
+    !byte $e2,   4                                                    ; 3290: e2 04       ..             ; draw rect from 0,13 with size 4x2
+    !byte $86, $11                                                    ; 3292: 86 11       ..             ; set position to 17,6
+    !byte $61                                                         ; 3294: 61          a              ; set delta to 1,0
+    !byte 3                                                           ; 3295: 03          .              ; plot strip at 17,6 of length 3
+    !byte $a4                                                         ; 3296: a4          .              ; move by 4*delta to 23,6
+    !byte 8                                                           ; 3297: 08          .              ; plot strip at 23,6 of length 8
+    !byte $a6                                                         ; 3298: a6          .              ; move by 6*delta to 37,6
+    !byte 2                                                           ; 3299: 02          .              ; plot strip at 37,6 of length 2
+    !byte $87, $12                                                    ; 329a: 87 12       ..             ; set position to 18,7
+    !byte 1                                                           ; 329c: 01          .              ; plot strip at 18,7 of length 1
+    !byte $a6                                                         ; 329d: a6          .              ; move by 6*delta to 24,7
+    !byte 3                                                           ; 329e: 03          .              ; plot strip at 24,7 of length 3
+    !byte $a2                                                         ; 329f: a2          .              ; move by 2*delta to 29,7
+    !byte 1                                                           ; 32a0: 01          .              ; plot strip at 29,7 of length 1
+    !byte $a8                                                         ; 32a1: a8          .              ; move by 8*delta to 38,7
+    !byte 1                                                           ; 32a2: 01          .              ; plot strip at 38,7 of length 1
+    !byte $8e, $0c                                                    ; 32a3: 8e 0c       ..             ; set position to 12,14
+    !byte $1c                                                         ; 32a5: 1c          .              ; plot strip at 12,14 of length 28
+    !byte $42                                                         ; 32a6: 42          B              ; set sprite 2, collision byte 128
+    !byte $86,   5                                                    ; 32a7: 86 05       ..             ; set position to 5,6
+    !byte 6                                                           ; 32a9: 06          .              ; plot strip at 5,6 of length 6
+    !byte $87,   4                                                    ; 32aa: 87 04       ..             ; set position to 4,7
+    !byte 8                                                           ; 32ac: 08          .              ; plot strip at 4,7 of length 8
+    !byte $88,   3                                                    ; 32ad: 88 03       ..             ; set position to 3,8
+    !byte $0a                                                         ; 32af: 0a          .              ; plot strip at 3,8 of length 10
+    !byte $71                                                         ; 32b0: 71          q              ; set delta to 0,1
+    !byte $8c,   4                                                    ; 32b1: 8c 04       ..             ; set position to 4,12
+    !byte $13                                                         ; 32b3: 13          .              ; plot strip at 4,12 of length 19
+    !byte $61                                                         ; 32b4: 61          a              ; set delta to 1,0
+    !byte 7                                                           ; 32b5: 07          .              ; plot strip at 4,30 of length 7
+    !byte $79                                                         ; 32b6: 79          y              ; set delta to 0,-1
+    !byte 3                                                           ; 32b7: 03          .              ; plot strip at 11,30 of length 3
+    !byte $c2                                                         ; 32b8: c2          .              ; set sprite 2, collision byte 144
+    !byte 4                                                           ; 32b9: 04          .              ; plot strip at 11,27 of length 4
+    !byte $42                                                         ; 32ba: 42          B              ; set sprite 2, collision byte 128
+    !byte $0b                                                         ; 32bb: 0b          .              ; plot strip at 11,23 of length 11
+    !byte $43                                                         ; 32bc: 43          C              ; set sprite 3, collision byte 128
+    !byte $8f,   0                                                    ; 32bd: 8f 00       ..             ; set position to 0,15
+    !byte $f0,   4                                                    ; 32bf: f0 04       ..             ; draw rect from 0,15 with size 4x16
+    !byte $e1, $28                                                    ; 32c1: e1 28       .(             ; draw rect from 0,31 with size 40x1
+    !byte $8f, $0c                                                    ; 32c3: 8f 0c       ..             ; set position to 12,15
+    !byte $e8, $1c                                                    ; 32c5: e8 1c       ..             ; draw rect from 12,15 with size 28x8
+    !byte $9b, $0c                                                    ; 32c7: 9b 0c       ..             ; set position to 12,27
+    !byte $e5, $1c                                                    ; 32c9: e5 1c       ..             ; draw rect from 12,27 with size 28x5
+    !byte $4e                                                         ; 32cb: 4e          N              ; set sprite 14, collision byte 128
+    !byte $9b,   5                                                    ; 32cc: 9b 05       ..             ; set position to 5,27
+    !byte $e1,   6                                                    ; 32ce: e1 06       ..             ; draw rect from 5,27 with size 6x1
+    !byte $4a                                                         ; 32d0: 4a          J              ; set sprite 10, collision byte 128
+    !byte $e2,   6                                                    ; 32d1: e2 06       ..             ; draw rect from 5,28 with size 6x2
+    !byte $91, $26                                                    ; 32d3: 91 26       .&             ; set position to 38,17
+    !byte $6a                                                         ; 32d5: 6a          j              ; set delta to -2,0
+    !byte $c9                                                         ; 32d6: c9          .              ; set sprite 9, collision byte 144
+    !byte $0f                                                         ; 32d7: 0f          .              ; plot strip at 38,17 of length 15
+    !byte $69                                                         ; 32d8: 69          i              ; set delta to -1,0
+    !byte $d7                                                         ; 32d9: d7          .              ; set sprite 23, collision byte 144
+    !byte 1                                                           ; 32da: 01          .              ; plot strip at 10,17 of length 1
+    !byte 0                                                           ; 32db: 00          .              ; terminator for commands
+    !byte $44, $27,   8,   3, $12                                     ; 32dc: 44 27 08... D'.            ; invisible vertical door at 39,8 to door 3 in room 18
+    !byte   4, $20,   6,   1, $27                                     ; 32e1: 04 20 06... . .            ; invisible horizontal door at 32,6 to door 1 in room 39
+    !byte   4, $13,   6,   2, $27                                     ; 32e6: 04 13 06... ...            ; invisible horizontal door at 19,6 to door 2 in room 39
+    !byte   4, $0b,   6,   3, $27                                     ; 32eb: 04 0b 06... ...            ; invisible horizontal door at 11,6 to door 3 in room 39
+    !byte $44, $27, $16,   4, $12                                     ; 32f0: 44 27 16... D'.            ; invisible vertical door at 39,22 to door 4 in room 18
+    !byte 0                                                           ; 32f5: 00          .              ; terminator for doors
+    !byte 0                                                           ; 32f6: 00          .              ; terminator for keys
+    !byte 0                                                           ; 32f7: 00          .              ; terminator for computers
+    !byte 0                                                           ; 32f8: 00          .              ; terminator for collectibles
+    !text "The Cesspi", $80+'t'                                       ; 32f9: 54 68 65... The            ; "The Cesspit"
+
+;                    
+; ***..................................***
+; ***..................................***
+; ***...................................**
+; **....................................**
+; ***..................................***
+; ****................................****
+; ****..................................**
+; ****.................................***
+; ***...................................**
+; **.....................................*
+; **......................................
+; ****....................................
+; ****....................................
+; *****...................................
+; *****............*......................
+; ****............**......................
+; ***............***....................**
+; **.............****.......***........***
+; **.............****......*****......****
+; **.............*****.....*****.......***
+; ***.............****......***........***
+; **..............****......***.......****
+; ***.............***........**.......****
+; ****............**........****......****
+; ****............**.......******......***
+; **..............****....********......**
 room_39_definition
-    !byte $71,   0,   2,   0,   2,   5                                ; 3304: 71 00 02... q..            ; room header
-    !byte $52, $71, $1a, $61,   1, $ae, $10, $a6,   2, $79,   9, $a6  ; 330a: 52 71 1a... Rq.            ; room commands
-    !byte $0a, $69,   2, $d2, $71, $86,   1, $1a, $86,   2,   3, $a1  ; 3316: 0a 69 02... .i.
-    !byte   2, $e3,   2,   1, $a3, $e2,   2, $e2,   3, $e1,   2,   1  ; 3322: 02 e3 02... ...
-    !byte $a3,   1, $a1,   2, $e2,   2, $87, $26,   8, $a7,   9, $87  ; 332e: a3 01 a1... ...
-    !byte $25,   1, $a2,   2, $a1,   1, $a9,   8, $8b, $24,   1, $ac  ; 333a: 25 01 a2... %..
-    !byte   1, $a2,   3, $94, $11,   1, $96, $0f,   4, $95, $10, $e2  ; 3346: 01 a2 03... ...
-    !byte   2, $e2,   3, $e3,   4, $e1,   3, $e2,   2, $98, $19,   2  ; 3352: 02 e2 03... ...
-    !byte $97, $1a, $e1,   3, $e2,   4, $e2,   3, $61, $9c, $1b,   2  ; 335e: 97 1a e1... ...
-    !byte $9d, $1a,   4, $9e, $19,   6, $55, $9f,   2,   9,   0, $44  ; 336a: 9d 1a 04... ...
-    !byte $27, $10,   0, $28,   4, $20, $1f,   1, $26,   4, $13, $1f  ; 3376: 27 10 00... '..
-    !byte   2, $26,   4, $0b, $1f,   3, $26,   4,   3,   6,   1, $2a  ; 3382: 02 26 04... .&.
-    !byte   4,   7,   6,   2, $2a,   4, $0b,   6,   3, $2a,   4, $0f  ; 338e: 04 07 06... ...
-    !byte   6,   4, $2a,   4, $13,   6,   5, $2a,   4, $17,   6,   6  ; 339a: 06 04 2a... ..*
-    !byte $2a,   4, $1b,   6,   7, $2a,   4, $1f,   6,   8, $2a,   0  ; 33a6: 2a 04 1b... *..
-    !byte   0,   0,   0,   0                                          ; 33b2: 00 00 00... ...
+    !byte $71                                                         ; 3304: 71          q              ; offset to start of doors
+    !byte 0, 2, 0, 2, 5                                               ; 3305: 00 02 00... ...            ; room header
+    !byte $52                                                         ; 330a: 52          R              ; set sprite 18, collision byte 128
+    !byte $71                                                         ; 330b: 71          q              ; set delta to 0,1
+    !byte $1a                                                         ; 330c: 1a          .              ; plot strip at 0,6 of length 26
+    !byte $61                                                         ; 330d: 61          a              ; set delta to 1,0
+    !byte 1                                                           ; 330e: 01          .              ; plot strip at 0,31 of length 1
+    !byte $ae                                                         ; 330f: ae          .              ; move by 14*delta to 15,31
+    !byte $10                                                         ; 3310: 10          .              ; plot strip at 15,31 of length 16
+    !byte $a6                                                         ; 3311: a6          .              ; move by 6*delta to 37,31
+    !byte 2                                                           ; 3312: 02          .              ; plot strip at 37,31 of length 2
+    !byte $79                                                         ; 3313: 79          y              ; set delta to 0,-1
+    !byte 9                                                           ; 3314: 09          .              ; plot strip at 39,31 of length 9
+    !byte $a6                                                         ; 3315: a6          .              ; move by 6*delta to 39,16
+    !byte $0a                                                         ; 3316: 0a          .              ; plot strip at 39,16 of length 10
+    !byte $69                                                         ; 3317: 69          i              ; set delta to -1,0
+    !byte 2                                                           ; 3318: 02          .              ; plot strip at 39,6 of length 2
+    !byte $d2                                                         ; 3319: d2          .              ; set sprite 18, collision byte 144
+    !byte $71                                                         ; 331a: 71          q              ; set delta to 0,1
+    !byte $86,   1                                                    ; 331b: 86 01       ..             ; set position to 1,6
+    !byte $1a                                                         ; 331d: 1a          .              ; plot strip at 1,6 of length 26
+    !byte $86,   2                                                    ; 331e: 86 02       ..             ; set position to 2,6
+    !byte 3                                                           ; 3320: 03          .              ; plot strip at 2,6 of length 3
+    !byte $a1                                                         ; 3321: a1          .              ; move by 1*delta to 2,9
+    !byte 2                                                           ; 3322: 02          .              ; plot strip at 2,9 of length 2
+    !byte $e3,   2                                                    ; 3323: e3 02       ..             ; draw rect from 2,11 with size 2x3
+    !byte 1                                                           ; 3325: 01          .              ; plot strip at 2,14 of length 1
+    !byte $a3                                                         ; 3326: a3          .              ; move by 3*delta to 2,17
+    !byte $e2,   2                                                    ; 3327: e2 02       ..             ; draw rect from 2,17 with size 2x2
+    !byte $e2,   3                                                    ; 3329: e2 03       ..             ; draw rect from 2,19 with size 3x2
+    !byte $e1,   2                                                    ; 332b: e1 02       ..             ; draw rect from 2,21 with size 2x1
+    !byte 1                                                           ; 332d: 01          .              ; plot strip at 2,22 of length 1
+    !byte $a3                                                         ; 332e: a3          .              ; move by 3*delta to 2,25
+    !byte 1                                                           ; 332f: 01          .              ; plot strip at 2,25 of length 1
+    !byte $a1                                                         ; 3330: a1          .              ; move by 1*delta to 2,27
+    !byte 2                                                           ; 3331: 02          .              ; plot strip at 2,27 of length 2
+    !byte $e2,   2                                                    ; 3332: e2 02       ..             ; draw rect from 2,29 with size 2x2
+    !byte $87, $26                                                    ; 3334: 87 26       .&             ; set position to 38,7
+    !byte 8                                                           ; 3336: 08          .              ; plot strip at 38,7 of length 8
+    !byte $a7                                                         ; 3337: a7          .              ; move by 7*delta to 38,21
+    !byte 9                                                           ; 3338: 09          .              ; plot strip at 38,21 of length 9
+    !byte $87, $25                                                    ; 3339: 87 25       .%             ; set position to 37,7
+    !byte 1                                                           ; 333b: 01          .              ; plot strip at 37,7 of length 1
+    !byte $a2                                                         ; 333c: a2          .              ; move by 2*delta to 37,9
+    !byte 2                                                           ; 333d: 02          .              ; plot strip at 37,9 of length 2
+    !byte $a1                                                         ; 333e: a1          .              ; move by 1*delta to 37,12
+    !byte 1                                                           ; 333f: 01          .              ; plot strip at 37,12 of length 1
+    !byte $a9                                                         ; 3340: a9          .              ; move by 9*delta to 37,22
+    !byte 8                                                           ; 3341: 08          .              ; plot strip at 37,22 of length 8
+    !byte $8b, $24                                                    ; 3342: 8b 24       .$             ; set position to 36,11
+    !byte 1                                                           ; 3344: 01          .              ; plot strip at 36,11 of length 1
+    !byte $ac                                                         ; 3345: ac          .              ; move by 12*delta to 36,23
+    !byte 1                                                           ; 3346: 01          .              ; plot strip at 36,23 of length 1
+    !byte $a2                                                         ; 3347: a2          .              ; move by 2*delta to 36,26
+    !byte 3                                                           ; 3348: 03          .              ; plot strip at 36,26 of length 3
+    !byte $94, $11                                                    ; 3349: 94 11       ..             ; set position to 17,20
+    !byte 1                                                           ; 334b: 01          .              ; plot strip at 17,20 of length 1
+    !byte $96, $0f                                                    ; 334c: 96 0f       ..             ; set position to 15,22
+    !byte 4                                                           ; 334e: 04          .              ; plot strip at 15,22 of length 4
+    !byte $95, $10                                                    ; 334f: 95 10       ..             ; set position to 16,21
+    !byte $e2,   2                                                    ; 3351: e2 02       ..             ; draw rect from 16,21 with size 2x2
+    !byte $e2,   3                                                    ; 3353: e2 03       ..             ; draw rect from 16,23 with size 3x2
+    !byte $e3,   4                                                    ; 3355: e3 04       ..             ; draw rect from 16,25 with size 4x3
+    !byte $e1,   3                                                    ; 3357: e1 03       ..             ; draw rect from 16,28 with size 3x1
+    !byte $e2,   2                                                    ; 3359: e2 02       ..             ; draw rect from 16,29 with size 2x2
+    !byte $98, $19                                                    ; 335b: 98 19       ..             ; set position to 25,24
+    !byte 2                                                           ; 335d: 02          .              ; plot strip at 25,24 of length 2
+    !byte $97, $1a                                                    ; 335e: 97 1a       ..             ; set position to 26,23
+    !byte $e1,   3                                                    ; 3360: e1 03       ..             ; draw rect from 26,23 with size 3x1
+    !byte $e2,   4                                                    ; 3362: e2 04       ..             ; draw rect from 26,24 with size 4x2
+    !byte $e2,   3                                                    ; 3364: e2 03       ..             ; draw rect from 26,26 with size 3x2
+    !byte $61                                                         ; 3366: 61          a              ; set delta to 1,0
+    !byte $9c, $1b                                                    ; 3367: 9c 1b       ..             ; set position to 27,28
+    !byte 2                                                           ; 3369: 02          .              ; plot strip at 27,28 of length 2
+    !byte $9d, $1a                                                    ; 336a: 9d 1a       ..             ; set position to 26,29
+    !byte 4                                                           ; 336c: 04          .              ; plot strip at 26,29 of length 4
+    !byte $9e, $19                                                    ; 336d: 9e 19       ..             ; set position to 25,30
+    !byte 6                                                           ; 336f: 06          .              ; plot strip at 25,30 of length 6
+    !byte $55                                                         ; 3370: 55          U              ; set sprite 21, collision byte 128
+    !byte $9f,   2                                                    ; 3371: 9f 02       ..             ; set position to 2,31
+    !byte 9                                                           ; 3373: 09          .              ; plot strip at 2,31 of length 9
+    !byte 0                                                           ; 3374: 00          .              ; terminator for commands
+    !byte $44, $27, $10,   0, $28                                     ; 3375: 44 27 10... D'.            ; invisible vertical door at 39,16 to door 0 in room 40
+    !byte   4, $20, $1f,   1, $26                                     ; 337a: 04 20 1f... . .            ; invisible horizontal door at 32,31 to door 1 in room 38
+    !byte   4, $13, $1f,   2, $26                                     ; 337f: 04 13 1f... ...            ; invisible horizontal door at 19,31 to door 2 in room 38
+    !byte   4, $0b, $1f,   3, $26                                     ; 3384: 04 0b 1f... ...            ; invisible horizontal door at 11,31 to door 3 in room 38
+    !byte   4,   3,   6,   1, $2a                                     ; 3389: 04 03 06... ...            ; invisible horizontal door at 3,6 to door 1 in room 42
+    !byte   4,   7,   6,   2, $2a                                     ; 338e: 04 07 06... ...            ; invisible horizontal door at 7,6 to door 2 in room 42
+    !byte   4, $0b,   6,   3, $2a                                     ; 3393: 04 0b 06... ...            ; invisible horizontal door at 11,6 to door 3 in room 42
+    !byte   4, $0f,   6,   4, $2a                                     ; 3398: 04 0f 06... ...            ; invisible horizontal door at 15,6 to door 4 in room 42
+    !byte   4, $13,   6,   5, $2a                                     ; 339d: 04 13 06... ...            ; invisible horizontal door at 19,6 to door 5 in room 42
+    !byte   4, $17,   6,   6, $2a                                     ; 33a2: 04 17 06... ...            ; invisible horizontal door at 23,6 to door 6 in room 42
+    !byte   4, $1b,   6,   7, $2a                                     ; 33a7: 04 1b 06... ...            ; invisible horizontal door at 27,6 to door 7 in room 42
+    !byte   4, $1f,   6,   8, $2a                                     ; 33ac: 04 1f 06... ...            ; invisible horizontal door at 31,6 to door 8 in room 42
+    !byte 0                                                           ; 33b1: 00          .              ; terminator for doors
+    !byte 0                                                           ; 33b2: 00          .              ; terminator for keys
+    !byte 0                                                           ; 33b3: 00          .              ; terminator for computers
+    !byte 0                                                           ; 33b4: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 33b5: 00          .              ; terminator for title
+
+;                    
+; ***....***....*********************....*
+; **......*......*******............*....*
+; ***..............*****.CCCC.....K.*....*
+; ***...............****.CCCC.....1.*....*
+; ***...............****.CCCC.....K.*....*
+; ***...............****.CCCC.....4.*....*
+; ****..............****............*....*
+; ***...............**********....***....*
+; **................****.....*....*......*
+; **................****....========.....*
+; ..................****.................*
+; ..................****.................*
+; ..................****.................*
+; ..................****.................*
+; ..................****....========.....*
+; ..................****.....*....*......*
+; **................**********....********
+; ***...............****.................*
+; **................*1**.................*
+; **.................D...................*
+; ***................D...................*
+; ***................D...................*
+; **.......**........D...................*
+; ***....*****..**..*1**.................*
+; *****..***************.................*
+; ****************************************
 room_40_definition
-    !byte $73,   2,   2,   2,   0, $0a                                ; 33b6: 73 02 02... s..            ; room header
-    !byte $52, $71, $0a, $a6, $0a, $d2, $86,   1, $0a, $a6, $0a, $86  ; 33bc: 52 71 0a... Rq.            ; room commands
-    !byte   2,   1, $a1,   6, $a9,   1, $a2,   2, $a1,   3, $8c,   3  ; 33c8: 02 01 a1... ...
-    !byte   1, $61, $86,   7,   3, $a4,   4, $87,   8,   1, $a6,   3  ; 33d4: 01 61 86... .a.
-    !byte $71,   1, $9c,   9, $61,   2, $9d, $0e,   2, $9d,   7, $e1  ; 33e0: 71 01 9c... q..
-    !byte   5, $e1, $0b, $9e,   3, $e1,   2, $e1, $0f, $42, $86, $12  ; 33ec: 05 e1 0b... ...
-    !byte $f3,   3, $9d, $12, $e3,   3, $41, $86, $27, $71, $1a, $69  ; 33f8: f3 03 9d... ...
-    !byte $12, $79,   2, $a4, $13, $61, $0d, $71,   7, $69,   2, $71  ; 3404: 12 79 02... .y.
-    !byte   1, $95, $20,   2, $61,   6, $8d, $16,   6, $71,   1, $95  ; 3410: 01 95 20... ..
-    !byte $1b,   2, $69,   5, $db, $62, $8f, $1a,   4, $94, $1a,   4  ; 341c: 1b 02 69... ..i
-    !byte   0, $44,   0, $10,   0, $27,   4,   2,   6,   1, $29,   4  ; 3428: 00 44 00... .D.
-    !byte   9,   6,   2, $29, $60, $13, $18,   0,   0,   4, $22,   6  ; 3434: 09 06 02... ...
-    !byte   4, $29,   0, $c0, $20,   8, $c3, $20, $0a,   0, $c0, $17  ; 3440: 04 29 00... .).
-    !byte   8,   0,   0,   0                                          ; 344c: 08 00 00... ...
+    !byte $73                                                         ; 33b6: 73          s              ; offset to start of doors
+    !byte   2,   2,   2,   0, $0a                                     ; 33b7: 02 02 02... ...            ; room header
+    !byte $52                                                         ; 33bc: 52          R              ; set sprite 18, collision byte 128
+    !byte $71                                                         ; 33bd: 71          q              ; set delta to 0,1
+    !byte $0a                                                         ; 33be: 0a          .              ; plot strip at 0,6 of length 10
+    !byte $a6                                                         ; 33bf: a6          .              ; move by 6*delta to 0,21
+    !byte $0a                                                         ; 33c0: 0a          .              ; plot strip at 0,21 of length 10
+    !byte $d2                                                         ; 33c1: d2          .              ; set sprite 18, collision byte 144
+    !byte $86,   1                                                    ; 33c2: 86 01       ..             ; set position to 1,6
+    !byte $0a                                                         ; 33c4: 0a          .              ; plot strip at 1,6 of length 10
+    !byte $a6                                                         ; 33c5: a6          .              ; move by 6*delta to 1,21
+    !byte $0a                                                         ; 33c6: 0a          .              ; plot strip at 1,21 of length 10
+    !byte $86,   2                                                    ; 33c7: 86 02       ..             ; set position to 2,6
+    !byte 1                                                           ; 33c9: 01          .              ; plot strip at 2,6 of length 1
+    !byte $a1                                                         ; 33ca: a1          .              ; move by 1*delta to 2,7
+    !byte 6                                                           ; 33cb: 06          .              ; plot strip at 2,7 of length 6
+    !byte $a9                                                         ; 33cc: a9          .              ; move by 9*delta to 2,22
+    !byte 1                                                           ; 33cd: 01          .              ; plot strip at 2,22 of length 1
+    !byte $a2                                                         ; 33ce: a2          .              ; move by 2*delta to 2,25
+    !byte 2                                                           ; 33cf: 02          .              ; plot strip at 2,25 of length 2
+    !byte $a1                                                         ; 33d0: a1          .              ; move by 1*delta to 2,28
+    !byte 3                                                           ; 33d1: 03          .              ; plot strip at 2,28 of length 3
+    !byte $8c,   3                                                    ; 33d2: 8c 03       ..             ; set position to 3,12
+    !byte 1                                                           ; 33d4: 01          .              ; plot strip at 3,12 of length 1
+    !byte $61                                                         ; 33d5: 61          a              ; set delta to 1,0
+    !byte $86,   7                                                    ; 33d6: 86 07       ..             ; set position to 7,6
+    !byte 3                                                           ; 33d8: 03          .              ; plot strip at 7,6 of length 3
+    !byte $a4                                                         ; 33d9: a4          .              ; move by 4*delta to 13,6
+    !byte 4                                                           ; 33da: 04          .              ; plot strip at 13,6 of length 4
+    !byte $87,   8                                                    ; 33db: 87 08       ..             ; set position to 8,7
+    !byte 1                                                           ; 33dd: 01          .              ; plot strip at 8,7 of length 1
+    !byte $a6                                                         ; 33de: a6          .              ; move by 6*delta to 14,7
+    !byte 3                                                           ; 33df: 03          .              ; plot strip at 14,7 of length 3
+    !byte $71                                                         ; 33e0: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 33e1: 01          .              ; plot strip at 17,7 of length 1
+    !byte $9c,   9                                                    ; 33e2: 9c 09       ..             ; set position to 9,28
+    !byte $61                                                         ; 33e4: 61          a              ; set delta to 1,0
+    !byte 2                                                           ; 33e5: 02          .              ; plot strip at 9,28 of length 2
+    !byte $9d, $0e                                                    ; 33e6: 9d 0e       ..             ; set position to 14,29
+    !byte 2                                                           ; 33e8: 02          .              ; plot strip at 14,29 of length 2
+    !byte $9d,   7                                                    ; 33e9: 9d 07       ..             ; set position to 7,29
+    !byte $e1,   5                                                    ; 33eb: e1 05       ..             ; draw rect from 7,29 with size 5x1
+    !byte $e1, $0b                                                    ; 33ed: e1 0b       ..             ; draw rect from 7,30 with size 11x1
+    !byte $9e,   3                                                    ; 33ef: 9e 03       ..             ; set position to 3,30
+    !byte $e1,   2                                                    ; 33f1: e1 02       ..             ; draw rect from 3,30 with size 2x1
+    !byte $e1, $0f                                                    ; 33f3: e1 0f       ..             ; draw rect from 3,31 with size 15x1
+    !byte $42                                                         ; 33f5: 42          B              ; set sprite 2, collision byte 128
+    !byte $86, $12                                                    ; 33f6: 86 12       ..             ; set position to 18,6
+    !byte $f3,   3                                                    ; 33f8: f3 03       ..             ; draw rect from 18,6 with size 3x19
+    !byte $9d, $12                                                    ; 33fa: 9d 12       ..             ; set position to 18,29
+    !byte $e3,   3                                                    ; 33fc: e3 03       ..             ; draw rect from 18,29 with size 3x3
+    !byte $41                                                         ; 33fe: 41          A              ; set sprite 1, collision byte 128
+    !byte $86, $27                                                    ; 33ff: 86 27       .'             ; set position to 39,6
+    !byte $71                                                         ; 3401: 71          q              ; set delta to 0,1
+    !byte $1a                                                         ; 3402: 1a          .              ; plot strip at 39,6 of length 26
+    !byte $69                                                         ; 3403: 69          i              ; set delta to -1,0
+    !byte $12                                                         ; 3404: 12          .              ; plot strip at 39,31 of length 18
+    !byte $79                                                         ; 3405: 79          y              ; set delta to 0,-1
+    !byte 2                                                           ; 3406: 02          .              ; plot strip at 21,31 of length 2
+    !byte $a4                                                         ; 3407: a4          .              ; move by 4*delta to 21,25
+    !byte $13                                                         ; 3408: 13          .              ; plot strip at 21,25 of length 19
+    !byte $61                                                         ; 3409: 61          a              ; set delta to 1,0
+    !byte $0d                                                         ; 340a: 0d          .              ; plot strip at 21,6 of length 13
+    !byte $71                                                         ; 340b: 71          q              ; set delta to 0,1
+    !byte 7                                                           ; 340c: 07          .              ; plot strip at 34,6 of length 7
+    !byte $69                                                         ; 340d: 69          i              ; set delta to -1,0
+    !byte 2                                                           ; 340e: 02          .              ; plot strip at 34,13 of length 2
+    !byte $71                                                         ; 340f: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 3410: 01          .              ; plot strip at 32,13 of length 1
+    !byte $95, $20                                                    ; 3411: 95 20       .              ; set position to 32,21
+    !byte 2                                                           ; 3413: 02          .              ; plot strip at 32,21 of length 2
+    !byte $61                                                         ; 3414: 61          a              ; set delta to 1,0
+    !byte 6                                                           ; 3415: 06          .              ; plot strip at 32,22 of length 6
+    !byte $8d, $16                                                    ; 3416: 8d 16       ..             ; set position to 22,13
+    !byte 6                                                           ; 3418: 06          .              ; plot strip at 22,13 of length 6
+    !byte $71                                                         ; 3419: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 341a: 01          .              ; plot strip at 27,13 of length 1
+    !byte $95, $1b                                                    ; 341b: 95 1b       ..             ; set position to 27,21
+    !byte 2                                                           ; 341d: 02          .              ; plot strip at 27,21 of length 2
+    !byte $69                                                         ; 341e: 69          i              ; set delta to -1,0
+    !byte 5                                                           ; 341f: 05          .              ; plot strip at 27,22 of length 5
+    !byte $db                                                         ; 3420: db          .              ; set sprite 27, collision byte 144
+    !byte $62                                                         ; 3421: 62          b              ; set delta to 2,0
+    !byte $8f, $1a                                                    ; 3422: 8f 1a       ..             ; set position to 26,15
+    !byte 4                                                           ; 3424: 04          .              ; plot strip at 26,15 of length 4
+    !byte $94, $1a                                                    ; 3425: 94 1a       ..             ; set position to 26,20
+    !byte 4                                                           ; 3427: 04          .              ; plot strip at 26,20 of length 4
+    !byte 0                                                           ; 3428: 00          .              ; terminator for commands
+    !byte $44,   0, $10,   0, $27                                     ; 3429: 44 00 10... D..            ; invisible vertical door at 0,16 to door 0 in room 39
+    !byte   4,   2,   6,   1, $29                                     ; 342e: 04 02 06... ...            ; invisible horizontal door at 2,6 to door 1 in room 41
+    !byte   4,   9,   6,   2, $29                                     ; 3433: 04 09 06... ...            ; invisible horizontal door at 9,6 to door 2 in room 41
+    !byte $60, $13, $18,   0,   0                                     ; 3438: 60 13 18... `..            ; visible vertical door at 19,24 to door 0 in room 0
+    !byte   4, $22,   6,   4, $29                                     ; 343d: 04 22 06... .".            ; invisible horizontal door at 34,6 to door 4 in room 41
+    !byte 0                                                           ; 3442: 00          .              ; terminator for doors
+    !byte $c0, $20,   8                                               ; 3443: c0 20 08    . .            ; key at 32,8
+    !byte $c3, $20, $0a                                               ; 3446: c3 20 0a    . .            ; key at 32,10
+    !byte 0                                                           ; 3449: 00          .              ; terminator for keys
+    !byte $c0, $17,   8                                               ; 344a: c0 17 08    ...            ; computer at 23,8
+    !byte 0                                                           ; 344d: 00          .              ; terminator for computers
+    !byte 0                                                           ; 344e: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 344f: 00          .              ; terminator for title
+
+;                    
+; ****************************************
+; **********************XXXX....XXXX*.....
+; **********************XXXX....XXXX*.....
+; **********************XXXX....XXXX*.....
+; **********************XXXX....XXXX*.....
+; **************************....*****....*
+; **************************....*****....*
+; **************************....*****....*
+; **************************....*****....*
+; *********.......**********....*****....*
+; ********.....OO.**********....**1**....*
+; *****.*......OO.**********......D......*
+; ..*..........OO.**********......D......*
+; ............**************......D......*
+; .............*************......D......*
+; ..............************....**1**....*
+; ...............***********....*****....*
+; ..............************....*****....*
+; **............************....*****....*
+; ****...........***********....*****....*
+; ***...........************....*****....*
+; ***...........********xxxx....xxxx*....*
+; ***.....**.....*******xxxx....xxxx*....*
+; ***.....**.....*******xxxx....xxxx*....*
+; ***.....**....********xxxx....xxxx*....*
+; ***.....**....*********************....*
 room_41_definition
-    !byte $62,   1,   1,   1,   1,   8                                ; 3450: 62 01 01... b..            ; room header
-    !byte $52, $e9, $12, $71,   3, $a6,   8, $61,   2, $a5,   2, $a4  ; 3456: 52 e9 12... R..            ; room commands
-    !byte   4, $d2, $8f,   1, $e1,   8, $e1,   7, $61,   4, $a1,   1  ; 3462: 04 d2 8f... ...
-    !byte $92,   2,   1, $8f, $10, $f0,   2, $93, $0c,   4, $71, $0b  ; 346e: 92 02 01... ...
-    !byte $98,   1,   2, $e1,   3, $e5,   2, $9c,   8, $e3,   2, $94  ; 347a: 98 01 02... ...
-    !byte $0d, $61,   2, $71,   1, $a1,   2, $a1,   2, $a2,   1, $42  ; 3486: 0d 61 02... .a.
-    !byte $86, $12, $fa,   3, $41, $8b, $27, $15, $69, $12, $79, $19  ; 3492: 86 12 fa... ...
-    !byte $61, $12, $71, $87, $22, $0a, $a4, $0a, $8b, $16, $f0,   4  ; 349e: 61 12 71... a.q
-    !byte $8b, $1e, $e6,   4, $a4, $e6,   4,   0, $44,   0, $12,   0  ; 34aa: 8b 1e e6... ...
-    !byte $2a,   4,   2, $1f,   1, $28,   4,   9, $1f,   2            ; 34b6: 2a 04 02... *..
-    !text "(D'"                                                       ; 34c0: 28 44 27    (D'
-    !byte   6,   6, $23,   4, $22, $1f,   4                           ; 34c3: 06 06 23... ..#
-    !text "(` "                                                       ; 34ca: 28 60 20    (`
-    !byte $10,   0,   0,   0,   0, $c2, $16,   7, $c2, $1e,   7, $c3  ; 34cd: 10 00 00... ...
-    !byte $16, $1b, $c3, $1e, $1b,   0, $c1, $0d, $10,   0,   0       ; 34d9: 16 1b c3... ...
+    !byte $62                                                         ; 3450: 62          b              ; offset to start of doors
+    !byte 1, 1, 1, 1, 8                                               ; 3451: 01 01 01... ...            ; room header
+    !byte $52                                                         ; 3456: 52          R              ; set sprite 18, collision byte 128
+    !byte $e9, $12                                                    ; 3457: e9 12       ..             ; draw rect from 0,6 with size 18x9
+    !byte $71                                                         ; 3459: 71          q              ; set delta to 0,1
+    !byte 3                                                           ; 345a: 03          .              ; plot strip at 0,15 of length 3
+    !byte $a6                                                         ; 345b: a6          .              ; move by 6*delta to 0,23
+    !byte 8                                                           ; 345c: 08          .              ; plot strip at 0,23 of length 8
+    !byte $61                                                         ; 345d: 61          a              ; set delta to 1,0
+    !byte 2                                                           ; 345e: 02          .              ; plot strip at 0,31 of length 2
+    !byte $a5                                                         ; 345f: a5          .              ; move by 5*delta to 7,31
+    !byte 2                                                           ; 3460: 02          .              ; plot strip at 7,31 of length 2
+    !byte $a4                                                         ; 3461: a4          .              ; move by 4*delta to 13,31
+    !byte 4                                                           ; 3462: 04          .              ; plot strip at 13,31 of length 4
+    !byte $d2                                                         ; 3463: d2          .              ; set sprite 18, collision byte 144
+    !byte $8f,   1                                                    ; 3464: 8f 01       ..             ; set position to 1,15
+    !byte $e1,   8                                                    ; 3466: e1 08       ..             ; draw rect from 1,15 with size 8x1
+    !byte $e1,   7                                                    ; 3468: e1 07       ..             ; draw rect from 1,16 with size 7x1
+    !byte $61                                                         ; 346a: 61          a              ; set delta to 1,0
+    !byte 4                                                           ; 346b: 04          .              ; plot strip at 1,17 of length 4
+    !byte $a1                                                         ; 346c: a1          .              ; move by 1*delta to 5,17
+    !byte 1                                                           ; 346d: 01          .              ; plot strip at 5,17 of length 1
+    !byte $92,   2                                                    ; 346e: 92 02       ..             ; set position to 2,18
+    !byte 1                                                           ; 3470: 01          .              ; plot strip at 2,18 of length 1
+    !byte $8f, $10                                                    ; 3471: 8f 10       ..             ; set position to 16,15
+    !byte $f0,   2                                                    ; 3473: f0 02       ..             ; draw rect from 16,15 with size 2x16
+    !byte $93, $0c                                                    ; 3475: 93 0c       ..             ; set position to 12,19
+    !byte 4                                                           ; 3477: 04          .              ; plot strip at 12,19 of length 4
+    !byte $71                                                         ; 3478: 71          q              ; set delta to 0,1
+    !byte $0b                                                         ; 3479: 0b          .              ; plot strip at 15,19 of length 11
+    !byte $98,   1                                                    ; 347a: 98 01       ..             ; set position to 1,24
+    !byte 2                                                           ; 347c: 02          .              ; plot strip at 1,24 of length 2
+    !byte $e1,   3                                                    ; 347d: e1 03       ..             ; draw rect from 1,25 with size 3x1
+    !byte $e5,   2                                                    ; 347f: e5 02       ..             ; draw rect from 1,26 with size 2x5
+    !byte $9c,   8                                                    ; 3481: 9c 08       ..             ; set position to 8,28
+    !byte $e3,   2                                                    ; 3483: e3 02       ..             ; draw rect from 8,28 with size 2x3
+    !byte $94, $0d                                                    ; 3485: 94 0d       ..             ; set position to 13,20
+    !byte $61                                                         ; 3487: 61          a              ; set delta to 1,0
+    !byte 2                                                           ; 3488: 02          .              ; plot strip at 13,20 of length 2
+    !byte $71                                                         ; 3489: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 348a: 01          .              ; plot strip at 14,20 of length 1
+    !byte $a1                                                         ; 348b: a1          .              ; move by 1*delta to 14,22
+    !byte 2                                                           ; 348c: 02          .              ; plot strip at 14,22 of length 2
+    !byte $a1                                                         ; 348d: a1          .              ; move by 1*delta to 14,25
+    !byte 2                                                           ; 348e: 02          .              ; plot strip at 14,25 of length 2
+    !byte $a2                                                         ; 348f: a2          .              ; move by 2*delta to 14,29
+    !byte 1                                                           ; 3490: 01          .              ; plot strip at 14,29 of length 1
+    !byte $42                                                         ; 3491: 42          B              ; set sprite 2, collision byte 128
+    !byte $86, $12                                                    ; 3492: 86 12       ..             ; set position to 18,6
+    !byte $fa,   3                                                    ; 3494: fa 03       ..             ; draw rect from 18,6 with size 3x26
+    !byte $41                                                         ; 3496: 41          A              ; set sprite 1, collision byte 128
+    !byte $8b, $27                                                    ; 3497: 8b 27       .'             ; set position to 39,11
+    !byte $15                                                         ; 3499: 15          .              ; plot strip at 39,11 of length 21
+    !byte $69                                                         ; 349a: 69          i              ; set delta to -1,0
+    !byte $12                                                         ; 349b: 12          .              ; plot strip at 39,31 of length 18
+    !byte $79                                                         ; 349c: 79          y              ; set delta to 0,-1
+    !byte $19                                                         ; 349d: 19          .              ; plot strip at 21,31 of length 25
+    !byte $61                                                         ; 349e: 61          a              ; set delta to 1,0
+    !byte $12                                                         ; 349f: 12          .              ; plot strip at 21,6 of length 18
+    !byte $71                                                         ; 34a0: 71          q              ; set delta to 0,1
+    !byte $87, $22                                                    ; 34a1: 87 22       ."             ; set position to 34,7
+    !byte $0a                                                         ; 34a3: 0a          .              ; plot strip at 34,7 of length 10
+    !byte $a4                                                         ; 34a4: a4          .              ; move by 4*delta to 34,20
+    !byte $0a                                                         ; 34a5: 0a          .              ; plot strip at 34,20 of length 10
+    !byte $8b, $16                                                    ; 34a6: 8b 16       ..             ; set position to 22,11
+    !byte $f0,   4                                                    ; 34a8: f0 04       ..             ; draw rect from 22,11 with size 4x16
+    !byte $8b, $1e                                                    ; 34aa: 8b 1e       ..             ; set position to 30,11
+    !byte $e6,   4                                                    ; 34ac: e6 04       ..             ; draw rect from 30,11 with size 4x6
+    !byte $a4                                                         ; 34ae: a4          .              ; move by 4*delta to 30,21
+    !byte $e6,   4                                                    ; 34af: e6 04       ..             ; draw rect from 30,21 with size 4x6
+    !byte 0                                                           ; 34b1: 00          .              ; terminator for commands
+    !byte $44,   0, $12,   0, $2a                                     ; 34b2: 44 00 12... D..            ; invisible vertical door at 0,18 to door 0 in room 42
+    !byte   4,   2, $1f,   1, $28                                     ; 34b7: 04 02 1f... ...            ; invisible horizontal door at 2,31 to door 1 in room 40
+    !byte   4,   9, $1f,   2, $28                                     ; 34bc: 04 09 1f... ...            ; invisible horizontal door at 9,31 to door 2 in room 40
+    !byte $44, $27,   6,   6, $23                                     ; 34c1: 44 27 06... D'.            ; invisible vertical door at 39,6 to door 6 in room 35
+    !byte   4, $22, $1f,   4, $28                                     ; 34c6: 04 22 1f... .".            ; invisible horizontal door at 34,31 to door 4 in room 40
+    !byte $60, $20, $10,   0,   0                                     ; 34cb: 60 20 10... ` .            ; visible vertical door at 32,16 to door 0 in room 0
+    !byte 0                                                           ; 34d0: 00          .              ; terminator for doors
+    !byte 0                                                           ; 34d1: 00          .              ; terminator for keys
+    !byte $c2, $16,   7                                               ; 34d2: c2 16 07    ...            ; computer at 22,7
+    !byte $c2, $1e,   7                                               ; 34d5: c2 1e 07    ...            ; computer at 30,7
+    !byte $c3, $16, $1b                                               ; 34d8: c3 16 1b    ...            ; computer at 22,27
+    !byte $c3, $1e, $1b                                               ; 34db: c3 1e 1b    ...            ; computer at 30,27
+    !byte 0                                                           ; 34de: 00          .              ; terminator for computers
+    !byte $c1, $0d, $10                                               ; 34df: c1 0d 10    ...            ; collectible at 13,16
+    !byte 0                                                           ; 34e2: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 34e3: 00          .              ; terminator for title
+
+;                    
+; ******************......****************
+; ******************......****************
+; *****************.......*.**************
+; ****************..........**************
+; ***************............*************
+; *************.*.............************
+; ************................************
+; *************................*..********
+; ************...................*********
+; ************....................*..*****
+; *********.*.........................****
+; *****.*..............................***
+; ***.....................................
+; ****....................................
+; ****....................................
+; ****....................................
+; ***.....................................
+; ***.....................................
+; **....................................**
+; **....................................**
+; ***...................................**
+; **..................................****
+; **..................................****
+; **..................................****
+; ***..................................***
+; ***..................................***
 room_42_definition
-    !byte $77,   1,   1,   1,   1,   7                                ; 34e4: 77 01 01... w..            ; room header
-    !byte $52, $12, $a6, $10, $71, $0b, $a6,   8, $69,   2, $9f,   2  ; 34ea: 52 12 a6... R..            ; room commands
-    !byte   3, $79, $18, $d2, $87,   1, $e3, $0f, $e2, $0c, $e4, $0b  ; 34f6: 03 79 18... .y.
-    !byte $e1,   8, $e1,   4, $e1,   2, $e3,   3, $e2,   2, $e2,   1  ; 3502: e1 08 e1... ...
-    !byte $e1,   2, $e3,   1, $e1,   2, $87, $11, $69,   2, $71,   1  ; 350e: e1 02 e3... ...
-    !byte $8a, $0d, $61,   2, $71,   1, $8d, $0c,   1, $90, $0a,   1  ; 351a: 8a 0d 61... ..a
-    !byte $91,   6,   1, $86, $18,   3, $61, $87, $19, $0e, $88, $1a  ; 3526: 91 06 01... ...
-    !byte $e2, $0d, $8a, $1b, $0c, $8b, $1c, $e2, $0b, $8d, $1d,   1  ; 3532: e2 0d 8a... ...
-    !byte $a2,   7, $8e, $1f,   8, $8f, $20,   1, $a2,   4, $90, $24  ; 353e: a2 07 8e... ...
-    !byte   3, $91, $25,   2, $98, $26, $e3,   1, $9b, $24, $e3,   3  ; 354a: 03 91 25... ..%
-    !byte $9e, $25, $e1,   2,   0, $44, $27, $12,   0, $29,   4,   3  ; 3556: 9e 25 e1... .%.
-    !byte $1f,   4, $27,   4,   7, $1f,   5, $27,   4, $0b, $1f,   6  ; 3562: 1f 04 27... ..'
-    !byte $27,   4, $0f, $1f,   7, $27,   4, $13, $1f,   8, $27,   4  ; 356e: 27 04 0f... '..
-    !byte $17, $1f,   9, $27,   4, $1b, $1f, $0a, $27,   4, $1f, $1f  ; 357a: 17 1f 09... ...
-    !byte $0b, $27,   4, $12,   6,   0, $2b,   0,   0,   0,   0,   0  ; 3586: 0b 27 04... .'.
+    !byte $77                                                         ; 34e4: 77          w              ; offset to start of doors
+    !byte 1, 1, 1, 1, 7                                               ; 34e5: 01 01 01... ...            ; room header
+    !byte $52                                                         ; 34ea: 52          R              ; set sprite 18, collision byte 128
+    !byte $12                                                         ; 34eb: 12          .              ; plot strip at 0,6 of length 18
+    !byte $a6                                                         ; 34ec: a6          .              ; move by 6*delta to 23,6
+    !byte $10                                                         ; 34ed: 10          .              ; plot strip at 23,6 of length 16
+    !byte $71                                                         ; 34ee: 71          q              ; set delta to 0,1
+    !byte $0b                                                         ; 34ef: 0b          .              ; plot strip at 39,6 of length 11
+    !byte $a6                                                         ; 34f0: a6          .              ; move by 6*delta to 39,23
+    !byte 8                                                           ; 34f1: 08          .              ; plot strip at 39,23 of length 8
+    !byte $69                                                         ; 34f2: 69          i              ; set delta to -1,0
+    !byte 2                                                           ; 34f3: 02          .              ; plot strip at 39,31 of length 2
+    !byte $9f,   2                                                    ; 34f4: 9f 02       ..             ; set position to 2,31
+    !byte 3                                                           ; 34f6: 03          .              ; plot strip at 2,31 of length 3
+    !byte $79                                                         ; 34f7: 79          y              ; set delta to 0,-1
+    !byte $18                                                         ; 34f8: 18          .              ; plot strip at 0,31 of length 24
+    !byte $d2                                                         ; 34f9: d2          .              ; set sprite 18, collision byte 144
+    !byte $87,   1                                                    ; 34fa: 87 01       ..             ; set position to 1,7
+    !byte $e3, $0f                                                    ; 34fc: e3 0f       ..             ; draw rect from 1,7 with size 15x3
+    !byte $e2, $0c                                                    ; 34fe: e2 0c       ..             ; draw rect from 1,10 with size 12x2
+    !byte $e4, $0b                                                    ; 3500: e4 0b       ..             ; draw rect from 1,12 with size 11x4
+    !byte $e1,   8                                                    ; 3502: e1 08       ..             ; draw rect from 1,16 with size 8x1
+    !byte $e1,   4                                                    ; 3504: e1 04       ..             ; draw rect from 1,17 with size 4x1
+    !byte $e1,   2                                                    ; 3506: e1 02       ..             ; draw rect from 1,18 with size 2x1
+    !byte $e3,   3                                                    ; 3508: e3 03       ..             ; draw rect from 1,19 with size 3x3
+    !byte $e2,   2                                                    ; 350a: e2 02       ..             ; draw rect from 1,22 with size 2x2
+    !byte $e2,   1                                                    ; 350c: e2 01       ..             ; draw rect from 1,24 with size 1x2
+    !byte $e1,   2                                                    ; 350e: e1 02       ..             ; draw rect from 1,26 with size 2x1
+    !byte $e3,   1                                                    ; 3510: e3 01       ..             ; draw rect from 1,27 with size 1x3
+    !byte $e1,   2                                                    ; 3512: e1 02       ..             ; draw rect from 1,30 with size 2x1
+    !byte $87, $11                                                    ; 3514: 87 11       ..             ; set position to 17,7
+    !byte $69                                                         ; 3516: 69          i              ; set delta to -1,0
+    !byte 2                                                           ; 3517: 02          .              ; plot strip at 17,7 of length 2
+    !byte $71                                                         ; 3518: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 3519: 01          .              ; plot strip at 16,7 of length 1
+    !byte $8a, $0d                                                    ; 351a: 8a 0d       ..             ; set position to 13,10
+    !byte $61                                                         ; 351c: 61          a              ; set delta to 1,0
+    !byte 2                                                           ; 351d: 02          .              ; plot strip at 13,10 of length 2
+    !byte $71                                                         ; 351e: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 351f: 01          .              ; plot strip at 14,10 of length 1
+    !byte $8d, $0c                                                    ; 3520: 8d 0c       ..             ; set position to 12,13
+    !byte 1                                                           ; 3522: 01          .              ; plot strip at 12,13 of length 1
+    !byte $90, $0a                                                    ; 3523: 90 0a       ..             ; set position to 10,16
+    !byte 1                                                           ; 3525: 01          .              ; plot strip at 10,16 of length 1
+    !byte $91,   6                                                    ; 3526: 91 06       ..             ; set position to 6,17
+    !byte 1                                                           ; 3528: 01          .              ; plot strip at 6,17 of length 1
+    !byte $86, $18                                                    ; 3529: 86 18       ..             ; set position to 24,6
+    !byte 3                                                           ; 352b: 03          .              ; plot strip at 24,6 of length 3
+    !byte $61                                                         ; 352c: 61          a              ; set delta to 1,0
+    !byte $87, $19                                                    ; 352d: 87 19       ..             ; set position to 25,7
+    !byte $0e                                                         ; 352f: 0e          .              ; plot strip at 25,7 of length 14
+    !byte $88, $1a                                                    ; 3530: 88 1a       ..             ; set position to 26,8
+    !byte $e2, $0d                                                    ; 3532: e2 0d       ..             ; draw rect from 26,8 with size 13x2
+    !byte $8a, $1b                                                    ; 3534: 8a 1b       ..             ; set position to 27,10
+    !byte $0c                                                         ; 3536: 0c          .              ; plot strip at 27,10 of length 12
+    !byte $8b, $1c                                                    ; 3537: 8b 1c       ..             ; set position to 28,11
+    !byte $e2, $0b                                                    ; 3539: e2 0b       ..             ; draw rect from 28,11 with size 11x2
+    !byte $8d, $1d                                                    ; 353b: 8d 1d       ..             ; set position to 29,13
+    !byte 1                                                           ; 353d: 01          .              ; plot strip at 29,13 of length 1
+    !byte $a2                                                         ; 353e: a2          .              ; move by 2*delta to 31,13
+    !byte 7                                                           ; 353f: 07          .              ; plot strip at 31,13 of length 7
+    !byte $8e, $1f                                                    ; 3540: 8e 1f       ..             ; set position to 31,14
+    !byte 8                                                           ; 3542: 08          .              ; plot strip at 31,14 of length 8
+    !byte $8f, $20                                                    ; 3543: 8f 20       .              ; set position to 32,15
+    !byte 1                                                           ; 3545: 01          .              ; plot strip at 32,15 of length 1
+    !byte $a2                                                         ; 3546: a2          .              ; move by 2*delta to 34,15
+    !byte 4                                                           ; 3547: 04          .              ; plot strip at 34,15 of length 4
+    !byte $90, $24                                                    ; 3548: 90 24       .$             ; set position to 36,16
+    !byte 3                                                           ; 354a: 03          .              ; plot strip at 36,16 of length 3
+    !byte $91, $25                                                    ; 354b: 91 25       .%             ; set position to 37,17
+    !byte 2                                                           ; 354d: 02          .              ; plot strip at 37,17 of length 2
+    !byte $98, $26                                                    ; 354e: 98 26       .&             ; set position to 38,24
+    !byte $e3,   1                                                    ; 3550: e3 01       ..             ; draw rect from 38,24 with size 1x3
+    !byte $9b, $24                                                    ; 3552: 9b 24       .$             ; set position to 36,27
+    !byte $e3,   3                                                    ; 3554: e3 03       ..             ; draw rect from 36,27 with size 3x3
+    !byte $9e, $25                                                    ; 3556: 9e 25       .%             ; set position to 37,30
+    !byte $e1,   2                                                    ; 3558: e1 02       ..             ; draw rect from 37,30 with size 2x1
+    !byte 0                                                           ; 355a: 00          .              ; terminator for commands
+    !byte $44, $27, $12,   0, $29                                     ; 355b: 44 27 12... D'.            ; invisible vertical door at 39,18 to door 0 in room 41
+    !byte   4,   3, $1f,   4, $27                                     ; 3560: 04 03 1f... ...            ; invisible horizontal door at 3,31 to door 4 in room 39
+    !byte   4,   7, $1f,   5, $27                                     ; 3565: 04 07 1f... ...            ; invisible horizontal door at 7,31 to door 5 in room 39
+    !byte   4, $0b, $1f,   6, $27                                     ; 356a: 04 0b 1f... ...            ; invisible horizontal door at 11,31 to door 6 in room 39
+    !byte   4, $0f, $1f,   7, $27                                     ; 356f: 04 0f 1f... ...            ; invisible horizontal door at 15,31 to door 7 in room 39
+    !byte   4, $13, $1f,   8, $27                                     ; 3574: 04 13 1f... ...            ; invisible horizontal door at 19,31 to door 8 in room 39
+    !byte   4, $17, $1f,   9, $27                                     ; 3579: 04 17 1f... ...            ; invisible horizontal door at 23,31 to door 9 in room 39
+    !byte   4, $1b, $1f, $0a, $27                                     ; 357e: 04 1b 1f... ...            ; invisible horizontal door at 27,31 to door 10 in room 39
+    !byte   4, $1f, $1f, $0b, $27                                     ; 3583: 04 1f 1f... ...            ; invisible horizontal door at 31,31 to door 11 in room 39
+    !byte   4, $12,   6,   0, $2b                                     ; 3588: 04 12 06... ...            ; invisible horizontal door at 18,6 to door 0 in room 43
+    !byte 0                                                           ; 358d: 00          .              ; terminator for doors
+    !byte 0                                                           ; 358e: 00          .              ; terminator for keys
+    !byte 0                                                           ; 358f: 00          .              ; terminator for computers
+    !byte 0                                                           ; 3590: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 3591: 00          .              ; terminator for title
+
+;                    
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; *********************.******************
+; *******************.....****************
+; *****************AA.....K***************
+; *****************AA.....4***************
+; *****************AA.....*****.**********
+; ********************....*.**..***.*...**
+; ********************....*...............
+; *******************.....................
+; *******************.....................
+; *******************.....................
+; ******************......................
+; *******************..........**.........
+; *******************.........***.***.****
+; *******************........*************
+; *******************.......**************
+; ******************........**************
+; ******************.......***************
+; ******************.......***************
+; *****************.......****************
+; ******************......****************
+; ******************......****************
+; ******************......****************
 room_43_definition
-    !byte $64,   1,   1,   1,   1,   5                                ; 3592: 64 01 01... d..            ; room header
-    !byte $52, $e4, $28, $71, $16, $8a, $27,   6, $a6, $0a, $d2, $8a  ; 3598: 52 e4 28... R.(            ; room commands
-    !byte   1, $e1, $14, $e1, $12, $e3, $10, $e2, $13, $e3, $12, $e1  ; 35a4: 01 e1 14... ...
-    !byte $11, $e4, $12, $e3, $11, $e1, $10, $e3, $11, $8a, $19, $e4  ; 35b0: 11 e4 12... ...
-    !byte $0e, $8a, $18,   2, $a2,   3, $9c, $18,   4, $9a, $19,   6  ; 35bc: 0e 8a 18... ...
-    !byte $98, $1a,   8, $97, $1b,   9, $96, $1c, $0a, $95, $1d, $eb  ; 35c8: 98 1a 08... ...
-    !byte   2, $97, $1f,   9, $96, $20, $ea,   3, $97, $23,   9, $96  ; 35d4: 02 97 1f... ...
-    !byte $24, $ea,   3, $61, $8a, $16,   2, $8e, $19,   4, $a1,   9  ; 35e0: 24 ea 03... $..
-    !byte $8f, $1a,   2, $a2,   3, $a1,   1, $a3,   1,   0,   4, $12  ; 35ec: 8f 1a 02... ...
-    !byte $1f,   9                                                    ; 35f8: 1f 09       ..
-    !text "*D'"                                                       ; 35fa: 2a 44 27    *D'
-    !byte $10,   0, $2c,   0, $c3, $18, $0c,   0,   0, $c3, $11, $0c  ; 35fd: 10 00 2c... ..,
-    !byte   0,   0                                                    ; 3609: 00 00       ..
+    !byte $64                                                         ; 3592: 64          d              ; offset to start of doors
+    !byte 1, 1, 1, 1, 5                                               ; 3593: 01 01 01... ...            ; room header
+    !byte $52                                                         ; 3598: 52          R              ; set sprite 18, collision byte 128
+    !byte $e4, $28                                                    ; 3599: e4 28       .(             ; draw rect from 0,6 with size 40x4
+    !byte $71                                                         ; 359b: 71          q              ; set delta to 0,1
+    !byte $16                                                         ; 359c: 16          .              ; plot strip at 0,10 of length 22
+    !byte $8a, $27                                                    ; 359d: 8a 27       .'             ; set position to 39,10
+    !byte 6                                                           ; 359f: 06          .              ; plot strip at 39,10 of length 6
+    !byte $a6                                                         ; 35a0: a6          .              ; move by 6*delta to 39,21
+    !byte $0a                                                         ; 35a1: 0a          .              ; plot strip at 39,21 of length 10
+    !byte $d2                                                         ; 35a2: d2          .              ; set sprite 18, collision byte 144
+    !byte $8a,   1                                                    ; 35a3: 8a 01       ..             ; set position to 1,10
+    !byte $e1, $14                                                    ; 35a5: e1 14       ..             ; draw rect from 1,10 with size 20x1
+    !byte $e1, $12                                                    ; 35a7: e1 12       ..             ; draw rect from 1,11 with size 18x1
+    !byte $e3, $10                                                    ; 35a9: e3 10       ..             ; draw rect from 1,12 with size 16x3
+    !byte $e2, $13                                                    ; 35ab: e2 13       ..             ; draw rect from 1,15 with size 19x2
+    !byte $e3, $12                                                    ; 35ad: e3 12       ..             ; draw rect from 1,17 with size 18x3
+    !byte $e1, $11                                                    ; 35af: e1 11       ..             ; draw rect from 1,20 with size 17x1
+    !byte $e4, $12                                                    ; 35b1: e4 12       ..             ; draw rect from 1,21 with size 18x4
+    !byte $e3, $11                                                    ; 35b3: e3 11       ..             ; draw rect from 1,25 with size 17x3
+    !byte $e1, $10                                                    ; 35b5: e1 10       ..             ; draw rect from 1,28 with size 16x1
+    !byte $e3, $11                                                    ; 35b7: e3 11       ..             ; draw rect from 1,29 with size 17x3
+    !byte $8a, $19                                                    ; 35b9: 8a 19       ..             ; set position to 25,10
+    !byte $e4, $0e                                                    ; 35bb: e4 0e       ..             ; draw rect from 25,10 with size 14x4
+    !byte $8a, $18                                                    ; 35bd: 8a 18       ..             ; set position to 24,10
+    !byte 2                                                           ; 35bf: 02          .              ; plot strip at 24,10 of length 2
+    !byte $a2                                                         ; 35c0: a2          .              ; move by 2*delta to 24,13
+    !byte 3                                                           ; 35c1: 03          .              ; plot strip at 24,13 of length 3
+    !byte $9c, $18                                                    ; 35c2: 9c 18       ..             ; set position to 24,28
+    !byte 4                                                           ; 35c4: 04          .              ; plot strip at 24,28 of length 4
+    !byte $9a, $19                                                    ; 35c5: 9a 19       ..             ; set position to 25,26
+    !byte 6                                                           ; 35c7: 06          .              ; plot strip at 25,26 of length 6
+    !byte $98, $1a                                                    ; 35c8: 98 1a       ..             ; set position to 26,24
+    !byte 8                                                           ; 35ca: 08          .              ; plot strip at 26,24 of length 8
+    !byte $97, $1b                                                    ; 35cb: 97 1b       ..             ; set position to 27,23
+    !byte 9                                                           ; 35cd: 09          .              ; plot strip at 27,23 of length 9
+    !byte $96, $1c                                                    ; 35ce: 96 1c       ..             ; set position to 28,22
+    !byte $0a                                                         ; 35d0: 0a          .              ; plot strip at 28,22 of length 10
+    !byte $95, $1d                                                    ; 35d1: 95 1d       ..             ; set position to 29,21
+    !byte $eb,   2                                                    ; 35d3: eb 02       ..             ; draw rect from 29,21 with size 2x11
+    !byte $97, $1f                                                    ; 35d5: 97 1f       ..             ; set position to 31,23
+    !byte 9                                                           ; 35d7: 09          .              ; plot strip at 31,23 of length 9
+    !byte $96, $20                                                    ; 35d8: 96 20       .              ; set position to 32,22
+    !byte $ea,   3                                                    ; 35da: ea 03       ..             ; draw rect from 32,22 with size 3x10
+    !byte $97, $23                                                    ; 35dc: 97 23       .#             ; set position to 35,23
+    !byte 9                                                           ; 35de: 09          .              ; plot strip at 35,23 of length 9
+    !byte $96, $24                                                    ; 35df: 96 24       .$             ; set position to 36,22
+    !byte $ea,   3                                                    ; 35e1: ea 03       ..             ; draw rect from 36,22 with size 3x10
+    !byte $61                                                         ; 35e3: 61          a              ; set delta to 1,0
+    !byte $8a, $16                                                    ; 35e4: 8a 16       ..             ; set position to 22,10
+    !byte 2                                                           ; 35e6: 02          .              ; plot strip at 22,10 of length 2
+    !byte $8e, $19                                                    ; 35e7: 8e 19       ..             ; set position to 25,14
+    !byte 4                                                           ; 35e9: 04          .              ; plot strip at 25,14 of length 4
+    !byte $a1                                                         ; 35ea: a1          .              ; move by 1*delta to 29,14
+    !byte 9                                                           ; 35eb: 09          .              ; plot strip at 29,14 of length 9
+    !byte $8f, $1a                                                    ; 35ec: 8f 1a       ..             ; set position to 26,15
+    !byte 2                                                           ; 35ee: 02          .              ; plot strip at 26,15 of length 2
+    !byte $a2                                                         ; 35ef: a2          .              ; move by 2*delta to 29,15
+    !byte 3                                                           ; 35f0: 03          .              ; plot strip at 29,15 of length 3
+    !byte $a1                                                         ; 35f1: a1          .              ; move by 1*delta to 33,15
+    !byte 1                                                           ; 35f2: 01          .              ; plot strip at 33,15 of length 1
+    !byte $a3                                                         ; 35f3: a3          .              ; move by 3*delta to 37,15
+    !byte 1                                                           ; 35f4: 01          .              ; plot strip at 37,15 of length 1
+    !byte 0                                                           ; 35f5: 00          .              ; terminator for commands
+    !byte   4, $12, $1f,   9, $2a                                     ; 35f6: 04 12 1f... ...            ; invisible horizontal door at 18,31 to door 9 in room 42
+    !byte $44, $27, $10,   0, $2c                                     ; 35fb: 44 27 10... D'.            ; invisible vertical door at 39,16 to door 0 in room 44
+    !byte 0                                                           ; 3600: 00          .              ; terminator for doors
+    !byte $c3, $18, $0c                                               ; 3601: c3 18 0c    ...            ; key at 24,12
+    !byte 0                                                           ; 3604: 00          .              ; terminator for keys
+    !byte 0                                                           ; 3605: 00          .              ; terminator for computers
+    !byte $c3, $11, $0c                                               ; 3606: c3 11 0c    ...            ; collectible at 17,12
+    !byte 0                                                           ; 3609: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 360a: 00          .              ; terminator for title
+
+;              Onto The Roof
+; *******.................................
+; *******.................................
+; *******.................................
+; ******..................................
+; ******..................................
+; *****...................................
+; *****...................................
+; ****....................................
+; ***.....................................
+; **......................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; ***.....................................
+; ****..***.....**........................
+; ***********.*****.......................
+; *****************...********************
+; ****************...*********************
+; ****************..**********************
+; ****************************************
+; *****************.**********************
+; *****************.**********************
+; ****************************************
 room_44_definition
-    !byte $55,   3,   1,   3,   1, $0a                                ; 360b: 55 03 01... U..            ; room header
-    !byte $52, $71, $0a, $a6, $0a, $d2, $86,   1, $e3,   6, $e2,   5  ; 3611: 52 71 0a... Rq.            ; room commands
-    !byte $e2,   4, $e1,   3, $e1,   2,   1, $99,   1, $e7, $0f, $61  ; 361d: e2 04 e1... ...
-    !byte $96,   1,   2, $97,   1,   3, $a2,   3, $a5,   2, $98,   1  ; 3629: 96 01 02... ...
-    !byte $0a, $a1,   5, $71,   1, $a2,   4, $61,   1, $55, $86,   7  ; 3635: 0a a1 05... ...
-    !byte $21, $42, $9d, $12, $e3, $16, $99, $14, $5c,   1, $5e, $13  ; 3641: 21 42 9d... !B.
-    !byte $9a, $13, $5c,   1, $5e, $14, $9b, $12, $5c,   1, $5e, $15  ; 364d: 9a 13 5c... ..\
-    !byte $9c, $11, $5c,   1, $5e, $16,   0, $44,   0, $10,   1       ; 3659: 9c 11 5c... ..\
-    !text "+D'"                                                       ; 3664: 2b 44 27    +D'
-    !byte 7, 0                                                        ; 3667: 07 00       ..
-    !text "-D'"                                                       ; 3669: 2d 44 27    -D'
-    !byte $0b,   1                                                    ; 366c: 0b 01       ..
-    !text "-D'"                                                       ; 366e: 2d 44 27    -D'
-    !byte $0f,   2                                                    ; 3671: 0f 02       ..
-    !text "-D'"                                                       ; 3673: 2d 44 27    -D'
-    !byte $13,   3, $2d,   0,   0,   0,   0                           ; 3676: 13 03 2d... ..-
-    !text "Onto The Roo", $80+'f'                                     ; 367d: 4f 6e 74... Ont
+    !byte $55                                                         ; 360b: 55          U              ; offset to start of doors
+    !byte   3,   1,   3,   1, $0a                                     ; 360c: 03 01 03... ...            ; room header
+    !byte $52                                                         ; 3611: 52          R              ; set sprite 18, collision byte 128
+    !byte $71                                                         ; 3612: 71          q              ; set delta to 0,1
+    !byte $0a                                                         ; 3613: 0a          .              ; plot strip at 0,6 of length 10
+    !byte $a6                                                         ; 3614: a6          .              ; move by 6*delta to 0,21
+    !byte $0a                                                         ; 3615: 0a          .              ; plot strip at 0,21 of length 10
+    !byte $d2                                                         ; 3616: d2          .              ; set sprite 18, collision byte 144
+    !byte $86,   1                                                    ; 3617: 86 01       ..             ; set position to 1,6
+    !byte $e3,   6                                                    ; 3619: e3 06       ..             ; draw rect from 1,6 with size 6x3
+    !byte $e2,   5                                                    ; 361b: e2 05       ..             ; draw rect from 1,9 with size 5x2
+    !byte $e2,   4                                                    ; 361d: e2 04       ..             ; draw rect from 1,11 with size 4x2
+    !byte $e1,   3                                                    ; 361f: e1 03       ..             ; draw rect from 1,13 with size 3x1
+    !byte $e1,   2                                                    ; 3621: e1 02       ..             ; draw rect from 1,14 with size 2x1
+    !byte 1                                                           ; 3623: 01          .              ; plot strip at 1,15 of length 1
+    !byte $99,   1                                                    ; 3624: 99 01       ..             ; set position to 1,25
+    !byte $e7, $0f                                                    ; 3626: e7 0f       ..             ; draw rect from 1,25 with size 15x7
+    !byte $61                                                         ; 3628: 61          a              ; set delta to 1,0
+    !byte $96,   1                                                    ; 3629: 96 01       ..             ; set position to 1,22
+    !byte 2                                                           ; 362b: 02          .              ; plot strip at 1,22 of length 2
+    !byte $97,   1                                                    ; 362c: 97 01       ..             ; set position to 1,23
+    !byte 3                                                           ; 362e: 03          .              ; plot strip at 1,23 of length 3
+    !byte $a2                                                         ; 362f: a2          .              ; move by 2*delta to 5,23
+    !byte 3                                                           ; 3630: 03          .              ; plot strip at 5,23 of length 3
+    !byte $a5                                                         ; 3631: a5          .              ; move by 5*delta to 13,23
+    !byte 2                                                           ; 3632: 02          .              ; plot strip at 13,23 of length 2
+    !byte $98,   1                                                    ; 3633: 98 01       ..             ; set position to 1,24
+    !byte $0a                                                         ; 3635: 0a          .              ; plot strip at 1,24 of length 10
+    !byte $a1                                                         ; 3636: a1          .              ; move by 1*delta to 11,24
+    !byte 5                                                           ; 3637: 05          .              ; plot strip at 11,24 of length 5
+    !byte $71                                                         ; 3638: 71          q              ; set delta to 0,1
+    !byte 1                                                           ; 3639: 01          .              ; plot strip at 16,24 of length 1
+    !byte $a2                                                         ; 363a: a2          .              ; move by 2*delta to 16,27
+    !byte 4                                                           ; 363b: 04          .              ; plot strip at 16,27 of length 4
+    !byte $61                                                         ; 363c: 61          a              ; set delta to 1,0
+    !byte 1                                                           ; 363d: 01          .              ; plot strip at 16,31 of length 1
+    !byte $55                                                         ; 363e: 55          U              ; set sprite 21, collision byte 128
+    !byte $86,   7                                                    ; 363f: 86 07       ..             ; set position to 7,6
+    !byte $21                                                         ; 3641: 21          !              ; plot strip at 7,6 of length 33
+    !byte $42                                                         ; 3642: 42          B              ; set sprite 2, collision byte 128
+    !byte $9d, $12                                                    ; 3643: 9d 12       ..             ; set position to 18,29
+    !byte $e3, $16                                                    ; 3645: e3 16       ..             ; draw rect from 18,29 with size 22x3
+    !byte $99, $14                                                    ; 3647: 99 14       ..             ; set position to 20,25
+    !byte $5c                                                         ; 3649: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 364a: 01          .              ; plot strip at 20,25 of length 1
+    !byte $5e                                                         ; 364b: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $13                                                         ; 364c: 13          .              ; plot strip at 20,25 of length 19
+    !byte $9a, $13                                                    ; 364d: 9a 13       ..             ; set position to 19,26
+    !byte $5c                                                         ; 364f: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 3650: 01          .              ; plot strip at 19,26 of length 1
+    !byte $5e                                                         ; 3651: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $14                                                         ; 3652: 14          .              ; plot strip at 19,26 of length 20
+    !byte $9b, $12                                                    ; 3653: 9b 12       ..             ; set position to 18,27
+    !byte $5c                                                         ; 3655: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 3656: 01          .              ; plot strip at 18,27 of length 1
+    !byte $5e                                                         ; 3657: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $15                                                         ; 3658: 15          .              ; plot strip at 18,27 of length 21
+    !byte $9c, $11                                                    ; 3659: 9c 11       ..             ; set position to 17,28
+    !byte $5c                                                         ; 365b: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 365c: 01          .              ; plot strip at 17,28 of length 1
+    !byte $5e                                                         ; 365d: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $16                                                         ; 365e: 16          .              ; plot strip at 17,28 of length 22
+    !byte 0                                                           ; 365f: 00          .              ; terminator for commands
+    !byte $44,   0, $10,   1, $2b                                     ; 3660: 44 00 10... D..            ; invisible vertical door at 0,16 to door 1 in room 43
+    !byte $44, $27,   7,   0, $2d                                     ; 3665: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 0 in room 45
+    !byte $44, $27, $0b,   1, $2d                                     ; 366a: 44 27 0b... D'.            ; invisible vertical door at 39,11 to door 1 in room 45
+    !byte $44, $27, $0f,   2, $2d                                     ; 366f: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 2 in room 45
+    !byte $44, $27, $13,   3, $2d                                     ; 3674: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 3 in room 45
+    !byte 0                                                           ; 3679: 00          .              ; terminator for doors
+    !byte 0                                                           ; 367a: 00          .              ; terminator for keys
+    !byte 0                                                           ; 367b: 00          .              ; terminator for computers
+    !byte 0                                                           ; 367c: 00          .              ; terminator for collectibles
+    !text "Onto The Roo", $80+'f'                                     ; 367d: 4f 6e 74... Ont            ; "Onto The Roof"
+
+;                    
+; ****......................****.....
+; .....****......................****.....
+; ......**........................**......
+; ......**........................**......
+; ......**........................**......
+; ......**........................**......
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_45_definition
-    !byte $20,   3,   2,   3,   2, $0a                                ; 368a: 20 03 02...  ..            ; room header
-    !text "U(^"                                                       ; 3690: 55 28 5e    U(^            ; room commands
-    !byte $99,   0, $e4, $28, $42, $e3, $28, $95,   6, $e5,   2, $95  ; 3693: 99 00 e4... ...
-    !byte $20, $e5,   2, $5f, $93,   5,   1, $93, $1f,   1,   0, $44  ; 369f: 20 e5 02...  ..
-    !byte   0,   7,   1, $2c, $44,   0, $0b,   2, $2c, $44,   0, $0f  ; 36ab: 00 07 01... ...
-    !byte   3, $2c, $44,   0, $13,   4                                ; 36b7: 03 2c 44... .,D
-    !text ",D'"                                                       ; 36bd: 2c 44 27    ,D'
-    !byte 7, 0                                                        ; 36c0: 07 00       ..
-    !text ".D'"                                                       ; 36c2: 2e 44 27    .D'
-    !byte $0b,   1                                                    ; 36c5: 0b 01       ..
-    !text ".D'"                                                       ; 36c7: 2e 44 27    .D'
-    !byte $0f,   2                                                    ; 36ca: 0f 02       ..
-    !text ".D'"                                                       ; 36cc: 2e 44 27    .D'
-    !byte $13,   3, $2e,   0,   0,   0,   0,   0                      ; 36cf: 13 03 2e... ...
+    !byte $20                                                         ; 368a: 20                         ; offset to start of doors
+    !byte   3,   2,   3,   2, $0a                                     ; 368b: 03 02 03... ...            ; room header
+    !byte $55                                                         ; 3690: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 3691: 28          (              ; plot strip at 0,6 of length 40
+    !byte $5e                                                         ; 3692: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $99,   0                                                    ; 3693: 99 00       ..             ; set position to 0,25
+    !byte $e4, $28                                                    ; 3695: e4 28       .(             ; draw rect from 0,25 with size 40x4
+    !byte $42                                                         ; 3697: 42          B              ; set sprite 2, collision byte 128
+    !byte $e3, $28                                                    ; 3698: e3 28       .(             ; draw rect from 0,29 with size 40x3
+    !byte $95,   6                                                    ; 369a: 95 06       ..             ; set position to 6,21
+    !byte $e5,   2                                                    ; 369c: e5 02       ..             ; draw rect from 6,21 with size 2x5
+    !byte $95, $20                                                    ; 369e: 95 20       .              ; set position to 32,21
+    !byte $e5,   2                                                    ; 36a0: e5 02       ..             ; draw rect from 32,21 with size 2x5
+    !byte $5f                                                         ; 36a2: 5f          _              ; set sprite 31, collision byte 128
+    !byte $93,   5                                                    ; 36a3: 93 05       ..             ; set position to 5,19
+    !byte 1                                                           ; 36a5: 01          .              ; plot strip at 5,19 of length 1
+    !byte $93, $1f                                                    ; 36a6: 93 1f       ..             ; set position to 31,19
+    !byte 1                                                           ; 36a8: 01          .              ; plot strip at 31,19 of length 1
+    !byte 0                                                           ; 36a9: 00          .              ; terminator for commands
+    !byte $44,   0,   7,   1, $2c                                     ; 36aa: 44 00 07... D..            ; invisible vertical door at 0,7 to door 1 in room 44
+    !byte $44,   0, $0b,   2, $2c                                     ; 36af: 44 00 0b... D..            ; invisible vertical door at 0,11 to door 2 in room 44
+    !byte $44,   0, $0f,   3, $2c                                     ; 36b4: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 3 in room 44
+    !byte $44,   0, $13,   4, $2c                                     ; 36b9: 44 00 13... D..            ; invisible vertical door at 0,19 to door 4 in room 44
+    !byte $44, $27,   7,   0, $2e                                     ; 36be: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 0 in room 46
+    !byte $44, $27, $0b,   1, $2e                                     ; 36c3: 44 27 0b... D'.            ; invisible vertical door at 39,11 to door 1 in room 46
+    !byte $44, $27, $0f,   2, $2e                                     ; 36c8: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 2 in room 46
+    !byte $44, $27, $13,   3, $2e                                     ; 36cd: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 3 in room 46
+    !byte 0                                                           ; 36d2: 00          .              ; terminator for doors
+    !byte 0                                                           ; 36d3: 00          .              ; terminator for keys
+    !byte 0                                                           ; 36d4: 00          .              ; terminator for computers
+    !byte 0                                                           ; 36d5: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 36d6: 00          .              ; terminator for title
+
+;                The Attic
+; ****..................
+; ..................****..................
+; ...................**...................
+; .........**********************.........
+; ........************************........
+; .......**************************.......
+; ........************************........
+; ........***....XXXX**XXXX....***........
+; ........***....XXXX**XXXX....***........
+; ........***....XXXX**XXXX....***........
+; ........*1*....XXXX**XXXX....*1*........
+; .........D....************....D.........
+; .........D.....SSAA**AASS.....D.........
+; .........D.....SSAA**AASS.....D.........
+; .........D.....SSAA**AASS.....D.........
+; ........*1*...************...*1*........
+; ........***....cccc**cccc....***........
+; ***********....cccc**cccc....***********
+; ***********....cccc**cccc....***********
+; ***********....cccc**cccc....***********
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_46_definition
-    !byte $58,   1,   2,   1,   2, $0a                                ; 36d7: 58 01 02... X..            ; room header
-    !text "U(^"                                                       ; 36dd: 55 28 5e    U(^            ; room commands
-    !byte $99,   0, $e4,   8, $99, $20, $e4,   8, $8b,   9, $5c,   1  ; 36e0: 99 00 e4... ...
-    !byte $5e, $14, $5d,   1, $8c,   8, $5c,   1, $5e, $16, $5d,   1  ; 36ec: 5e 14 5d... ^.]
-    !byte $8d,   7, $5c,   1, $5e, $18, $5d,   1, $42, $8e,   8, $e5  ; 36f8: 8d 07 5c... ..\
-    !byte   3, $97,   8, $e5,   3, $8e, $1d, $e5,   3, $97, $1d, $e5  ; 3704: 03 97 08... ...
-    !byte   3, $8f, $13, $ed,   2, $8e, $0b, $12, $93, $0e, $0c, $97  ; 3710: 03 8f 13... ...
-    !byte $0e, $0c, $9c,   8, $18, $9d,   0, $e3, $28, $c2, $8a, $13  ; 371c: 0e 0c 9c... ...
-    !byte $e3,   2, $df, $88, $12,   1,   0, $44,   0,   7,   4, $2d  ; 3728: e3 02 df... ...
-    !byte $44,   0, $0b,   5, $2d, $44,   0, $0f,   6, $2d, $44,   0  ; 3734: 44 00 0b... D..
-    !byte $13,   7                                                    ; 3740: 13 07       ..
-    !text "-D'"                                                       ; 3742: 2d 44 27    -D'
-    !byte 7, 0                                                        ; 3745: 07 00       ..
-    !text "/D'"                                                       ; 3747: 2f 44 27    /D'
-    !byte $0b,   1                                                    ; 374a: 0b 01       ..
-    !text "/D'"                                                       ; 374c: 2f 44 27    /D'
-    !byte $0f,   2                                                    ; 374f: 0f 02       ..
-    !text "/D'"                                                       ; 3751: 2f 44 27    /D'
-    !byte $13,   3, $2f, $60,   9, $12,   0,   0, $60, $1e, $12,   0  ; 3754: 13 03 2f... ../
-    !byte   0,   0,   0, $c2, $0f, $0f, $c2, $15, $0f, $c1, $0f, $18  ; 3760: 00 00 00... ...
-    !byte $c1, $15, $18,   0, $c2, $0f, $14, $c3, $11, $14, $c3, $15  ; 376c: c1 15 18... ...
-    !byte $14, $c2, $17, $14,   0                                     ; 3778: 14 c2 17... ...
-    !text "The Atti", $80+'c'                                         ; 377d: 54 68 65... The
+    !byte $58                                                         ; 36d7: 58          X              ; offset to start of doors
+    !byte   1,   2,   1,   2, $0a                                     ; 36d8: 01 02 01... ...            ; room header
+    !byte $55                                                         ; 36dd: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 36de: 28          (              ; plot strip at 0,6 of length 40
+    !byte $5e                                                         ; 36df: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $99,   0                                                    ; 36e0: 99 00       ..             ; set position to 0,25
+    !byte $e4,   8                                                    ; 36e2: e4 08       ..             ; draw rect from 0,25 with size 8x4
+    !byte $99, $20                                                    ; 36e4: 99 20       .              ; set position to 32,25
+    !byte $e4,   8                                                    ; 36e6: e4 08       ..             ; draw rect from 32,25 with size 8x4
+    !byte $8b,   9                                                    ; 36e8: 8b 09       ..             ; set position to 9,11
+    !byte $5c                                                         ; 36ea: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 36eb: 01          .              ; plot strip at 9,11 of length 1
+    !byte $5e                                                         ; 36ec: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $14                                                         ; 36ed: 14          .              ; plot strip at 9,11 of length 20
+    !byte $5d                                                         ; 36ee: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 36ef: 01          .              ; plot strip at 29,11 of length 1
+    !byte $8c,   8                                                    ; 36f0: 8c 08       ..             ; set position to 8,12
+    !byte $5c                                                         ; 36f2: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 36f3: 01          .              ; plot strip at 8,12 of length 1
+    !byte $5e                                                         ; 36f4: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $16                                                         ; 36f5: 16          .              ; plot strip at 8,12 of length 22
+    !byte $5d                                                         ; 36f6: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 36f7: 01          .              ; plot strip at 30,12 of length 1
+    !byte $8d,   7                                                    ; 36f8: 8d 07       ..             ; set position to 7,13
+    !byte $5c                                                         ; 36fa: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 36fb: 01          .              ; plot strip at 7,13 of length 1
+    !byte $5e                                                         ; 36fc: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $18                                                         ; 36fd: 18          .              ; plot strip at 7,13 of length 24
+    !byte $5d                                                         ; 36fe: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 36ff: 01          .              ; plot strip at 31,13 of length 1
+    !byte $42                                                         ; 3700: 42          B              ; set sprite 2, collision byte 128
+    !byte $8e,   8                                                    ; 3701: 8e 08       ..             ; set position to 8,14
+    !byte $e5,   3                                                    ; 3703: e5 03       ..             ; draw rect from 8,14 with size 3x5
+    !byte $97,   8                                                    ; 3705: 97 08       ..             ; set position to 8,23
+    !byte $e5,   3                                                    ; 3707: e5 03       ..             ; draw rect from 8,23 with size 3x5
+    !byte $8e, $1d                                                    ; 3709: 8e 1d       ..             ; set position to 29,14
+    !byte $e5,   3                                                    ; 370b: e5 03       ..             ; draw rect from 29,14 with size 3x5
+    !byte $97, $1d                                                    ; 370d: 97 1d       ..             ; set position to 29,23
+    !byte $e5,   3                                                    ; 370f: e5 03       ..             ; draw rect from 29,23 with size 3x5
+    !byte $8f, $13                                                    ; 3711: 8f 13       ..             ; set position to 19,15
+    !byte $ed,   2                                                    ; 3713: ed 02       ..             ; draw rect from 19,15 with size 2x13
+    !byte $8e, $0b                                                    ; 3715: 8e 0b       ..             ; set position to 11,14
+    !byte $12                                                         ; 3717: 12          .              ; plot strip at 11,14 of length 18
+    !byte $93, $0e                                                    ; 3718: 93 0e       ..             ; set position to 14,19
+    !byte $0c                                                         ; 371a: 0c          .              ; plot strip at 14,19 of length 12
+    !byte $97, $0e                                                    ; 371b: 97 0e       ..             ; set position to 14,23
+    !byte $0c                                                         ; 371d: 0c          .              ; plot strip at 14,23 of length 12
+    !byte $9c,   8                                                    ; 371e: 9c 08       ..             ; set position to 8,28
+    !byte $18                                                         ; 3720: 18          .              ; plot strip at 8,28 of length 24
+    !byte $9d,   0                                                    ; 3721: 9d 00       ..             ; set position to 0,29
+    !byte $e3, $28                                                    ; 3723: e3 28       .(             ; draw rect from 0,29 with size 40x3
+    !byte $c2                                                         ; 3725: c2          .              ; set sprite 2, collision byte 144
+    !byte $8a, $13                                                    ; 3726: 8a 13       ..             ; set position to 19,10
+    !byte $e3,   2                                                    ; 3728: e3 02       ..             ; draw rect from 19,10 with size 2x3
+    !byte $df                                                         ; 372a: df          .              ; set sprite 31, collision byte 0
+    !byte $88, $12                                                    ; 372b: 88 12       ..             ; set position to 18,8
+    !byte 1                                                           ; 372d: 01          .              ; plot strip at 18,8 of length 1
+    !byte 0                                                           ; 372e: 00          .              ; terminator for commands
+    !byte $44,   0,   7,   4, $2d                                     ; 372f: 44 00 07... D..            ; invisible vertical door at 0,7 to door 4 in room 45
+    !byte $44,   0, $0b,   5, $2d                                     ; 3734: 44 00 0b... D..            ; invisible vertical door at 0,11 to door 5 in room 45
+    !byte $44,   0, $0f,   6, $2d                                     ; 3739: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 6 in room 45
+    !byte $44,   0, $13,   7, $2d                                     ; 373e: 44 00 13... D..            ; invisible vertical door at 0,19 to door 7 in room 45
+    !byte $44, $27,   7,   0, $2f                                     ; 3743: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 0 in room 47
+    !byte $44, $27, $0b,   1, $2f                                     ; 3748: 44 27 0b... D'.            ; invisible vertical door at 39,11 to door 1 in room 47
+    !byte $44, $27, $0f,   2, $2f                                     ; 374d: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 2 in room 47
+    !byte $44, $27, $13,   3, $2f                                     ; 3752: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 3 in room 47
+    !byte $60,   9, $12,   0,   0                                     ; 3757: 60 09 12... `..            ; visible vertical door at 9,18 to door 0 in room 0
+    !byte $60, $1e, $12,   0,   0                                     ; 375c: 60 1e 12... `..            ; visible vertical door at 30,18 to door 0 in room 0
+    !byte 0                                                           ; 3761: 00          .              ; terminator for doors
+    !byte 0                                                           ; 3762: 00          .              ; terminator for keys
+    !byte $c2, $0f, $0f                                               ; 3763: c2 0f 0f    ...            ; computer at 15,15
+    !byte $c2, $15, $0f                                               ; 3766: c2 15 0f    ...            ; computer at 21,15
+    !byte $c1, $0f, $18                                               ; 3769: c1 0f 18    ...            ; computer at 15,24
+    !byte $c1, $15, $18                                               ; 376c: c1 15 18    ...            ; computer at 21,24
+    !byte 0                                                           ; 376f: 00          .              ; terminator for computers
+    !byte $c2, $0f, $14                                               ; 3770: c2 0f 14    ...            ; collectible at 15,20
+    !byte $c3, $11, $14                                               ; 3773: c3 11 14    ...            ; collectible at 17,20
+    !byte $c3, $15, $14                                               ; 3776: c3 15 14    ...            ; collectible at 21,20
+    !byte $c2, $17, $14                                               ; 3779: c2 17 14    ...            ; collectible at 23,20
+    !byte 0                                                           ; 377c: 00          .              ; terminator for collectibles
+    !text "The Atti", $80+'c'                                         ; 377d: 54 68 65... The            ; "The Attic"
+
+;                    
+; ****......................****.....
+; .....****......................****.....
+; ......**........................**......
+; ......**........................**......
+; ......**........................**......
+; ......**........................**......
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_47_definition
-    !byte $20,   0,   2,   0,   2, $0a                                ; 3786: 20 00 02...  ..            ; room header
-    !text "U(^"                                                       ; 378c: 55 28 5e    U(^            ; room commands
-    !byte $99,   0, $e4, $28, $42, $e3, $28, $95,   6, $e5,   2, $95  ; 378f: 99 00 e4... ...
-    !byte $20, $e5,   2, $5f, $93,   5,   1, $93, $1f,   1,   0, $44  ; 379b: 20 e5 02...  ..
-    !byte   0,   7,   4, $2e, $44,   0, $0b,   5, $2e, $44,   0, $0f  ; 37a7: 00 07 04... ...
-    !byte   6, $2e, $44,   0, $13,   7                                ; 37b3: 06 2e 44... ..D
-    !text ".D'"                                                       ; 37b9: 2e 44 27    .D'
-    !byte 7, 0                                                        ; 37bc: 07 00       ..
-    !text "0D'"                                                       ; 37be: 30 44 27    0D'
-    !byte $0b,   1                                                    ; 37c1: 0b 01       ..
-    !text "0D'"                                                       ; 37c3: 30 44 27    0D'
-    !byte $0f,   2                                                    ; 37c6: 0f 02       ..
-    !text "0D'"                                                       ; 37c8: 30 44 27    0D'
-    !byte $13,   3, $30,   0,   0,   0,   0,   0                      ; 37cb: 13 03 30... ..0
+    !byte $20                                                         ; 3786: 20                         ; offset to start of doors
+    !byte   0,   2,   0,   2, $0a                                     ; 3787: 00 02 00... ...            ; room header
+    !byte $55                                                         ; 378c: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 378d: 28          (              ; plot strip at 0,6 of length 40
+    !byte $5e                                                         ; 378e: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $99,   0                                                    ; 378f: 99 00       ..             ; set position to 0,25
+    !byte $e4, $28                                                    ; 3791: e4 28       .(             ; draw rect from 0,25 with size 40x4
+    !byte $42                                                         ; 3793: 42          B              ; set sprite 2, collision byte 128
+    !byte $e3, $28                                                    ; 3794: e3 28       .(             ; draw rect from 0,29 with size 40x3
+    !byte $95,   6                                                    ; 3796: 95 06       ..             ; set position to 6,21
+    !byte $e5,   2                                                    ; 3798: e5 02       ..             ; draw rect from 6,21 with size 2x5
+    !byte $95, $20                                                    ; 379a: 95 20       .              ; set position to 32,21
+    !byte $e5,   2                                                    ; 379c: e5 02       ..             ; draw rect from 32,21 with size 2x5
+    !byte $5f                                                         ; 379e: 5f          _              ; set sprite 31, collision byte 128
+    !byte $93,   5                                                    ; 379f: 93 05       ..             ; set position to 5,19
+    !byte 1                                                           ; 37a1: 01          .              ; plot strip at 5,19 of length 1
+    !byte $93, $1f                                                    ; 37a2: 93 1f       ..             ; set position to 31,19
+    !byte 1                                                           ; 37a4: 01          .              ; plot strip at 31,19 of length 1
+    !byte 0                                                           ; 37a5: 00          .              ; terminator for commands
+    !byte $44,   0,   7,   4, $2e                                     ; 37a6: 44 00 07... D..            ; invisible vertical door at 0,7 to door 4 in room 46
+    !byte $44,   0, $0b,   5, $2e                                     ; 37ab: 44 00 0b... D..            ; invisible vertical door at 0,11 to door 5 in room 46
+    !byte $44,   0, $0f,   6, $2e                                     ; 37b0: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 6 in room 46
+    !byte $44,   0, $13,   7, $2e                                     ; 37b5: 44 00 13... D..            ; invisible vertical door at 0,19 to door 7 in room 46
+    !byte $44, $27,   7,   0, $30                                     ; 37ba: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 0 in room 48
+    !byte $44, $27, $0b,   1, $30                                     ; 37bf: 44 27 0b... D'.            ; invisible vertical door at 39,11 to door 1 in room 48
+    !byte $44, $27, $0f,   2, $30                                     ; 37c4: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 2 in room 48
+    !byte $44, $27, $13,   3, $30                                     ; 37c9: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 3 in room 48
+    !byte 0                                                           ; 37ce: 00          .              ; terminator for doors
+    !byte 0                                                           ; 37cf: 00          .              ; terminator for keys
+    !byte 0                                                           ; 37d0: 00          .              ; terminator for computers
+    !byte 0                                                           ; 37d1: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 37d2: 00          .              ; terminator for title
+
+;                    
+; ********............********......
+; .....**********..........**********.....
+; ......********............********......
+; ......**K...**............**...K**......
+; ......**4....|............|....1**......
+; ......**CCCC.|............|.CCCC**......
+; ......**CCCC.|............|.CCCC**......
+; ......**CCCC.|............|.CCCC**......
+; ......**CCCC**............**CCCC**......
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
+; ****************************************
 room_48_definition
-    !byte $61,   0,   1,   1,   0, $0a                                ; 37d3: 61 00 01... a..            ; room header
-    !byte $55, $28, $90,   6, $5c,   1, $5e,   6, $5d,   1, $ac, $5c  ; 37d9: 55 28 90... U(.            ; room commands
-    !byte   1, $5e,   6, $5d,   1, $91,   5, $5c,   1, $5e,   8, $5d  ; 37e5: 01 5e 06... .^.
-    !byte   1, $aa, $5c,   1, $5e,   8, $5d,   1, $5e, $99,   0, $e2  ; 37f1: 01 aa 5c... ..\
-    !byte   6, $e2, $28, $99, $0e, $e2, $0c, $99, $22, $e2,   6, $42  ; 37fd: 06 e2 28... ..(
-    !byte $9d,   0, $e3, $28, $92,   6, $e1,   8, $e6,   2, $e2,   8  ; 3809: 9d 00 e3... ...
-    !byte $93, $0c,   2, $98, $0c,   2, $92, $1a, $e1,   8, $e1,   2  ; 3815: 93 0c 02... ...
-    !byte $98, $1a, $e1,   2, $e2,   8, $93, $20, $e6,   2, $d4, $71  ; 3821: 98 1a e1... ...
-    !byte $94, $0d,   4, $94, $1a,   4,   0, $44,   0,   7,   4, $2f  ; 382d: 94 0d 04... ...
-    !byte $44,   0, $0b,   5, $2f, $44,   0, $0f,   6, $2f, $44,   0  ; 3839: 44 00 0b... D..
-    !byte $13,   7                                                    ; 3845: 13 07       ..
-    !text "/D'"                                                       ; 3847: 2f 44 27    /D'
-    !byte 7, 0                                                        ; 384a: 07 00       ..
-    !text "1D'"                                                       ; 384c: 31 44 27    1D'
-    !byte $0b,   1                                                    ; 384f: 0b 01       ..
-    !text "1D'"                                                       ; 3851: 31 44 27    1D'
-    !byte $0f,   2                                                    ; 3854: 0f 02       ..
-    !text "1D'"                                                       ; 3856: 31 44 27    1D'
-    !byte $13,   3, $31,   0, $c3,   8, $13, $c0, $1f, $13,   0, $c0  ; 3859: 13 03 31... ..1
-    !byte   8, $15, $c0, $1c, $15,   0,   0,   0                      ; 3865: 08 15 c0... ...
+    !byte $61                                                         ; 37d3: 61          a              ; offset to start of doors
+    !byte   0,   1,   1,   0, $0a                                     ; 37d4: 00 01 01... ...            ; room header
+    !byte $55                                                         ; 37d9: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 37da: 28          (              ; plot strip at 0,6 of length 40
+    !byte $90,   6                                                    ; 37db: 90 06       ..             ; set position to 6,16
+    !byte $5c                                                         ; 37dd: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 37de: 01          .              ; plot strip at 6,16 of length 1
+    !byte $5e                                                         ; 37df: 5e          ^              ; set sprite 30, collision byte 128
+    !byte 6                                                           ; 37e0: 06          .              ; plot strip at 6,16 of length 6
+    !byte $5d                                                         ; 37e1: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 37e2: 01          .              ; plot strip at 12,16 of length 1
+    !byte $ac, $5c                                                    ; 37e3: ac 5c       .\             ; move by 12*delta to 25,16; set sprite 28, collision byte 128
+    !byte 1                                                           ; 37e5: 01          .              ; plot strip at 25,16 of length 1
+    !byte $5e                                                         ; 37e6: 5e          ^              ; set sprite 30, collision byte 128
+    !byte 6                                                           ; 37e7: 06          .              ; plot strip at 26,16 of length 6
+    !byte $5d                                                         ; 37e8: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 37e9: 01          .              ; plot strip at 32,16 of length 1
+    !byte $91,   5                                                    ; 37ea: 91 05       ..             ; set position to 5,17
+    !byte $5c                                                         ; 37ec: 5c          \              ; set sprite 28, collision byte 128
+    !byte 1                                                           ; 37ed: 01          .              ; plot strip at 5,17 of length 1
+    !byte $5e                                                         ; 37ee: 5e          ^              ; set sprite 30, collision byte 128
+    !byte 8                                                           ; 37ef: 08          .              ; plot strip at 5,17 of length 8
+    !byte $5d                                                         ; 37f0: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 37f1: 01          .              ; plot strip at 13,17 of length 1
+    !byte $aa, $5c                                                    ; 37f2: aa 5c       .\             ; move by 10*delta to 24,17; set sprite 28, collision byte 128
+    !byte 1                                                           ; 37f4: 01          .              ; plot strip at 24,17 of length 1
+    !byte $5e                                                         ; 37f5: 5e          ^              ; set sprite 30, collision byte 128
+    !byte 8                                                           ; 37f6: 08          .              ; plot strip at 25,17 of length 8
+    !byte $5d                                                         ; 37f7: 5d          ]              ; set sprite 29, collision byte 128
+    !byte 1                                                           ; 37f8: 01          .              ; plot strip at 33,17 of length 1
+    !byte $5e                                                         ; 37f9: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $99,   0                                                    ; 37fa: 99 00       ..             ; set position to 0,25
+    !byte $e2,   6                                                    ; 37fc: e2 06       ..             ; draw rect from 0,25 with size 6x2
+    !byte $e2, $28                                                    ; 37fe: e2 28       .(             ; draw rect from 0,27 with size 40x2
+    !byte $99, $0e                                                    ; 3800: 99 0e       ..             ; set position to 14,25
+    !byte $e2, $0c                                                    ; 3802: e2 0c       ..             ; draw rect from 14,25 with size 12x2
+    !byte $99, $22                                                    ; 3804: 99 22       ."             ; set position to 34,25
+    !byte $e2,   6                                                    ; 3806: e2 06       ..             ; draw rect from 34,25 with size 6x2
+    !byte $42                                                         ; 3808: 42          B              ; set sprite 2, collision byte 128
+    !byte $9d,   0                                                    ; 3809: 9d 00       ..             ; set position to 0,29
+    !byte $e3, $28                                                    ; 380b: e3 28       .(             ; draw rect from 0,29 with size 40x3
+    !byte $92,   6                                                    ; 380d: 92 06       ..             ; set position to 6,18
+    !byte $e1,   8                                                    ; 380f: e1 08       ..             ; draw rect from 6,18 with size 8x1
+    !byte $e6,   2                                                    ; 3811: e6 02       ..             ; draw rect from 6,19 with size 2x6
+    !byte $e2,   8                                                    ; 3813: e2 08       ..             ; draw rect from 6,25 with size 8x2
+    !byte $93, $0c                                                    ; 3815: 93 0c       ..             ; set position to 12,19
+    !byte 2                                                           ; 3817: 02          .              ; plot strip at 12,19 of length 2
+    !byte $98, $0c                                                    ; 3818: 98 0c       ..             ; set position to 12,24
+    !byte 2                                                           ; 381a: 02          .              ; plot strip at 12,24 of length 2
+    !byte $92, $1a                                                    ; 381b: 92 1a       ..             ; set position to 26,18
+    !byte $e1,   8                                                    ; 381d: e1 08       ..             ; draw rect from 26,18 with size 8x1
+    !byte $e1,   2                                                    ; 381f: e1 02       ..             ; draw rect from 26,19 with size 2x1
+    !byte $98, $1a                                                    ; 3821: 98 1a       ..             ; set position to 26,24
+    !byte $e1,   2                                                    ; 3823: e1 02       ..             ; draw rect from 26,24 with size 2x1
+    !byte $e2,   8                                                    ; 3825: e2 08       ..             ; draw rect from 26,25 with size 8x2
+    !byte $93, $20                                                    ; 3827: 93 20       .              ; set position to 32,19
+    !byte $e6,   2                                                    ; 3829: e6 02       ..             ; draw rect from 32,19 with size 2x6
+    !byte $d4                                                         ; 382b: d4          .              ; set sprite 20, collision byte 144
+    !byte $71                                                         ; 382c: 71          q              ; set delta to 0,1
+    !byte $94, $0d                                                    ; 382d: 94 0d       ..             ; set position to 13,20
+    !byte 4                                                           ; 382f: 04          .              ; plot strip at 13,20 of length 4
+    !byte $94, $1a                                                    ; 3830: 94 1a       ..             ; set position to 26,20
+    !byte 4                                                           ; 3832: 04          .              ; plot strip at 26,20 of length 4
+    !byte 0                                                           ; 3833: 00          .              ; terminator for commands
+    !byte $44,   0,   7,   4, $2f                                     ; 3834: 44 00 07... D..            ; invisible vertical door at 0,7 to door 4 in room 47
+    !byte $44,   0, $0b,   5, $2f                                     ; 3839: 44 00 0b... D..            ; invisible vertical door at 0,11 to door 5 in room 47
+    !byte $44,   0, $0f,   6, $2f                                     ; 383e: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 6 in room 47
+    !byte $44,   0, $13,   7, $2f                                     ; 3843: 44 00 13... D..            ; invisible vertical door at 0,19 to door 7 in room 47
+    !byte $44, $27,   7,   0, $31                                     ; 3848: 44 27 07... D'.            ; invisible vertical door at 39,7 to door 0 in room 49
+    !byte $44, $27, $0b,   1, $31                                     ; 384d: 44 27 0b... D'.            ; invisible vertical door at 39,11 to door 1 in room 49
+    !byte $44, $27, $0f,   2, $31                                     ; 3852: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 2 in room 49
+    !byte $44, $27, $13,   3, $31                                     ; 3857: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 3 in room 49
+    !byte 0                                                           ; 385c: 00          .              ; terminator for doors
+    !byte $c3,   8, $13                                               ; 385d: c3 08 13    ...            ; key at 8,19
+    !byte $c0, $1f, $13                                               ; 3860: c0 1f 13    ...            ; key at 31,19
+    !byte 0                                                           ; 3863: 00          .              ; terminator for keys
+    !byte $c0,   8, $15                                               ; 3864: c0 08 15    ...            ; computer at 8,21
+    !byte $c0, $1c, $15                                               ; 3867: c0 1c 15    ...            ; computer at 28,21
+    !byte 0                                                           ; 386a: 00          .              ; terminator for computers
+    !byte 0                                                           ; 386b: 00          .              ; terminator for collectibles
+    !byte 0                                                           ; 386c: 00          .              ; terminator for title
+
+;              Onto The Roof
+; **==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; ........................................
+; ........................................
+; ........................................
+; ........................................
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; ***********************************==***
+; ***********************************==***
+; ***********************************==***
+; ***********************************==***
+; ***********************************==***
+; ***********************************==***
+; ***********************************==***
 room_49_definition
-    !byte $29,   3,   2,   3,   2,   6                                ; 386d: 29 03 02... )..            ; room header
-    !byte $55, $1b, $71, $44, $86, $21, $e4,   2, $a4, $f2,   2, $86  ; 3873: 55 1b 71... U.q            ; room commands
-    !byte $25, $e4,   3, $a4, $f2,   3, $5b, $86, $23,   4, $a4, $12  ; 387f: 25 e4 03... %..
-    !byte $5e, $99,   0, $e4, $21, $42, $9d,   0, $e3, $21,   0, $44  ; 388b: 5e 99 00... ^..
-    !byte   0,   7,   4, $30, $44,   0, $0b,   5, $30, $44,   0, $0f  ; 3897: 00 07 04... ...
-    !byte   6, $30, $44,   0, $13,   7, $30,   4, $1b,   6,   7       ; 38a3: 06 30 44... .0D
-    !text "5D'"                                                       ; 38ae: 35 44 27    5D'
-    !byte   9,   0, $32,   4, $17,   6,   6, $35,   4, $13,   6,   5  ; 38b1: 09 00 32... ..2
-    !byte $35,   4, $0f,   6,   4, $35,   4, $0b,   6,   3, $35,   4  ; 38bd: 35 04 0f... 5..
-    !byte   7,   6,   2, $35,   4,   3,   6,   1, $35,   4,   0,   6  ; 38c9: 07 06 02... ...
-    !byte   0, $35,   0,   0,   0,   0                                ; 38d5: 00 35 00... .5.
-    !text "Onto The Roo", $80+'f'                                     ; 38db: 4f 6e 74... Ont
+    !byte $29                                                         ; 386d: 29          )              ; offset to start of doors
+    !byte 3, 2, 3, 2, 6                                               ; 386e: 03 02 03... ...            ; room header
+    !byte $55                                                         ; 3873: 55          U              ; set sprite 21, collision byte 128
+    !byte $1b                                                         ; 3874: 1b          .              ; plot strip at 0,6 of length 27
+    !byte $71                                                         ; 3875: 71          q              ; set delta to 0,1
+    !byte $44                                                         ; 3876: 44          D              ; set sprite 4, collision byte 128
+    !byte $86, $21                                                    ; 3877: 86 21       .!             ; set position to 33,6
+    !byte $e4,   2                                                    ; 3879: e4 02       ..             ; draw rect from 33,6 with size 2x4
+    !byte $a4                                                         ; 387b: a4          .              ; move by 4*delta to 33,14
+    !byte $f2,   2                                                    ; 387c: f2 02       ..             ; draw rect from 33,14 with size 2x18
+    !byte $86, $25                                                    ; 387e: 86 25       .%             ; set position to 37,6
+    !byte $e4,   3                                                    ; 3880: e4 03       ..             ; draw rect from 37,6 with size 3x4
+    !byte $a4                                                         ; 3882: a4          .              ; move by 4*delta to 37,14
+    !byte $f2,   3                                                    ; 3883: f2 03       ..             ; draw rect from 37,14 with size 3x18
+    !byte $5b                                                         ; 3885: 5b          [              ; set sprite 27, collision byte 128
+    !byte $86, $23                                                    ; 3886: 86 23       .#             ; set position to 35,6
+    !byte 4                                                           ; 3888: 04          .              ; plot strip at 35,6 of length 4
+    !byte $a4                                                         ; 3889: a4          .              ; move by 4*delta to 35,13
+    !byte $12                                                         ; 388a: 12          .              ; plot strip at 35,13 of length 18
+    !byte $5e                                                         ; 388b: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $99,   0                                                    ; 388c: 99 00       ..             ; set position to 0,25
+    !byte $e4, $21                                                    ; 388e: e4 21       .!             ; draw rect from 0,25 with size 33x4
+    !byte $42                                                         ; 3890: 42          B              ; set sprite 2, collision byte 128
+    !byte $9d,   0                                                    ; 3891: 9d 00       ..             ; set position to 0,29
+    !byte $e3, $21                                                    ; 3893: e3 21       .!             ; draw rect from 0,29 with size 33x3
+    !byte 0                                                           ; 3895: 00          .              ; terminator for commands
+    !byte $44,   0,   7,   4, $30                                     ; 3896: 44 00 07... D..            ; invisible vertical door at 0,7 to door 4 in room 48
+    !byte $44,   0, $0b,   5, $30                                     ; 389b: 44 00 0b... D..            ; invisible vertical door at 0,11 to door 5 in room 48
+    !byte $44,   0, $0f,   6, $30                                     ; 38a0: 44 00 0f... D..            ; invisible vertical door at 0,15 to door 6 in room 48
+    !byte $44,   0, $13,   7, $30                                     ; 38a5: 44 00 13... D..            ; invisible vertical door at 0,19 to door 7 in room 48
+    !byte   4, $1b,   6,   7, $35                                     ; 38aa: 04 1b 06... ...            ; invisible horizontal door at 27,6 to door 7 in room 53
+    !byte $44, $27,   9,   0, $32                                     ; 38af: 44 27 09... D'.            ; invisible vertical door at 39,9 to door 0 in room 50
+    !byte   4, $17,   6,   6, $35                                     ; 38b4: 04 17 06... ...            ; invisible horizontal door at 23,6 to door 6 in room 53
+    !byte   4, $13,   6,   5, $35                                     ; 38b9: 04 13 06... ...            ; invisible horizontal door at 19,6 to door 5 in room 53
+    !byte   4, $0f,   6,   4, $35                                     ; 38be: 04 0f 06... ...            ; invisible horizontal door at 15,6 to door 4 in room 53
+    !byte   4, $0b,   6,   3, $35                                     ; 38c3: 04 0b 06... ...            ; invisible horizontal door at 11,6 to door 3 in room 53
+    !byte   4,   7,   6,   2, $35                                     ; 38c8: 04 07 06... ...            ; invisible horizontal door at 7,6 to door 2 in room 53
+    !byte   4,   3,   6,   1, $35                                     ; 38cd: 04 03 06... ...            ; invisible horizontal door at 3,6 to door 1 in room 53
+    !byte   4,   0,   6,   0, $35                                     ; 38d2: 04 00 06... ...            ; invisible horizontal door at 0,6 to door 0 in room 53
+    !byte 0                                                           ; 38d7: 00          .              ; terminator for doors
+    !byte 0                                                           ; 38d8: 00          .              ; terminator for keys
+    !byte 0                                                           ; 38d9: 00          .              ; terminator for computers
+    !byte 0                                                           ; 38da: 00          .              ; terminator for collectibles
+    !text "Onto The Roo", $80+'f'                                     ; 38db: 4f 6e 74... Ont            ; "Onto The Roof"
+
+;              In the Tower
+; ***==***********=1DDDD1=***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ............****==....==***********==***
+; ............****==....==***********==***
+; ............****==....==***********==***
+; ............****==....==***********==***
+; ***==****...****==....==***********==***
+; ***==****...****......==***********==***
+; ***==**|||||||........==***********==***
+; ***==****...****......==***********==***
+; ***==****...****==....==***********==***
+; ***==****...**1*==....==***********==***
+; ***==****.....D.......==***********==***
+; ***==****.....D.......==***********==***
+; ***==****.....D.......==***********==***
+; ***==****.....D.......==***********==***
+; ***==*********1*==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********==....==***********==***
 room_50_definition
-    !byte $3f,   1,   1,   1,   1,   6                                ; 38e8: 3f 01 01... ?..            ; room header
-    !byte $44, $e4,   3, $71, $a4, $f2,   3, $86,   5, $e4, $0b, $8a  ; 38ee: 44 e4 03... D..            ; room commands
-    !byte $0c, $e6,   4, $a1, $e3,   4, $8e,   5, $ea,   4, $e8, $0b  ; 38fa: 0c e6 04... ...
-    !byte $86, $18, $fa, $0b, $86, $25, $fa,   3, $5b, $86,   3,   4  ; 3906: 86 18 fa... ...
-    !byte $a4, $12, $86, $10,   9, $a3,   2, $a4,   8, $86, $16, $1a  ; 3912: a4 12 86... ...
-    !byte $86, $23, $1a, $d4, $61, $90,   7,   7,   0, $44,   0,   9  ; 391e: 86 23 1a... .#.
-    !byte   5, $31, $60, $0e, $13,   0,   0,   4, $11, $1f,   3, $1a  ; 392a: 05 31 60... .1`
-    !byte $20, $11,   6,   0, $33,   0,   0,   0,   0                 ; 3936: 20 11 06...  ..
-    !text "In the Towe", $80+'r'                                      ; 393f: 49 6e 20... In
+    !byte $3f                                                         ; 38e8: 3f          ?              ; offset to start of doors
+    !byte 1, 1, 1, 1, 6                                               ; 38e9: 01 01 01... ...            ; room header
+    !byte $44                                                         ; 38ee: 44          D              ; set sprite 4, collision byte 128
+    !byte $e4,   3                                                    ; 38ef: e4 03       ..             ; draw rect from 0,6 with size 3x4
+    !byte $71                                                         ; 38f1: 71          q              ; set delta to 0,1
+    !byte $a4                                                         ; 38f2: a4          .              ; move by 4*delta to 0,14
+    !byte $f2,   3                                                    ; 38f3: f2 03       ..             ; draw rect from 0,14 with size 3x18
+    !byte $86,   5                                                    ; 38f5: 86 05       ..             ; set position to 5,6
+    !byte $e4, $0b                                                    ; 38f7: e4 0b       ..             ; draw rect from 5,6 with size 11x4
+    !byte $8a, $0c                                                    ; 38f9: 8a 0c       ..             ; set position to 12,10
+    !byte $e6,   4                                                    ; 38fb: e6 04       ..             ; draw rect from 12,10 with size 4x6
+    !byte $a1                                                         ; 38fd: a1          .              ; move by 1*delta to 12,17
+    !byte $e3,   4                                                    ; 38fe: e3 04       ..             ; draw rect from 12,17 with size 4x3
+    !byte $8e,   5                                                    ; 3900: 8e 05       ..             ; set position to 5,14
+    !byte $ea,   4                                                    ; 3902: ea 04       ..             ; draw rect from 5,14 with size 4x10
+    !byte $e8, $0b                                                    ; 3904: e8 0b       ..             ; draw rect from 5,24 with size 11x8
+    !byte $86, $18                                                    ; 3906: 86 18       ..             ; set position to 24,6
+    !byte $fa, $0b                                                    ; 3908: fa 0b       ..             ; draw rect from 24,6 with size 11x26
+    !byte $86, $25                                                    ; 390a: 86 25       .%             ; set position to 37,6
+    !byte $fa,   3                                                    ; 390c: fa 03       ..             ; draw rect from 37,6 with size 3x26
+    !byte $5b                                                         ; 390e: 5b          [              ; set sprite 27, collision byte 128
+    !byte $86,   3                                                    ; 390f: 86 03       ..             ; set position to 3,6
+    !byte 4                                                           ; 3911: 04          .              ; plot strip at 3,6 of length 4
+    !byte $a4                                                         ; 3912: a4          .              ; move by 4*delta to 3,13
+    !byte $12                                                         ; 3913: 12          .              ; plot strip at 3,13 of length 18
+    !byte $86, $10                                                    ; 3914: 86 10       ..             ; set position to 16,6
+    !byte 9                                                           ; 3916: 09          .              ; plot strip at 16,6 of length 9
+    !byte $a3                                                         ; 3917: a3          .              ; move by 3*delta to 16,17
+    !byte 2                                                           ; 3918: 02          .              ; plot strip at 16,17 of length 2
+    !byte $a4                                                         ; 3919: a4          .              ; move by 4*delta to 16,23
+    !byte 8                                                           ; 391a: 08          .              ; plot strip at 16,23 of length 8
+    !byte $86, $16                                                    ; 391b: 86 16       ..             ; set position to 22,6
+    !byte $1a                                                         ; 391d: 1a          .              ; plot strip at 22,6 of length 26
+    !byte $86, $23                                                    ; 391e: 86 23       .#             ; set position to 35,6
+    !byte $1a                                                         ; 3920: 1a          .              ; plot strip at 35,6 of length 26
+    !byte $d4                                                         ; 3921: d4          .              ; set sprite 20, collision byte 144
+    !byte $61                                                         ; 3922: 61          a              ; set delta to 1,0
+    !byte $90,   7                                                    ; 3923: 90 07       ..             ; set position to 7,16
+    !byte 7                                                           ; 3925: 07          .              ; plot strip at 7,16 of length 7
+    !byte 0                                                           ; 3926: 00          .              ; terminator for commands
+    !byte $44,   0,   9,   5, $31                                     ; 3927: 44 00 09... D..            ; invisible vertical door at 0,9 to door 5 in room 49
+    !byte $60, $0e, $13,   0,   0                                     ; 392c: 60 0e 13... `..            ; visible vertical door at 14,19 to door 0 in room 0
+    !byte   4, $11, $1f,   3, $1a                                     ; 3931: 04 11 1f... ...            ; invisible horizontal door at 17,31 to door 3 in room 26
+    !byte $20, $11,   6,   0, $33                                     ; 3936: 20 11 06...  ..            ; visible horizontal door at 17,6 to door 0 in room 51
+    !byte 0                                                           ; 393b: 00          .              ; terminator for doors
+    !byte 0                                                           ; 393c: 00          .              ; terminator for keys
+    !byte 0                                                           ; 393d: 00          .              ; terminator for computers
+    !byte 0                                                           ; 393e: 00          .              ; terminator for collectibles
+    !text "In the Towe", $80+'r'                                      ; 393f: 49 6e 20... In             ; "In the Tower"
 room_definition_low
     !byte <room_0_definition                                          ; 394b: 3c          <
     !byte <room_1_definition                                          ; 394c: 99          .
@@ -5361,52 +9342,295 @@ room_definition_high
     !byte >room_52_definition                                         ; 39b6: 3a          :
     !byte >room_53_definition                                         ; 39b7: 3a          :
     !byte >room_54_definition                                         ; 39b8: 3b          ;
+
+;            Top of the Tower
+; ==...........==....==...........==...
+; ***==***********==****==***********==***
+; ***==***********==****==***********==***
+; ***==...........==....==...........==***
+; ***==..............................==***
+; ***==..............................==***
+; ***==..............................==***
+; ***==..............................==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==...........==....==...........==***
+; ***==..OO...OO..==....==..K.....K..==***
+; ***==**OO***OO**==....==**1*****1**==***
+; ***==**OO***OO**==....==***********==***
+; ***==***********==....==***********==***
+; ***==***********=1DDDD1=***********==***
 room_51_definition
-    !byte $44,   2,   2,   2,   3,   7                                ; 39b9: 44 02 02... D..            ; room header
-    !text "U(D"                                                       ; 39bf: 55 28 44    U(D            ; room commands
-    !byte $8b,   0, $f5,   3, $8b,   5, $e2, $1e, $9e,   5, $e2, $0b  ; 39c2: 8b 00 f5... ...
-    !byte $9d, $18, $e3, $0b, $8b, $25, $f5,   3, $9c,   5,   2, $a2  ; 39ce: 9d 18 e3... ...
-    !byte   3, $a2,   2, $a8,   2, $a1,   5, $a1,   2, $9d,   5,   2  ; 39da: 03 a2 02... ...
-    !byte $a2,   3, $a2,   2, $71, $5b, $8a,   3, $16, $8a, $10,   4  ; 39e6: a2 03 a2... ...
-    !byte $a4, $0e, $8a, $16,   4, $a4, $0e, $8a, $23, $16,   0, $20  ; 39f2: a4 0e 8a... ...
-    !byte $11, $1f,   3, $32, $44,   0,   6,   8                      ; 39fe: 11 1f 03... ...
-    !text "5D'"                                                       ; 3a06: 35 44 27    5D'
-    !byte   6,   0, $36,   0, $c0, $1a, $1b, $c0, $20, $1b,   0,   0  ; 3a09: 06 00 36... ..6
-    !byte $c1,   7, $1b, $c1, $0c, $1b,   0                           ; 3a15: c1 07 1b... ...
-    !text "Top of the Towe", $80+'r'                                  ; 3a1c: 54 6f 70... Top
+    !byte $44                                                         ; 39b9: 44          D              ; offset to start of doors
+    !byte 2, 2, 2, 3, 7                                               ; 39ba: 02 02 02... ...            ; room header
+    !byte $55                                                         ; 39bf: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 39c0: 28          (              ; plot strip at 0,6 of length 40
+    !byte $44                                                         ; 39c1: 44          D              ; set sprite 4, collision byte 128
+    !byte $8b,   0                                                    ; 39c2: 8b 00       ..             ; set position to 0,11
+    !byte $f5,   3                                                    ; 39c4: f5 03       ..             ; draw rect from 0,11 with size 3x21
+    !byte $8b,   5                                                    ; 39c6: 8b 05       ..             ; set position to 5,11
+    !byte $e2, $1e                                                    ; 39c8: e2 1e       ..             ; draw rect from 5,11 with size 30x2
+    !byte $9e,   5                                                    ; 39ca: 9e 05       ..             ; set position to 5,30
+    !byte $e2, $0b                                                    ; 39cc: e2 0b       ..             ; draw rect from 5,30 with size 11x2
+    !byte $9d, $18                                                    ; 39ce: 9d 18       ..             ; set position to 24,29
+    !byte $e3, $0b                                                    ; 39d0: e3 0b       ..             ; draw rect from 24,29 with size 11x3
+    !byte $8b, $25                                                    ; 39d2: 8b 25       .%             ; set position to 37,11
+    !byte $f5,   3                                                    ; 39d4: f5 03       ..             ; draw rect from 37,11 with size 3x21
+    !byte $9c,   5                                                    ; 39d6: 9c 05       ..             ; set position to 5,28
+    !byte 2                                                           ; 39d8: 02          .              ; plot strip at 5,28 of length 2
+    !byte $a2                                                         ; 39d9: a2          .              ; move by 2*delta to 8,28
+    !byte 3                                                           ; 39da: 03          .              ; plot strip at 8,28 of length 3
+    !byte $a2                                                         ; 39db: a2          .              ; move by 2*delta to 13,28
+    !byte 2                                                           ; 39dc: 02          .              ; plot strip at 13,28 of length 2
+    !byte $a8                                                         ; 39dd: a8          .              ; move by 8*delta to 23,28
+    !byte 2                                                           ; 39de: 02          .              ; plot strip at 23,28 of length 2
+    !byte $a1                                                         ; 39df: a1          .              ; move by 1*delta to 26,28
+    !byte 5                                                           ; 39e0: 05          .              ; plot strip at 26,28 of length 5
+    !byte $a1                                                         ; 39e1: a1          .              ; move by 1*delta to 32,28
+    !byte 2                                                           ; 39e2: 02          .              ; plot strip at 32,28 of length 2
+    !byte $9d,   5                                                    ; 39e3: 9d 05       ..             ; set position to 5,29
+    !byte 2                                                           ; 39e5: 02          .              ; plot strip at 5,29 of length 2
+    !byte $a2                                                         ; 39e6: a2          .              ; move by 2*delta to 8,29
+    !byte 3                                                           ; 39e7: 03          .              ; plot strip at 8,29 of length 3
+    !byte $a2                                                         ; 39e8: a2          .              ; move by 2*delta to 13,29
+    !byte 2                                                           ; 39e9: 02          .              ; plot strip at 13,29 of length 2
+    !byte $71                                                         ; 39ea: 71          q              ; set delta to 0,1
+    !byte $5b                                                         ; 39eb: 5b          [              ; set sprite 27, collision byte 128
+    !byte $8a,   3                                                    ; 39ec: 8a 03       ..             ; set position to 3,10
+    !byte $16                                                         ; 39ee: 16          .              ; plot strip at 3,10 of length 22
+    !byte $8a, $10                                                    ; 39ef: 8a 10       ..             ; set position to 16,10
+    !byte 4                                                           ; 39f1: 04          .              ; plot strip at 16,10 of length 4
+    !byte $a4                                                         ; 39f2: a4          .              ; move by 4*delta to 16,17
+    !byte $0e                                                         ; 39f3: 0e          .              ; plot strip at 16,17 of length 14
+    !byte $8a, $16                                                    ; 39f4: 8a 16       ..             ; set position to 22,10
+    !byte 4                                                           ; 39f6: 04          .              ; plot strip at 22,10 of length 4
+    !byte $a4                                                         ; 39f7: a4          .              ; move by 4*delta to 22,17
+    !byte $0e                                                         ; 39f8: 0e          .              ; plot strip at 22,17 of length 14
+    !byte $8a, $23                                                    ; 39f9: 8a 23       .#             ; set position to 35,10
+    !byte $16                                                         ; 39fb: 16          .              ; plot strip at 35,10 of length 22
+    !byte 0                                                           ; 39fc: 00          .              ; terminator for commands
+    !byte $20, $11, $1f,   3, $32                                     ; 39fd: 20 11 1f...  ..            ; visible horizontal door at 17,31 to door 3 in room 50
+    !byte $44,   0,   6,   8, $35                                     ; 3a02: 44 00 06... D..            ; invisible vertical door at 0,6 to door 8 in room 53
+    !byte $44, $27,   6,   0, $36                                     ; 3a07: 44 27 06... D'.            ; invisible vertical door at 39,6 to door 0 in room 54
+    !byte 0                                                           ; 3a0c: 00          .              ; terminator for doors
+    !byte $c0, $1a, $1b                                               ; 3a0d: c0 1a 1b    ...            ; key at 26,27
+    !byte $c0, $20, $1b                                               ; 3a10: c0 20 1b    . .            ; key at 32,27
+    !byte 0                                                           ; 3a13: 00          .              ; terminator for keys
+    !byte 0                                                           ; 3a14: 00          .              ; terminator for computers
+    !byte $c1,   7, $1b                                               ; 3a15: c1 07 1b    ...            ; collectible at 7,27
+    !byte $c1, $0c, $1b                                               ; 3a18: c1 0c 1b    ...            ; collectible at 12,27
+    !byte 0                                                           ; 3a1b: 00          .              ; terminator for collectibles
+    !text "Top of the Towe", $80+'r'                                  ; 3a1c: 54 6f 70... Top            ; "Top of the Tower"
+
+;           The Helicopter Pad
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==*****************************......
+; ***==***cccc*....*....*....*XXXX*.......
+; ***==***cccc*....*....*....*XXXX*.......
+; ***==***cccc*....*....*....*XXXX*.......
+; ***==***cccc*....*....*....*XXXX*.......
+; ***==*************....***************...
+; ***==*************....****************..
+; ***==*************....*****************.
+; ***==*************....******************
+; ***==*************....*****************.
+; ***==*************....*****************.
+; ***==*************....*****************.
 room_52_definition
-    !byte $53,   1,   2,   1,   2,   8                                ; 3a2c: 53 01 02... S..            ; room header
-    !byte $44, $fa,   7, $55, $86, $0d, $1b, $71, $14, $5b, $86,   3  ; 3a32: 44 fa 07... D..            ; room commands
-    !byte $1a, $cc, $96,   7,   3, $96, $0c,   7, $96, $11, $0a, $96  ; 3a3e: 1a cc 96... ...
-    !byte $16, $0a, $96, $1b,   3, $96, $20,   3, $65, $4f, $95,   7  ; 3a4a: 16 0a 96... ...
-    !byte   6, $61, $94,   7, $1b, $42, $9d,   7, $e3, $0a, $9d, $17  ; 3a56: 06 61 94... .a.
-    !byte $e3, $10, $5e, $99,   7, $e4, $0a, $99, $17, $e2, $0e, $9b  ; 3a62: e3 10 5e... ..^
-    !byte $17, $e2, $10, $5d, $99, $24,   1, $9a, $25,   1, $9b, $26  ; 3a6e: 17 e2 10... ...
-    !byte   1, $9c, $27,   1,   0,   4, $11, $1f,   2,   1,   4,   7  ; 3a7a: 01 9c 27... ..'
-    !byte   6,   1, $36,   4, $0b,   6,   2, $36,   4, $0f,   6,   3  ; 3a86: 06 01 36... ..6
-    !byte $36,   4, $13,   6,   4, $36,   4, $17,   6,   5, $36,   4  ; 3a92: 36 04 13... 6..
-    !byte $1b,   6,   6, $36,   4, $1f,   6,   7, $36,   4, $23,   6  ; 3a9e: 1b 06 06... ...
-    !byte   8, $36,   0,   0, $c1,   8, $15, $c2, $1c, $15,   0,   0  ; 3aaa: 08 36 00... .6.
-    !text "The Helicopter Pa", $80+'d'                                ; 3ab6: 54 68 65... The
+    !byte $53                                                         ; 3a2c: 53          S              ; offset to start of doors
+    !byte 1, 2, 1, 2, 8                                               ; 3a2d: 01 02 01... ...            ; room header
+    !byte $44                                                         ; 3a32: 44          D              ; set sprite 4, collision byte 128
+    !byte $fa,   7                                                    ; 3a33: fa 07       ..             ; draw rect from 0,6 with size 7x26
+    !byte $55                                                         ; 3a35: 55          U              ; set sprite 21, collision byte 128
+    !byte $86, $0d                                                    ; 3a36: 86 0d       ..             ; set position to 13,6
+    !byte $1b                                                         ; 3a38: 1b          .              ; plot strip at 13,6 of length 27
+    !byte $71                                                         ; 3a39: 71          q              ; set delta to 0,1
+    !byte $14                                                         ; 3a3a: 14          .              ; plot strip at 39,6 of length 20
+    !byte $5b                                                         ; 3a3b: 5b          [              ; set sprite 27, collision byte 128
+    !byte $86,   3                                                    ; 3a3c: 86 03       ..             ; set position to 3,6
+    !byte $1a                                                         ; 3a3e: 1a          .              ; plot strip at 3,6 of length 26
+    !byte $cc                                                         ; 3a3f: cc          .              ; set sprite 12, collision byte 144
+    !byte $96,   7                                                    ; 3a40: 96 07       ..             ; set position to 7,22
+    !byte 3                                                           ; 3a42: 03          .              ; plot strip at 7,22 of length 3
+    !byte $96, $0c                                                    ; 3a43: 96 0c       ..             ; set position to 12,22
+    !byte 7                                                           ; 3a45: 07          .              ; plot strip at 12,22 of length 7
+    !byte $96, $11                                                    ; 3a46: 96 11       ..             ; set position to 17,22
+    !byte $0a                                                         ; 3a48: 0a          .              ; plot strip at 17,22 of length 10
+    !byte $96, $16                                                    ; 3a49: 96 16       ..             ; set position to 22,22
+    !byte $0a                                                         ; 3a4b: 0a          .              ; plot strip at 22,22 of length 10
+    !byte $96, $1b                                                    ; 3a4c: 96 1b       ..             ; set position to 27,22
+    !byte 3                                                           ; 3a4e: 03          .              ; plot strip at 27,22 of length 3
+    !byte $96, $20                                                    ; 3a4f: 96 20       .              ; set position to 32,22
+    !byte 3                                                           ; 3a51: 03          .              ; plot strip at 32,22 of length 3
+    !byte $65                                                         ; 3a52: 65          e              ; set delta to 5,0
+    !byte $4f                                                         ; 3a53: 4f          O              ; set sprite 15, collision byte 128
+    !byte $95,   7                                                    ; 3a54: 95 07       ..             ; set position to 7,21
+    !byte 6                                                           ; 3a56: 06          .              ; plot strip at 7,21 of length 6
+    !byte $61                                                         ; 3a57: 61          a              ; set delta to 1,0
+    !byte $94,   7                                                    ; 3a58: 94 07       ..             ; set position to 7,20
+    !byte $1b                                                         ; 3a5a: 1b          .              ; plot strip at 7,20 of length 27
+    !byte $42                                                         ; 3a5b: 42          B              ; set sprite 2, collision byte 128
+    !byte $9d,   7                                                    ; 3a5c: 9d 07       ..             ; set position to 7,29
+    !byte $e3, $0a                                                    ; 3a5e: e3 0a       ..             ; draw rect from 7,29 with size 10x3
+    !byte $9d, $17                                                    ; 3a60: 9d 17       ..             ; set position to 23,29
+    !byte $e3, $10                                                    ; 3a62: e3 10       ..             ; draw rect from 23,29 with size 16x3
+    !byte $5e                                                         ; 3a64: 5e          ^              ; set sprite 30, collision byte 128
+    !byte $99,   7                                                    ; 3a65: 99 07       ..             ; set position to 7,25
+    !byte $e4, $0a                                                    ; 3a67: e4 0a       ..             ; draw rect from 7,25 with size 10x4
+    !byte $99, $17                                                    ; 3a69: 99 17       ..             ; set position to 23,25
+    !byte $e2, $0e                                                    ; 3a6b: e2 0e       ..             ; draw rect from 23,25 with size 14x2
+    !byte $9b, $17                                                    ; 3a6d: 9b 17       ..             ; set position to 23,27
+    !byte $e2, $10                                                    ; 3a6f: e2 10       ..             ; draw rect from 23,27 with size 16x2
+    !byte $5d                                                         ; 3a71: 5d          ]              ; set sprite 29, collision byte 128
+    !byte $99, $24                                                    ; 3a72: 99 24       .$             ; set position to 36,25
+    !byte 1                                                           ; 3a74: 01          .              ; plot strip at 36,25 of length 1
+    !byte $9a, $25                                                    ; 3a75: 9a 25       .%             ; set position to 37,26
+    !byte 1                                                           ; 3a77: 01          .              ; plot strip at 37,26 of length 1
+    !byte $9b, $26                                                    ; 3a78: 9b 26       .&             ; set position to 38,27
+    !byte 1                                                           ; 3a7a: 01          .              ; plot strip at 38,27 of length 1
+    !byte $9c, $27                                                    ; 3a7b: 9c 27       .'             ; set position to 39,28
+    !byte 1                                                           ; 3a7d: 01          .              ; plot strip at 39,28 of length 1
+    !byte 0                                                           ; 3a7e: 00          .              ; terminator for commands
+    !byte   4, $11, $1f,   2,   1                                     ; 3a7f: 04 11 1f... ...            ; invisible horizontal door at 17,31 to door 2 in room 1
+    !byte   4,   7,   6,   1, $36                                     ; 3a84: 04 07 06... ...            ; invisible horizontal door at 7,6 to door 1 in room 54
+    !byte   4, $0b,   6,   2, $36                                     ; 3a89: 04 0b 06... ...            ; invisible horizontal door at 11,6 to door 2 in room 54
+    !byte   4, $0f,   6,   3, $36                                     ; 3a8e: 04 0f 06... ...            ; invisible horizontal door at 15,6 to door 3 in room 54
+    !byte   4, $13,   6,   4, $36                                     ; 3a93: 04 13 06... ...            ; invisible horizontal door at 19,6 to door 4 in room 54
+    !byte   4, $17,   6,   5, $36                                     ; 3a98: 04 17 06... ...            ; invisible horizontal door at 23,6 to door 5 in room 54
+    !byte   4, $1b,   6,   6, $36                                     ; 3a9d: 04 1b 06... ...            ; invisible horizontal door at 27,6 to door 6 in room 54
+    !byte   4, $1f,   6,   7, $36                                     ; 3aa2: 04 1f 06... ...            ; invisible horizontal door at 31,6 to door 7 in room 54
+    !byte   4, $23,   6,   8, $36                                     ; 3aa7: 04 23 06... .#.            ; invisible horizontal door at 35,6 to door 8 in room 54
+    !byte 0                                                           ; 3aac: 00          .              ; terminator for doors
+    !byte 0                                                           ; 3aad: 00          .              ; terminator for keys
+    !byte $c1,   8, $15                                               ; 3aae: c1 08 15    ...            ; computer at 8,21
+    !byte $c2, $1c, $15                                               ; 3ab1: c2 1c 15    ...            ; computer at 28,21
+    !byte 0                                                           ; 3ab4: 00          .              ; terminator for computers
+    !byte 0                                                           ; 3ab5: 00          .              ; terminator for collectibles
+    !text "The Helicopter Pa", $80+'d'                                ; 3ab6: 54 68 65... The            ; "The Helicopter Pad"
+
+;            West Of The Tower
+; ==...
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
+; .................................**==***
 room_53_definition
-    !byte $16,   2,   2,   2,   2, $0a                                ; 3ac8: 16 02 02... ...            ; room header
-    !byte $55, $28, $87,   0, $71, $19, $44, $8b, $21, $f5,   7, $5b  ; 3ace: 55 28 87... U(.            ; room commands
-    !byte $8a, $23, $16,   0,   4,   0, $1f, $0c, $31,   4,   3, $1f  ; 3ada: 8a 23 16... .#.
-    !byte $0b, $31,   4,   7, $1f, $0a, $31,   4, $0b, $1f,   9, $31  ; 3ae6: 0b 31 04... .1.
-    !byte   4, $0f, $1f,   8, $31,   4, $13, $1f,   7, $31,   4, $17  ; 3af2: 04 0f 1f... ...
-    !byte $1f,   6, $31,   4, $1b, $1f,   4                           ; 3afe: 1f 06 31... ..1
-    !text "1D'"                                                       ; 3b05: 31 44 27    1D'
-    !byte   6,   1, $33,   0,   0,   0,   0                           ; 3b08: 06 01 33... ..3
-    !text "West Of The Towe", $80+'r'                                 ; 3b0f: 57 65 73... Wes
+    !byte $16                                                         ; 3ac8: 16          .              ; offset to start of doors
+    !byte   2,   2,   2,   2, $0a                                     ; 3ac9: 02 02 02... ...            ; room header
+    !byte $55                                                         ; 3ace: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 3acf: 28          (              ; plot strip at 0,6 of length 40
+    !byte $87,   0                                                    ; 3ad0: 87 00       ..             ; set position to 0,7
+    !byte $71                                                         ; 3ad2: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 3ad3: 19          .              ; plot strip at 0,7 of length 25
+    !byte $44                                                         ; 3ad4: 44          D              ; set sprite 4, collision byte 128
+    !byte $8b, $21                                                    ; 3ad5: 8b 21       .!             ; set position to 33,11
+    !byte $f5,   7                                                    ; 3ad7: f5 07       ..             ; draw rect from 33,11 with size 7x21
+    !byte $5b                                                         ; 3ad9: 5b          [              ; set sprite 27, collision byte 128
+    !byte $8a, $23                                                    ; 3ada: 8a 23       .#             ; set position to 35,10
+    !byte $16                                                         ; 3adc: 16          .              ; plot strip at 35,10 of length 22
+    !byte 0                                                           ; 3add: 00          .              ; terminator for commands
+    !byte   4,   0, $1f, $0c, $31                                     ; 3ade: 04 00 1f... ...            ; invisible horizontal door at 0,31 to door 12 in room 49
+    !byte   4,   3, $1f, $0b, $31                                     ; 3ae3: 04 03 1f... ...            ; invisible horizontal door at 3,31 to door 11 in room 49
+    !byte   4,   7, $1f, $0a, $31                                     ; 3ae8: 04 07 1f... ...            ; invisible horizontal door at 7,31 to door 10 in room 49
+    !byte   4, $0b, $1f,   9, $31                                     ; 3aed: 04 0b 1f... ...            ; invisible horizontal door at 11,31 to door 9 in room 49
+    !byte   4, $0f, $1f,   8, $31                                     ; 3af2: 04 0f 1f... ...            ; invisible horizontal door at 15,31 to door 8 in room 49
+    !byte   4, $13, $1f,   7, $31                                     ; 3af7: 04 13 1f... ...            ; invisible horizontal door at 19,31 to door 7 in room 49
+    !byte   4, $17, $1f,   6, $31                                     ; 3afc: 04 17 1f... ...            ; invisible horizontal door at 23,31 to door 6 in room 49
+    !byte   4, $1b, $1f,   4, $31                                     ; 3b01: 04 1b 1f... ...            ; invisible horizontal door at 27,31 to door 4 in room 49
+    !byte $44, $27,   6,   1, $33                                     ; 3b06: 44 27 06... D'.            ; invisible vertical door at 39,6 to door 1 in room 51
+    !byte 0                                                           ; 3b0b: 00          .              ; terminator for doors
+    !byte 0                                                           ; 3b0c: 00          .              ; terminator for keys
+    !byte 0                                                           ; 3b0d: 00          .              ; terminator for computers
+    !byte 0                                                           ; 3b0e: 00          .              ; terminator for collectibles
+    !text "West Of The Towe", $80+'r'                                 ; 3b0f: 57 65 73... Wes            ; "West Of The Tower"
+
+;            East Of The Tower
+; ==...................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
+; ***==**.................................
 room_54_definition
-    !byte $14,   0,   0,   0,   0, $0a                                ; 3b20: 14 00 00... ...            ; room header
-    !text "U(q"                                                       ; 3b26: 55 28 71    U(q            ; room commands
-    !byte $19, $44, $8b,   0, $f5,   7, $5b, $8a,   3, $16,   0, $44  ; 3b29: 19 44 8b... .D.
-    !byte   0,   6,   2, $33,   4,   7, $1f,   1, $34,   4, $0b, $1f  ; 3b35: 00 06 02... ...
-    !byte   2, $34,   4, $0f, $1f,   3, $34,   4, $13, $1f,   4, $34  ; 3b41: 02 34 04... .4.
-    !byte   4, $17, $1f,   5, $34,   4, $1b, $1f,   6, $34,   4, $1f  ; 3b4d: 04 17 1f... ...
-    !byte $1f,   7, $34,   4, $23, $1f,   8, $34,   0,   0,   0,   0  ; 3b59: 1f 07 34... ..4
-    !text "East Of The Towe", $80+'r'                                 ; 3b65: 45 61 73... Eas
+    !byte $14                                                         ; 3b20: 14          .              ; offset to start of doors
+    !byte   0,   0,   0,   0, $0a                                     ; 3b21: 00 00 00... ...            ; room header
+    !byte $55                                                         ; 3b26: 55          U              ; set sprite 21, collision byte 128
+    !byte $28                                                         ; 3b27: 28          (              ; plot strip at 0,6 of length 40
+    !byte $71                                                         ; 3b28: 71          q              ; set delta to 0,1
+    !byte $19                                                         ; 3b29: 19          .              ; plot strip at 39,6 of length 25
+    !byte $44                                                         ; 3b2a: 44          D              ; set sprite 4, collision byte 128
+    !byte $8b,   0                                                    ; 3b2b: 8b 00       ..             ; set position to 0,11
+    !byte $f5,   7                                                    ; 3b2d: f5 07       ..             ; draw rect from 0,11 with size 7x21
+    !byte $5b                                                         ; 3b2f: 5b          [              ; set sprite 27, collision byte 128
+    !byte $8a,   3                                                    ; 3b30: 8a 03       ..             ; set position to 3,10
+    !byte $16                                                         ; 3b32: 16          .              ; plot strip at 3,10 of length 22
+    !byte 0                                                           ; 3b33: 00          .              ; terminator for commands
+    !byte $44,   0,   6,   2, $33                                     ; 3b34: 44 00 06... D..            ; invisible vertical door at 0,6 to door 2 in room 51
+    !byte   4,   7, $1f,   1, $34                                     ; 3b39: 04 07 1f... ...            ; invisible horizontal door at 7,31 to door 1 in room 52
+    !byte   4, $0b, $1f,   2, $34                                     ; 3b3e: 04 0b 1f... ...            ; invisible horizontal door at 11,31 to door 2 in room 52
+    !byte   4, $0f, $1f,   3, $34                                     ; 3b43: 04 0f 1f... ...            ; invisible horizontal door at 15,31 to door 3 in room 52
+    !byte   4, $13, $1f,   4, $34                                     ; 3b48: 04 13 1f... ...            ; invisible horizontal door at 19,31 to door 4 in room 52
+    !byte   4, $17, $1f,   5, $34                                     ; 3b4d: 04 17 1f... ...            ; invisible horizontal door at 23,31 to door 5 in room 52
+    !byte   4, $1b, $1f,   6, $34                                     ; 3b52: 04 1b 1f... ...            ; invisible horizontal door at 27,31 to door 6 in room 52
+    !byte   4, $1f, $1f,   7, $34                                     ; 3b57: 04 1f 1f... ...            ; invisible horizontal door at 31,31 to door 7 in room 52
+    !byte   4, $23, $1f,   8, $34                                     ; 3b5c: 04 23 1f... .#.            ; invisible horizontal door at 35,31 to door 8 in room 52
+    !byte 0                                                           ; 3b61: 00          .              ; terminator for doors
+    !byte 0                                                           ; 3b62: 00          .              ; terminator for keys
+    !byte 0                                                           ; 3b63: 00          .              ; terminator for computers
+    !byte 0                                                           ; 3b64: 00          .              ; terminator for collectibles
+    !text "East Of The Towe", $80+'r'                                 ; 3b65: 45 61 73... Eas            ; "East Of The Tower"
 
 get_random_byte
     sty temp_store_y                                                  ; 3b76: 84 3b       .;
@@ -6216,7 +10440,7 @@ clear_memory_loop
     bne clear_memory_loop                                             ; 4146: d0 e8       ..
     jmp clear_play_area                                               ; 4148: 4c e8 43    L.C
 
-decode_room_definition
+decode_room_commands
     stx current_room_low                                              ; 414b: 86 08       ..
     sty current_room_high                                             ; 414d: 84 09       ..
     ldy #6                                                            ; 414f: a0 06       ..
@@ -6262,24 +10486,30 @@ return8
     rts                                                               ; 4191: 60          `
 
 prepare_room
-    jsr decode_room_definition                                        ; 4192: 20 4b 41     KA
+    jsr decode_room_commands                                          ; 4192: 20 4b 41     KA
     lda #$80                                                          ; 4195: a9 80       ..
     sta collision_map_byte_to_write                                   ; 4197: 85 0c       ..
     iny                                                               ; 4199: c8          .
-prepare_room_loop
+prepare_doors_loop
     lda current_room_cache,y                                          ; 419a: b9 00 04    ...
     beq plot_keys                                                     ; 419d: f0 6f       .o
 
-; copy five byte room header to zero page
+; copy five bytes of door information (reversing the order!) to zero page:
+;     0x11: destination room index
+;     0x12: destination door index
+;     0x13: y cell position
+;     0x14: x cell position
+;     0x15: current_room_door_info
     ldx #4                                                            ; 419f: a2 04       ..
-copy_room_header_loop
+copy_door_info_loop
     lda current_room_cache,y                                          ; 41a1: b9 00 04    ...
     sta current_room_header,x                                         ; 41a4: 95 11       ..
     iny                                                               ; 41a6: c8          .
     dex                                                               ; 41a7: ca          .
-    bpl copy_room_header_loop                                         ; 41a8: 10 f7       ..
+    bpl copy_door_info_loop                                           ; 41a8: 10 f7       ..
 
-; current_room_door_info:
+; Reset current door information, if needed.
+;   current_room_door_info:
 ;     bit 7    = door is open flag
 ;     bit 6    = door is vertical flag
 ;     bit 5    = door is present flag
@@ -6347,7 +10577,7 @@ plot_door_sprite
     lda #$80                                                          ; 4206: a9 80       ..
     sta collision_map_byte_to_write                                   ; 4208: 85 0c       ..
     ldy delta_y                                                       ; 420a: a4 06       ..
-    bne prepare_room_loop                                             ; 420c: d0 8c       ..
+    bne prepare_doors_loop                                            ; 420c: d0 8c       ..
 
 plot_keys
     lda #2                                                            ; 420e: a9 02       ..
@@ -6506,17 +10736,17 @@ room_decode_set_cellxy
 
 room_decode_set_sprite
     ldx #0                                                            ; 42ff: a2 00       ..             ; redundant
-    ldx #$80                                                          ; 4301: a2 80       ..             ; collision map value
+    ldx #$80                                                          ; 4301: a2 80       ..             ; use collision map value $80 if A>=0
     cmp #0                                                            ; 4303: c9 00       ..
-    bpl c4311                                                         ; 4305: 10 0a       ..
-    ldx #$90                                                          ; 4307: a2 90       ..             ; collision map value
+    bpl set_sprite_a_and1f_and_collision_x                            ; 4305: 10 0a       ..
+    ldx #$90                                                          ; 4307: a2 90       ..             ; use collision map value $90 if A!=$95 ($95=128+sprite 21, the empty sprite)
     and #$1f                                                          ; 4309: 29 1f       ).
     cmp #$15                                                          ; 430b: c9 15       ..
-    bne c4313                                                         ; 430d: d0 04       ..
-    ldx #0                                                            ; 430f: a2 00       ..             ; collision map value
-c4311
+    bne set_sprite_a_and_collision_x                                  ; 430d: d0 04       ..
+    ldx #0                                                            ; 430f: a2 00       ..             ; use collision map value $00 if A=$95 (the empty sprite)
+set_sprite_a_and1f_and_collision_x
     and #$1f                                                          ; 4311: 29 1f       ).
-c4313
+set_sprite_a_and_collision_x
     sta room_decode_sprite                                            ; 4313: 85 07       ..
     iny                                                               ; 4315: c8          .
     stx collision_map_byte_to_write                                   ; 4316: 86 0c       ..
@@ -7186,7 +11416,7 @@ skip_store_player_sprite
     stx cell_x                                                        ; 4726: 86 00       ..
     sty cell_y                                                        ; 4728: 84 01       ..
     jsr update_collision_map_at_player                                ; 472a: 20 02 44     .D
-    jsr sub_c4941                                                     ; 472d: 20 41 49     AI
+    jsr get_player_collision_address                                  ; 472d: 20 41 49     AI
     ldy #$28                                                          ; 4730: a0 28       .(
     ldx #3                                                            ; 4732: a2 03       ..
     stx sprite_cell_height                                            ; 4734: 86 03       ..
@@ -7423,7 +11653,7 @@ handle_z_pressed
 skip_turn_left
     lda player_x                                                      ; 48c0: a5 1a       ..
     beq change_room_local                                             ; 48c2: f0 18       ..
-    jsr sub_c4941                                                     ; 48c4: 20 41 49     AI
+    jsr get_player_collision_address                                  ; 48c4: 20 41 49     AI
     ldy #$27                                                          ; 48c7: a0 27       .'
     lda (temp_addr_low),y                                             ; 48c9: b1 1d       ..
     bmi return19                                                      ; 48cb: 30 0e       0.
@@ -7451,7 +11681,7 @@ skip_turn_right
     lda player_x                                                      ; 48eb: a5 1a       ..
     cmp #$25                                                          ; 48ed: c9 25       .%
     beq change_room_local                                             ; 48ef: f0 eb       ..
-    jsr sub_c4941                                                     ; 48f1: 20 41 49     AI
+    jsr get_player_collision_address                                  ; 48f1: 20 41 49     AI
     ldy #$2b                                                          ; 48f4: a0 2b       .+
     lda (temp_addr_low),y                                             ; 48f6: b1 1d       ..
     bmi return20                                                      ; 48f8: 30 0e       0.
@@ -7469,7 +11699,7 @@ handle_shift_pressed
     lda player_y                                                      ; 4909: a5 1b       ..
     cmp #6                                                            ; 490b: c9 06       ..
     beq change_room_local                                             ; 490d: f0 cd       ..
-    jsr sub_c4941                                                     ; 490f: 20 41 49     AI
+    jsr get_player_collision_address                                  ; 490f: 20 41 49     AI
     ldy #0                                                            ; 4912: a0 00       ..
     lda (temp_addr_low),y                                             ; 4914: b1 1d       ..
     bmi return21                                                      ; 4916: 30 0c       0.
@@ -7487,7 +11717,7 @@ update_falling
     lda player_y                                                      ; 4925: a5 1b       ..
     cmp #$1d                                                          ; 4927: c9 1d       ..
     beq change_room_local                                             ; 4929: f0 b1       ..
-    jsr sub_c4941                                                     ; 492b: 20 41 49     AI
+    jsr get_player_collision_address                                  ; 492b: 20 41 49     AI
     ldy #$a0                                                          ; 492e: a0 a0       ..
     lda (temp_addr_low),y                                             ; 4930: b1 1d       ..
     bmi return22                                                      ; 4932: 30 0c       0.
@@ -7501,7 +11731,7 @@ update_falling
 return22
     rts                                                               ; 4940: 60          `
 
-sub_c4941
+get_player_collision_address
     ldy player_y                                                      ; 4941: a4 1b       ..
     dey                                                               ; 4943: 88          .
     lda player_x                                                      ; 4944: a5 1a       ..
@@ -7829,7 +12059,7 @@ copy_cache_back_to_room_definition
     dey                                                               ; 4b6a: 88          .
     bne copy_cache_back_to_room_definition                            ; 4b6b: d0 f8       ..
     pla                                                               ; 4b6d: 68          h
-    jsr sub_c4c98                                                     ; 4b6e: 20 98 4c     .L
+    jsr get_teleport_destination                                      ; 4b6e: 20 98 4c     .L
     lda (temp_addr_low),y                                             ; 4b71: b1 1d       ..
     and #7                                                            ; 4b73: 29 07       ).
     cmp #4                                                            ; 4b75: c9 04       ..
@@ -7923,7 +12153,7 @@ found_closed_door
     beq no_teleport_destination_found                                 ; 4c19: f0 d1       ..
 ; teleport to new room
     stx current_room_index                                            ; 4c1b: 86 0d       ..
-    jsr sub_c4c98                                                     ; 4c1d: 20 98 4c     .L
+    jsr get_teleport_destination                                      ; 4c1d: 20 98 4c     .L
     lda (temp_addr_low),y                                             ; 4c20: b1 1d       ..
     and #$40                                                          ; 4c22: 29 40       )@
     beq skip2                                                         ; 4c24: f0 1a       ..
@@ -8003,7 +12233,7 @@ no_door_found
     sec                                                               ; 4c96: 38          8
     rts                                                               ; 4c97: 60          `
 
-sub_c4c98
+get_teleport_destination
     ldy room_definition_low,x                                         ; 4c98: bc 4b 39    .K9
     sty temp_addr_low                                                 ; 4c9b: 84 1d       ..
     ldy room_definition_high,x                                        ; 4c9d: bc 82 39    ..9
@@ -8657,8 +12887,6 @@ pydis_end
 ;     c3fac
 ;     c4033
 ;     c4191
-;     c4311
-;     c4313
 ;     c43e7
 ;     c4430
 ;     c44e3
@@ -8723,8 +12951,6 @@ pydis_end
 ;     loop_c3f54
 ;     loop_c4cac
 ;     sub_c3d28
-;     sub_c4941
-;     sub_c4c98
 ;     sub_c500b
 !if ($80+$00) != $80 {
     !error "Assertion failed: $80+$00 == $80"
