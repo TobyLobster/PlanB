@@ -121,7 +121,7 @@ osbyte = $fff4
 
 ; There are 85 sprites. Sprites are stored 8x8 character cells which
 ; are ordered upside down and from right to left. The first 32 sprites
-; can be specified in the room definition.
+; can be specified in the commands of the room definition.
 ; 
 ;     /----------------\      /--------\      /--------\      /--------\
 ;     |################|      |########|      |# ######|      |#  ##  #|
@@ -4595,12 +4595,12 @@ sprite_offset_table_high
 ; *.SS...........................*....*..*
 ; *.SS...........................*....*..*
 ; *.SS...........................*....*..*
-; 1********....***************************
+; 3********....***************************
 ; D.......................................
 ; D.......................................
 ; D.......................................
 ; D.......................................
-; 1***************************************
+; 3***************************************
 room_0_definition
     !byte $3d                                                         ; 213c: 3d          =              ; offset to start of doors
     !byte 2, 2, 2, 2                                                  ; 213d: 02 02 02... ...            ; four enemy types
@@ -4672,12 +4672,12 @@ room_0_definition
 ; *********......................*********
 ; *********......................*********
 ; *********......................*********
-; .......................................1
+; .......................................4
 ; .......................................D
 ; .......................................D
 ; .......................................D
 ; .......................................D
-; .......................................1
+; .......................................4
 ; *********......................*********
 ; *********......................*********
 ; *********......................*********
@@ -5117,11 +5117,11 @@ room_6_definition
     !byte 0                                                           ; 23b8: 00          .              ; terminator for doors
     !byte $c1, $24, $11                                               ; 23b9: c1 24 11    .$.            ; key at 36,17
     !byte 0                                                           ; 23bc: 00          .              ; terminator for keys
-    !byte $c0,   2, $0b                                               ; 23bd: c0 02 0b    ...            ; computer at 2,11
-    !byte $c1,   2, $0f                                               ; 23c0: c1 02 0f    ...            ; computer at 2,15
-    !byte $c2, $18, $10                                               ; 23c3: c2 18 10    ...            ; computer at 24,16
-    !byte $c3, $16, $16                                               ; 23c6: c3 16 16    ...            ; computer at 22,22
-    !byte $c1, $21, $1a                                               ; 23c9: c1 21 1a    .!.            ; computer at 33,26
+    !byte $c0,   2, $0b                                               ; 23bd: c0 02 0b    ...            ; computer type 0 at 2,11
+    !byte $c1,   2, $0f                                               ; 23c0: c1 02 0f    ...            ; computer type 1 at 2,15
+    !byte $c2, $18, $10                                               ; 23c3: c2 18 10    ...            ; computer type 2 at 24,16
+    !byte $c3, $16, $16                                               ; 23c6: c3 16 16    ...            ; computer type 3 at 22,22
+    !byte $c1, $21, $1a                                               ; 23c9: c1 21 1a    .!.            ; computer type 1 at 33,26
     !byte 0                                                           ; 23cc: 00          .              ; terminator for computers
     !byte $c1, $24, $0b                                               ; 23cd: c1 24 0b    .$.            ; collectible at 36,11
     !byte 0                                                           ; 23d0: 00          .              ; terminator for collectibles
@@ -5361,11 +5361,11 @@ room_9_definition
     !byte $44,   0, $14,   0,   0                                     ; 24ed: 44 00 14... D..            ; invisible vertical door at 0,20 to door 0 in room 0
     !byte 0                                                           ; 24f2: 00          .              ; terminator for doors
     !byte 0                                                           ; 24f3: 00          .              ; terminator for keys
-    !byte $c1,   6,   8                                               ; 24f4: c1 06 08    ...            ; computer at 6,8
-    !byte $c1, $0c,   8                                               ; 24f7: c1 0c 08    ...            ; computer at 12,8
-    !byte $c2,   6, $0e                                               ; 24fa: c2 06 0e    ...            ; computer at 6,14
-    !byte $c2, $0c, $0e                                               ; 24fd: c2 0c 0e    ...            ; computer at 12,14
-    !byte $c3, $10, $1b                                               ; 2500: c3 10 1b    ...            ; computer at 16,27
+    !byte $c1,   6,   8                                               ; 24f4: c1 06 08    ...            ; computer type 1 at 6,8
+    !byte $c1, $0c,   8                                               ; 24f7: c1 0c 08    ...            ; computer type 1 at 12,8
+    !byte $c2,   6, $0e                                               ; 24fa: c2 06 0e    ...            ; computer type 2 at 6,14
+    !byte $c2, $0c, $0e                                               ; 24fd: c2 0c 0e    ...            ; computer type 2 at 12,14
+    !byte $c3, $10, $1b                                               ; 2500: c3 10 1b    ...            ; computer type 3 at 16,27
     !byte 0                                                           ; 2503: 00          .              ; terminator for computers
     !byte 0                                                           ; 2504: 00          .              ; terminator for collectibles
     !text "The Processing Plan", $80+'t'                              ; 2505: 54 68 65... The            ; "The Processing Plant"
@@ -5452,10 +5452,10 @@ room_10_definition
     !byte 0                                                           ; 2571: 00          .              ; terminator for doors
     !byte $c3,   7, $0e                                               ; 2572: c3 07 0e    ...            ; key at 7,14
     !byte 0                                                           ; 2575: 00          .              ; terminator for keys
-    !byte $c1,   4,   8                                               ; 2576: c1 04 08    ...            ; computer at 4,8
-    !byte $c1, $0a, $1a                                               ; 2579: c1 0a 1a    ...            ; computer at 10,26
-    !byte $c2, $0f, $1a                                               ; 257c: c2 0f 1a    ...            ; computer at 15,26
-    !byte $c3, $14, $1a                                               ; 257f: c3 14 1a    ...            ; computer at 20,26
+    !byte $c1,   4,   8                                               ; 2576: c1 04 08    ...            ; computer type 1 at 4,8
+    !byte $c1, $0a, $1a                                               ; 2579: c1 0a 1a    ...            ; computer type 1 at 10,26
+    !byte $c2, $0f, $1a                                               ; 257c: c2 0f 1a    ...            ; computer type 2 at 15,26
+    !byte $c3, $14, $1a                                               ; 257f: c3 14 1a    ...            ; computer type 3 at 20,26
     !byte 0                                                           ; 2582: 00          .              ; terminator for computers
     !byte $c2,   6, $12                                               ; 2583: c2 06 12    ...            ; collectible at 6,18
     !byte $c3, $12, $0a                                               ; 2586: c3 12 0a    ...            ; collectible at 18,10
@@ -5557,9 +5557,9 @@ room_11_definition
     !byte $44,   0, $14,   0, $0d                                     ; 25fc: 44 00 14... D..            ; invisible vertical door at 0,20 to door 0 in room 13
     !byte 0                                                           ; 2601: 00          .              ; terminator for doors
     !byte 0                                                           ; 2602: 00          .              ; terminator for keys
-    !byte $c1,   9, $10                                               ; 2603: c1 09 10    ...            ; computer at 9,16
-    !byte $c2,   9, $15                                               ; 2606: c2 09 15    ...            ; computer at 9,21
-    !byte $c3,   9, $1a                                               ; 2609: c3 09 1a    ...            ; computer at 9,26
+    !byte $c1,   9, $10                                               ; 2603: c1 09 10    ...            ; computer type 1 at 9,16
+    !byte $c2,   9, $15                                               ; 2606: c2 09 15    ...            ; computer type 2 at 9,21
+    !byte $c3,   9, $1a                                               ; 2609: c3 09 1a    ...            ; computer type 3 at 9,26
     !byte 0                                                           ; 260c: 00          .              ; terminator for computers
     !byte 0                                                           ; 260d: 00          .              ; terminator for collectibles
     !text "Not The En", $80+'d'                                       ; 260e: 4e 6f 74... Not            ; "Not The End"
@@ -5678,8 +5678,8 @@ room_12_definition
     !byte 0                                                           ; 269c: 00          .              ; terminator for doors
     !byte $c0, $21, $12                                               ; 269d: c0 21 12    .!.            ; key at 33,18
     !byte 0                                                           ; 26a0: 00          .              ; terminator for keys
-    !byte $c2, $11, $14                                               ; 26a1: c2 11 14    ...            ; computer at 17,20
-    !byte $c1,   5, $14                                               ; 26a4: c1 05 14    ...            ; computer at 5,20
+    !byte $c2, $11, $14                                               ; 26a1: c2 11 14    ...            ; computer type 2 at 17,20
+    !byte $c1,   5, $14                                               ; 26a4: c1 05 14    ...            ; computer type 1 at 5,20
     !byte 0                                                           ; 26a7: 00          .              ; terminator for computers
     !byte $c3,   1, $12                                               ; 26a8: c3 01 12    ...            ; collectible at 1,18
     !byte $c2, $22, $18                                               ; 26ab: c2 22 18    .".            ; collectible at 34,24
@@ -5773,8 +5773,8 @@ room_13_definition
     !byte 0                                                           ; 270b: 00          .              ; terminator for doors
     !byte $c0, $1b, $11                                               ; 270c: c0 1b 11    ...            ; key at 27,17
     !byte 0                                                           ; 270f: 00          .              ; terminator for keys
-    !byte $c2, $0d, $14                                               ; 2710: c2 0d 14    ...            ; computer at 13,20
-    !byte $c3, $23, $10                                               ; 2713: c3 23 10    .#.            ; computer at 35,16
+    !byte $c2, $0d, $14                                               ; 2710: c2 0d 14    ...            ; computer type 2 at 13,20
+    !byte $c3, $23, $10                                               ; 2713: c3 23 10    .#.            ; computer type 3 at 35,16
     !byte 0                                                           ; 2716: 00          .              ; terminator for computers
     !byte $c3,   2, $15                                               ; 2717: c3 02 15    ...            ; collectible at 2,21
     !byte 0                                                           ; 271a: 00          .              ; terminator for collectibles
@@ -5847,10 +5847,10 @@ room_14_definition
     !byte   4,   5,   6,   2, $0f                                     ; 2769: 04 05 06... ...            ; invisible horizontal door at 5,6 to door 2 in room 15
     !byte 0                                                           ; 276e: 00          .              ; terminator for doors
     !byte 0                                                           ; 276f: 00          .              ; terminator for keys
-    !byte $c1,   2,   8                                               ; 2770: c1 02 08    ...            ; computer at 2,8
-    !byte $c2,   2, $0e                                               ; 2773: c2 02 0e    ...            ; computer at 2,14
-    !byte $c3,   2, $14                                               ; 2776: c3 02 14    ...            ; computer at 2,20
-    !byte $c0, $23, $14                                               ; 2779: c0 23 14    .#.            ; computer at 35,20
+    !byte $c1,   2,   8                                               ; 2770: c1 02 08    ...            ; computer type 1 at 2,8
+    !byte $c2,   2, $0e                                               ; 2773: c2 02 0e    ...            ; computer type 2 at 2,14
+    !byte $c3,   2, $14                                               ; 2776: c3 02 14    ...            ; computer type 3 at 2,20
+    !byte $c0, $23, $14                                               ; 2779: c0 23 14    .#.            ; computer type 0 at 35,20
     !byte 0                                                           ; 277c: 00          .              ; terminator for computers
     !byte $c3, $1e, $15                                               ; 277d: c3 1e 15    ...            ; collectible at 30,21
     !byte $c3, $20, $15                                               ; 2780: c3 20 15    . .            ; collectible at 32,21
@@ -5858,7 +5858,7 @@ room_14_definition
     !text "More Mine", $80+'s'                                        ; 2784: 4d 6f 72... Mor            ; "More Mines"
 
 ;         Strange Things, part 2
-; *****1DDDD1*****************************
+; *****2DDDD2*****************************
 ; ******....******************************
 ; ******....****************************1*
 ; ******....*******.....................D.
@@ -5967,7 +5967,7 @@ room_15_definition
 ; ******....*******....................***
 ; ******....******************************
 ; ******....******************************
-; *****1DDDD1*****************************
+; *****2DDDD2*****************************
 room_16_definition
     !byte $3f                                                         ; 280c: 3f          ?              ; offset to start of doors
     !byte 2, 3, 2, 3                                                  ; 280d: 02 03 02... ...            ; four enemy types
@@ -6096,25 +6096,25 @@ room_17_definition
     !byte $60, $16, $0f,   0,   0                                     ; 28c4: 60 16 0f... `..            ; visible vertical door at 22,15 to door 0 in room 0
     !byte 0                                                           ; 28c9: 00          .              ; terminator for doors
     !byte 0                                                           ; 28ca: 00          .              ; terminator for keys
-    !byte $c1,   1, $12                                               ; 28cb: c1 01 12    ...            ; computer at 1,18
-    !byte $c2, $12, $19                                               ; 28ce: c2 12 19    ...            ; computer at 18,25
-    !byte $c0, $20, $11                                               ; 28d1: c0 20 11    . .            ; computer at 32,17
-    !byte $c1, $1b, $11                                               ; 28d4: c1 1b 11    ...            ; computer at 27,17
-    !byte $c3, $1b, $19                                               ; 28d7: c3 1b 19    ...            ; computer at 27,25
-    !byte $c3, $20, $19                                               ; 28da: c3 20 19    . .            ; computer at 32,25
-    !byte $c0, $0a, $12                                               ; 28dd: c0 0a 12    ...            ; computer at 10,18
+    !byte $c1,   1, $12                                               ; 28cb: c1 01 12    ...            ; computer type 1 at 1,18
+    !byte $c2, $12, $19                                               ; 28ce: c2 12 19    ...            ; computer type 2 at 18,25
+    !byte $c0, $20, $11                                               ; 28d1: c0 20 11    . .            ; computer type 0 at 32,17
+    !byte $c1, $1b, $11                                               ; 28d4: c1 1b 11    ...            ; computer type 1 at 27,17
+    !byte $c3, $1b, $19                                               ; 28d7: c3 1b 19    ...            ; computer type 3 at 27,25
+    !byte $c3, $20, $19                                               ; 28da: c3 20 19    . .            ; computer type 3 at 32,25
+    !byte $c0, $0a, $12                                               ; 28dd: c0 0a 12    ...            ; computer type 0 at 10,18
     !byte 0                                                           ; 28e0: 00          .              ; terminator for computers
     !byte 0                                                           ; 28e1: 00          .              ; terminator for collectibles
     !text "Computers In The Basemen", $80+'t'                         ; 28e2: 43 6f 6d... Com            ; "Computers In The Basement"
 
 ;             Into The Garden
 ; ****************************************
-; **................*1*.......**..........
+; **................*3*.......**..........
 ; ...................D........**..........
 ; ...................D....................
 ; ...................D....................
 ; ...................D....................
-; ..................*1*...................
+; ..................*3*...................
 ; .................***********************
 ; ****************************************
 ; *********************.......cccccccc...*
@@ -6193,8 +6193,8 @@ room_18_definition
     !byte $44,   9, $17,   0,   0                                     ; 295c: 44 09 17... D..            ; invisible vertical door at 9,23 to door 0 in room 0
     !byte 0                                                           ; 2961: 00          .              ; terminator for doors
     !byte 0                                                           ; 2962: 00          .              ; terminator for keys
-    !byte $c1, $1c, $0f                                               ; 2963: c1 1c 0f    ...            ; computer at 28,15
-    !byte $c1, $20, $0f                                               ; 2966: c1 20 0f    . .            ; computer at 32,15
+    !byte $c1, $1c, $0f                                               ; 2963: c1 1c 0f    ...            ; computer type 1 at 28,15
+    !byte $c1, $20, $0f                                               ; 2966: c1 20 0f    . .            ; computer type 1 at 32,15
     !byte 0                                                           ; 2969: 00          .              ; terminator for computers
     !byte $c1,   6, $18                                               ; 296a: c1 06 18    ...            ; collectible at 6,24
     !byte $c1, $0a, $18                                               ; 296d: c1 0a 18    ...            ; collectible at 10,24
@@ -6222,12 +6222,12 @@ room_18_definition
 ; **............***.....***.....OO......**
 ; **............***.....***.....OO......**
 ; **............***.....******************
-; **............***.....*****************1
+; **............***.....*****************2
 ; **............***.........**......**...D
 ; **.....SS.....***.........**......**...D
 ; **.....SS.....***......................D
 ; **.....SS.....***......................D
-; ***************************************1
+; ***************************************2
 ; ****************************************
 room_19_definition
     !byte $3d                                                         ; 2983: 3d          =              ; offset to start of doors
@@ -6299,12 +6299,12 @@ room_19_definition
 ; *1AA4XXXX*.cccc.cccc.cccc.cccc..........
 ; *.AA.XXXX*.cccc.cccc.cccc.cccc.........*
 ; ****************************************
-; 1***************************************
+; 2***************************************
 ; D.....**........................**......
 ; D.....**........................**......
 ; D.......................................
 ; D.......................................
-; 1***************************************
+; 2***************************************
 ; ****************************************
 room_20_definition
     !byte $34                                                         ; 29f3: 34          4              ; offset to start of doors
@@ -6355,11 +6355,11 @@ room_20_definition
     !byte $c0,   1, $15                                               ; 2a4b: c0 01 15    ...            ; key at 1,21
     !byte $c3,   4, $15                                               ; 2a4e: c3 04 15    ...            ; key at 4,21
     !byte 0                                                           ; 2a51: 00          .              ; terminator for keys
-    !byte $c2,   5, $14                                               ; 2a52: c2 05 14    ...            ; computer at 5,20
-    !byte $c1, $0b, $14                                               ; 2a55: c1 0b 14    ...            ; computer at 11,20
-    !byte $c1, $10, $14                                               ; 2a58: c1 10 14    ...            ; computer at 16,20
-    !byte $c1, $15, $14                                               ; 2a5b: c1 15 14    ...            ; computer at 21,20
-    !byte $c1, $1a, $14                                               ; 2a5e: c1 1a 14    ...            ; computer at 26,20
+    !byte $c2,   5, $14                                               ; 2a52: c2 05 14    ...            ; computer type 2 at 5,20
+    !byte $c1, $0b, $14                                               ; 2a55: c1 0b 14    ...            ; computer type 1 at 11,20
+    !byte $c1, $10, $14                                               ; 2a58: c1 10 14    ...            ; computer type 1 at 16,20
+    !byte $c1, $15, $14                                               ; 2a5b: c1 15 14    ...            ; computer type 1 at 21,20
+    !byte $c1, $1a, $14                                               ; 2a5e: c1 1a 14    ...            ; computer type 1 at 26,20
     !byte 0                                                           ; 2a61: 00          .              ; terminator for computers
     !byte $c2,   1, $0e                                               ; 2a62: c2 01 0e    ...            ; collectible at 1,14
     !byte $c2,   5, $0e                                               ; 2a65: c2 05 0e    ...            ; collectible at 5,14
@@ -6615,8 +6615,8 @@ room_23_definition
     !byte $44, $27, $13,   1, $1c                                     ; 2b9f: 44 27 13... D'.            ; invisible vertical door at 39,19 to door 1 in room 28
     !byte 0                                                           ; 2ba4: 00          .              ; terminator for doors
     !byte 0                                                           ; 2ba5: 00          .              ; terminator for keys
-    !byte $c3,   1, $0f                                               ; 2ba6: c3 01 0f    ...            ; computer at 1,15
-    !byte $c2,   1, $15                                               ; 2ba9: c2 01 15    ...            ; computer at 1,21
+    !byte $c3,   1, $0f                                               ; 2ba6: c3 01 0f    ...            ; computer type 3 at 1,15
+    !byte $c2,   1, $15                                               ; 2ba9: c2 01 15    ...            ; computer type 2 at 1,21
     !byte 0                                                           ; 2bac: 00          .              ; terminator for computers
     !byte $c1,   1, $0a                                               ; 2bad: c1 01 0a    ...            ; collectible at 1,10
     !byte $c1,   4, $0a                                               ; 2bb0: c1 04 0a    ...            ; collectible at 4,10
@@ -6712,10 +6712,10 @@ room_24_definition
     !byte 0                                                           ; 2c1f: 00          .              ; terminator for doors
     !byte $c0, $25, $1c                                               ; 2c20: c0 25 1c    .%.            ; key at 37,28
     !byte 0                                                           ; 2c23: 00          .              ; terminator for keys
-    !byte $c1,   5,   9                                               ; 2c24: c1 05 09    ...            ; computer at 5,9
-    !byte $c2, $0c,   9                                               ; 2c27: c2 0c 09    ...            ; computer at 12,9
-    !byte $c2, $18,   9                                               ; 2c2a: c2 18 09    ...            ; computer at 24,9
-    !byte $c3, $1f,   9                                               ; 2c2d: c3 1f 09    ...            ; computer at 31,9
+    !byte $c1,   5,   9                                               ; 2c24: c1 05 09    ...            ; computer type 1 at 5,9
+    !byte $c2, $0c,   9                                               ; 2c27: c2 0c 09    ...            ; computer type 2 at 12,9
+    !byte $c2, $18,   9                                               ; 2c2a: c2 18 09    ...            ; computer type 2 at 24,9
+    !byte $c3, $1f,   9                                               ; 2c2d: c3 1f 09    ...            ; computer type 3 at 31,9
     !byte 0                                                           ; 2c30: 00          .              ; terminator for computers
     !byte 0                                                           ; 2c31: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 2c32: 00          .              ; terminator for title
@@ -6778,12 +6778,12 @@ room_25_definition
     !byte $44, $27, $0f,   1, $18                                     ; 2c5e: 44 27 0f... D'.            ; invisible vertical door at 39,15 to door 1 in room 24
     !byte 0                                                           ; 2c63: 00          .              ; terminator for doors
     !byte 0                                                           ; 2c64: 00          .              ; terminator for keys
-    !byte $c0,   4, $0a                                               ; 2c65: c0 04 0a    ...            ; computer at 4,10
-    !byte $c0,   8, $0a                                               ; 2c68: c0 08 0a    ...            ; computer at 8,10
-    !byte $c0, $1c, $0a                                               ; 2c6b: c0 1c 0a    ...            ; computer at 28,10
-    !byte $c0, $20, $0a                                               ; 2c6e: c0 20 0a    . .            ; computer at 32,10
-    !byte $c2,   8, $1a                                               ; 2c71: c2 08 1a    ...            ; computer at 8,26
-    !byte $c2, $1c, $1a                                               ; 2c74: c2 1c 1a    ...            ; computer at 28,26
+    !byte $c0,   4, $0a                                               ; 2c65: c0 04 0a    ...            ; computer type 0 at 4,10
+    !byte $c0,   8, $0a                                               ; 2c68: c0 08 0a    ...            ; computer type 0 at 8,10
+    !byte $c0, $1c, $0a                                               ; 2c6b: c0 1c 0a    ...            ; computer type 0 at 28,10
+    !byte $c0, $20, $0a                                               ; 2c6e: c0 20 0a    . .            ; computer type 0 at 32,10
+    !byte $c2,   8, $1a                                               ; 2c71: c2 08 1a    ...            ; computer type 2 at 8,26
+    !byte $c2, $1c, $1a                                               ; 2c74: c2 1c 1a    ...            ; computer type 2 at 28,26
     !byte 0                                                           ; 2c77: 00          .              ; terminator for computers
     !byte $c2,   2, $11                                               ; 2c78: c2 02 11    ...            ; collectible at 2,17
     !byte $c3,   4, $1b                                               ; 2c7b: c3 04 1b    ...            ; collectible at 4,27
@@ -6869,8 +6869,8 @@ room_26_definition
     !byte 0                                                           ; 2ce5: 00          .              ; terminator for doors
     !byte $c0,   6, $11                                               ; 2ce6: c0 06 11    ...            ; key at 6,17
     !byte 0                                                           ; 2ce9: 00          .              ; terminator for keys
-    !byte $c3,   6, $14                                               ; 2cea: c3 06 14    ...            ; computer at 6,20
-    !byte $c3, $0b, $14                                               ; 2ced: c3 0b 14    ...            ; computer at 11,20
+    !byte $c3,   6, $14                                               ; 2cea: c3 06 14    ...            ; computer type 3 at 6,20
+    !byte $c3, $0b, $14                                               ; 2ced: c3 0b 14    ...            ; computer type 3 at 11,20
     !byte 0                                                           ; 2cf0: 00          .              ; terminator for computers
     !byte 0                                                           ; 2cf1: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 2cf2: 00          .              ; terminator for title
@@ -6879,26 +6879,26 @@ room_26_definition
 ; ****************************************
 ; ****************************************
 ; ****************************************
-; *.....***.....1*1......***.....1*1.....*
+; *.....***.....4*4......***.....4*4.....*
 ; *......*......D.D.......*......D.D.....*
 ; *......*......D.D.......*......D.D.....*
 ; *......*......D.D.......*......D.D.....*
 ; *......*......D.D.......*......D.D.....*
-; *.....***.....1*1......***.....1*1.....*
+; *.....***.....4*4......***.....4*4.....*
 ; *.....***.....***......***.....***.....*
-; 1......*.......*........*.......*......1
+; 4......*.......*........*.......*......4
 ; D......*.......*........*.......*......D
 ; D......*.......*........*.......*......D
 ; D......*.......*........*.......*......D
 ; D......*.......*........*.......*......D
-; 1......*.......*........*.......*......1
+; 4......*.......*........*.......*......4
 ; *.....***.....***......***.....***.....*
-; *.....1*1.....***......1*1.....***.....*
+; *.....4*4.....***......4*4.....***.....*
 ; *.....D.D......*.......D.D......*......*
 ; *.....D.D......*.......D.D......*......*
 ; *.....D.D......*.......D.D......*......*
 ; *.....D.D......*.......D.D......*......*
-; *.....1*1.....***......1*1.....***.....*
+; *.....4*4.....***......4*4.....***.....*
 ; ****************************************
 ; ****************************************
 ; ****************************************
@@ -7093,8 +7093,8 @@ room_28_definition
     !byte 0                                                           ; 2df5: 00          .              ; terminator for doors
     !byte $c3, $23, $12                                               ; 2df6: c3 23 12    .#.            ; key at 35,18
     !byte 0                                                           ; 2df9: 00          .              ; terminator for keys
-    !byte $c0,   7, $0a                                               ; 2dfa: c0 07 0a    ...            ; computer at 7,10
-    !byte $c0,   7, $19                                               ; 2dfd: c0 07 19    ...            ; computer at 7,25
+    !byte $c0,   7, $0a                                               ; 2dfa: c0 07 0a    ...            ; computer type 0 at 7,10
+    !byte $c0,   7, $19                                               ; 2dfd: c0 07 19    ...            ; computer type 0 at 7,25
     !byte 0                                                           ; 2e00: 00          .              ; terminator for computers
     !byte $c2, $0c, $0a                                               ; 2e01: c2 0c 0a    ...            ; collectible at 12,10
     !byte $c2, $0c, $19                                               ; 2e04: c2 0c 19    ...            ; collectible at 12,25
@@ -7198,13 +7198,13 @@ room_29_definition
     !byte $c3, $1f, $11                                               ; 2e7d: c3 1f 11    ...            ; key at 31,17
     !byte $c2, $25, $11                                               ; 2e80: c2 25 11    .%.            ; key at 37,17
     !byte 0                                                           ; 2e83: 00          .              ; terminator for keys
-    !byte $c1, $10, $0a                                               ; 2e84: c1 10 0a    ...            ; computer at 16,10
-    !byte $c1, $14, $0a                                               ; 2e87: c1 14 0a    ...            ; computer at 20,10
-    !byte $c2,   6, $15                                               ; 2e8a: c2 06 15    ...            ; computer at 6,21
-    !byte $c2, $0a, $15                                               ; 2e8d: c2 0a 15    ...            ; computer at 10,21
-    !byte $c3, $12, $1a                                               ; 2e90: c3 12 1a    ...            ; computer at 18,26
-    !byte $c3, $16, $1a                                               ; 2e93: c3 16 1a    ...            ; computer at 22,26
-    !byte $c3, $1a, $1a                                               ; 2e96: c3 1a 1a    ...            ; computer at 26,26
+    !byte $c1, $10, $0a                                               ; 2e84: c1 10 0a    ...            ; computer type 1 at 16,10
+    !byte $c1, $14, $0a                                               ; 2e87: c1 14 0a    ...            ; computer type 1 at 20,10
+    !byte $c2,   6, $15                                               ; 2e8a: c2 06 15    ...            ; computer type 2 at 6,21
+    !byte $c2, $0a, $15                                               ; 2e8d: c2 0a 15    ...            ; computer type 2 at 10,21
+    !byte $c3, $12, $1a                                               ; 2e90: c3 12 1a    ...            ; computer type 3 at 18,26
+    !byte $c3, $16, $1a                                               ; 2e93: c3 16 1a    ...            ; computer type 3 at 22,26
+    !byte $c3, $1a, $1a                                               ; 2e96: c3 1a 1a    ...            ; computer type 3 at 26,26
     !byte 0                                                           ; 2e99: 00          .              ; terminator for computers
     !byte $c3, $1e,   8                                               ; 2e9a: c3 1e 08    ...            ; collectible at 30,8
     !byte $c3, $25,   8                                               ; 2e9d: c3 25 08    .%.            ; collectible at 37,8
@@ -7295,8 +7295,8 @@ room_30_definition
     !byte $c3, $20, $0d                                               ; 2ef8: c3 20 0d    . .            ; key at 32,13
     !byte $c0, $20, $17                                               ; 2efb: c0 20 17    . .            ; key at 32,23
     !byte 0                                                           ; 2efe: 00          .              ; terminator for keys
-    !byte $c1, $1a, $0c                                               ; 2eff: c1 1a 0c    ...            ; computer at 26,12
-    !byte $c1, $1a, $16                                               ; 2f02: c1 1a 16    ...            ; computer at 26,22
+    !byte $c1, $1a, $0c                                               ; 2eff: c1 1a 0c    ...            ; computer type 1 at 26,12
+    !byte $c1, $1a, $16                                               ; 2f02: c1 1a 16    ...            ; computer type 1 at 26,22
     !byte 0                                                           ; 2f05: 00          .              ; terminator for computers
     !byte 0                                                           ; 2f06: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 2f07: 00          .              ; terminator for title
@@ -7378,10 +7378,10 @@ room_31_definition
     !byte $44,   0, $10,   0, $24                                     ; 2f56: 44 00 10... D..            ; invisible vertical door at 0,16 to door 0 in room 36
     !byte 0                                                           ; 2f5b: 00          .              ; terminator for doors
     !byte 0                                                           ; 2f5c: 00          .              ; terminator for keys
-    !byte $c2,   7, $11                                               ; 2f5d: c2 07 11    ...            ; computer at 7,17
-    !byte $c2, $0b, $11                                               ; 2f60: c2 0b 11    ...            ; computer at 11,17
-    !byte $c1,   7, $16                                               ; 2f63: c1 07 16    ...            ; computer at 7,22
-    !byte $c1, $0b, $16                                               ; 2f66: c1 0b 16    ...            ; computer at 11,22
+    !byte $c2,   7, $11                                               ; 2f5d: c2 07 11    ...            ; computer type 2 at 7,17
+    !byte $c2, $0b, $11                                               ; 2f60: c2 0b 11    ...            ; computer type 2 at 11,17
+    !byte $c1,   7, $16                                               ; 2f63: c1 07 16    ...            ; computer type 1 at 7,22
+    !byte $c1, $0b, $16                                               ; 2f66: c1 0b 16    ...            ; computer type 1 at 11,22
     !byte 0                                                           ; 2f69: 00          .              ; terminator for computers
     !byte 0                                                           ; 2f6a: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 2f6b: 00          .              ; terminator for title
@@ -7407,12 +7407,12 @@ room_31_definition
 ; ......*.......OO*.........*....*SS.....*
 ; ......*.......OO*.........*....*SS.....*
 ; ......*.......OO*.........*....*SS.....*
-; *****************....******....********1
+; *****************....******....********3
 ; .....................*.................D
 ; .....................*.................D
 ; .....................*.................D
 ; .....................*.................D
-; **********************....*************1
+; **********************....*************3
 room_32_definition
     !byte $4c                                                         ; 2f6c: 4c          L              ; offset to start of doors
     !byte 0, 0, 1, 1                                                  ; 2f6d: 00 00 01... ...            ; four enemy types
@@ -7485,9 +7485,9 @@ room_32_definition
     !byte $c0, $25, $12                                               ; 2fd7: c0 25 12    .%.            ; key at 37,18
     !byte $c0, $0e,   8                                               ; 2fda: c0 0e 08    ...            ; key at 14,8
     !byte 0                                                           ; 2fdd: 00          .              ; terminator for keys
-    !byte $c2, $11,   7                                               ; 2fde: c2 11 07    ...            ; computer at 17,7
-    !byte $c3, $1b,   7                                               ; 2fe1: c3 1b 07    ...            ; computer at 27,7
-    !byte $c1, $20,   7                                               ; 2fe4: c1 20 07    . .            ; computer at 32,7
+    !byte $c2, $11,   7                                               ; 2fde: c2 11 07    ...            ; computer type 2 at 17,7
+    !byte $c3, $1b,   7                                               ; 2fe1: c3 1b 07    ...            ; computer type 3 at 27,7
+    !byte $c1, $20,   7                                               ; 2fe4: c1 20 07    . .            ; computer type 1 at 32,7
     !byte 0                                                           ; 2fe7: 00          .              ; terminator for computers
     !byte $c1, $0e, $17                                               ; 2fe8: c1 0e 17    ...            ; collectible at 14,23
     !byte $c2, $20, $17                                               ; 2feb: c2 20 17    . .            ; collectible at 32,23
@@ -7571,10 +7571,10 @@ room_33_definition
     !byte $c0,   4, $1c                                               ; 303d: c0 04 1c    ...            ; key at 4,28
     !byte $c1, $23, $1c                                               ; 3040: c1 23 1c    .#.            ; key at 35,28
     !byte 0                                                           ; 3043: 00          .              ; terminator for keys
-    !byte $c1,   7, $1b                                               ; 3044: c1 07 1b    ...            ; computer at 7,27
-    !byte $c2, $0e, $1b                                               ; 3047: c2 0e 1b    ...            ; computer at 14,27
-    !byte $c2, $16, $1b                                               ; 304a: c2 16 1b    ...            ; computer at 22,27
-    !byte $c1, $1d, $1b                                               ; 304d: c1 1d 1b    ...            ; computer at 29,27
+    !byte $c1,   7, $1b                                               ; 3044: c1 07 1b    ...            ; computer type 1 at 7,27
+    !byte $c2, $0e, $1b                                               ; 3047: c2 0e 1b    ...            ; computer type 2 at 14,27
+    !byte $c2, $16, $1b                                               ; 304a: c2 16 1b    ...            ; computer type 2 at 22,27
+    !byte $c1, $1d, $1b                                               ; 304d: c1 1d 1b    ...            ; computer type 1 at 29,27
     !byte 0                                                           ; 3050: 00          .              ; terminator for computers
     !byte $c1, $0f, $17                                               ; 3051: c1 0f 17    ...            ; collectible at 15,23
     !byte $c1, $17, $17                                               ; 3054: c1 17 17    ...            ; collectible at 23,23
@@ -7582,7 +7582,7 @@ room_33_definition
     !byte 0                                                           ; 3058: 00          .              ; terminator for title
 
 ;                    
-; **......***......1DDDD1......***......**
+; **......***......2DDDD2......***......**
 ; *........*.......*....*.......*........*
 ; *........*.......*....*.......*........*
 ; *........*.......*....*.......*........*
@@ -7661,8 +7661,8 @@ room_34_definition
     !byte   4, $20,   6,   5, $23                                     ; 30a7: 04 20 06... . .            ; invisible horizontal door at 32,6 to door 5 in room 35
     !byte 0                                                           ; 30ac: 00          .              ; terminator for doors
     !byte 0                                                           ; 30ad: 00          .              ; terminator for keys
-    !byte $c2, $10, $16                                               ; 30ae: c2 10 16    ...            ; computer at 16,22
-    !byte $c2, $14, $16                                               ; 30b1: c2 14 16    ...            ; computer at 20,22
+    !byte $c2, $10, $16                                               ; 30ae: c2 10 16    ...            ; computer type 2 at 16,22
+    !byte $c2, $14, $16                                               ; 30b1: c2 14 16    ...            ; computer type 2 at 20,22
     !byte 0                                                           ; 30b4: 00          .              ; terminator for computers
     !byte 0                                                           ; 30b5: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 30b6: 00          .              ; terminator for title
@@ -7693,7 +7693,7 @@ room_34_definition
 ; *........*.......*....*.......*........*
 ; *........*.......*....*.......*........*
 ; *........*.......*....*.......*........*
-; **......***......1DDDD1......***......**
+; **......***......2DDDD2......***......**
 room_35_definition
     !byte $4e                                                         ; 30b7: 4e          N              ; offset to start of doors
     !byte 3, 4, 3, 4                                                  ; 30b8: 03 04 03... ...            ; four enemy types
@@ -7769,12 +7769,12 @@ room_35_definition
     !byte 0                                                           ; 3128: 00          .              ; terminator for doors
     !byte $c0, $13, $17                                               ; 3129: c0 13 17    ...            ; key at 19,23
     !byte 0                                                           ; 312c: 00          .              ; terminator for keys
-    !byte $c1, $10,   7                                               ; 312d: c1 10 07    ...            ; computer at 16,7
-    !byte $c1, $14,   7                                               ; 3130: c1 14 07    ...            ; computer at 20,7
-    !byte $c2, $10, $0c                                               ; 3133: c2 10 0c    ...            ; computer at 16,12
-    !byte $c2, $14, $0c                                               ; 3136: c2 14 0c    ...            ; computer at 20,12
-    !byte $c3, $10, $11                                               ; 3139: c3 10 11    ...            ; computer at 16,17
-    !byte $c3, $14, $11                                               ; 313c: c3 14 11    ...            ; computer at 20,17
+    !byte $c1, $10,   7                                               ; 312d: c1 10 07    ...            ; computer type 1 at 16,7
+    !byte $c1, $14,   7                                               ; 3130: c1 14 07    ...            ; computer type 1 at 20,7
+    !byte $c2, $10, $0c                                               ; 3133: c2 10 0c    ...            ; computer type 2 at 16,12
+    !byte $c2, $14, $0c                                               ; 3136: c2 14 0c    ...            ; computer type 2 at 20,12
+    !byte $c3, $10, $11                                               ; 3139: c3 10 11    ...            ; computer type 3 at 16,17
+    !byte $c3, $14, $11                                               ; 313c: c3 14 11    ...            ; computer type 3 at 20,17
     !byte 0                                                           ; 313f: 00          .              ; terminator for computers
     !byte $c3,   1, $0d                                               ; 3140: c3 01 0d    ...            ; collectible at 1,13
     !byte $c3,   3, $0d                                               ; 3143: c3 03 0d    ...            ; collectible at 3,13
@@ -8001,10 +8001,10 @@ room_37_definition
     !byte $c2,   3,   9                                               ; 325b: c2 03 09    ...            ; key at 3,9
     !byte $c3,   3, $1b                                               ; 325e: c3 03 1b    ...            ; key at 3,27
     !byte 0                                                           ; 3261: 00          .              ; terminator for keys
-    !byte $c0, $0d,   8                                               ; 3262: c0 0d 08    ...            ; computer at 13,8
-    !byte $c0, $15,   8                                               ; 3265: c0 15 08    ...            ; computer at 21,8
-    !byte $c0, $0d, $1b                                               ; 3268: c0 0d 1b    ...            ; computer at 13,27
-    !byte $c0, $15, $1b                                               ; 326b: c0 15 1b    ...            ; computer at 21,27
+    !byte $c0, $0d,   8                                               ; 3262: c0 0d 08    ...            ; computer type 0 at 13,8
+    !byte $c0, $15,   8                                               ; 3265: c0 15 08    ...            ; computer type 0 at 21,8
+    !byte $c0, $0d, $1b                                               ; 3268: c0 0d 1b    ...            ; computer type 0 at 13,27
+    !byte $c0, $15, $1b                                               ; 326b: c0 15 1b    ...            ; computer type 0 at 21,27
     !byte 0                                                           ; 326e: 00          .              ; terminator for computers
     !byte $c2,   2, $10                                               ; 326f: c2 02 10    ...            ; collectible at 2,16
     !byte $c3,   2, $13                                               ; 3272: c3 02 13    ...            ; collectible at 2,19
@@ -8369,7 +8369,7 @@ room_40_definition
     !byte $c0, $20,   8                                               ; 3443: c0 20 08    . .            ; key at 32,8
     !byte $c3, $20, $0a                                               ; 3446: c3 20 0a    . .            ; key at 32,10
     !byte 0                                                           ; 3449: 00          .              ; terminator for keys
-    !byte $c0, $17,   8                                               ; 344a: c0 17 08    ...            ; computer at 23,8
+    !byte $c0, $17,   8                                               ; 344a: c0 17 08    ...            ; computer type 0 at 23,8
     !byte 0                                                           ; 344d: 00          .              ; terminator for computers
     !byte 0                                                           ; 344e: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 344f: 00          .              ; terminator for title
@@ -8482,10 +8482,10 @@ room_41_definition
     !byte $60, $20, $10,   0,   0                                     ; 34cb: 60 20 10... ` .            ; visible vertical door at 32,16 to door 0 in room 0
     !byte 0                                                           ; 34d0: 00          .              ; terminator for doors
     !byte 0                                                           ; 34d1: 00          .              ; terminator for keys
-    !byte $c2, $16,   7                                               ; 34d2: c2 16 07    ...            ; computer at 22,7
-    !byte $c2, $1e,   7                                               ; 34d5: c2 1e 07    ...            ; computer at 30,7
-    !byte $c3, $16, $1b                                               ; 34d8: c3 16 1b    ...            ; computer at 22,27
-    !byte $c3, $1e, $1b                                               ; 34db: c3 1e 1b    ...            ; computer at 30,27
+    !byte $c2, $16,   7                                               ; 34d2: c2 16 07    ...            ; computer type 2 at 22,7
+    !byte $c2, $1e,   7                                               ; 34d5: c2 1e 07    ...            ; computer type 2 at 30,7
+    !byte $c3, $16, $1b                                               ; 34d8: c3 16 1b    ...            ; computer type 3 at 22,27
+    !byte $c3, $1e, $1b                                               ; 34db: c3 1e 1b    ...            ; computer type 3 at 30,27
     !byte 0                                                           ; 34de: 00          .              ; terminator for computers
     !byte $c1, $0d, $10                                               ; 34df: c1 0d 10    ...            ; collectible at 13,16
     !byte 0                                                           ; 34e2: 00          .              ; terminator for collectibles
@@ -8981,10 +8981,10 @@ room_46_definition
     !byte $60, $1e, $12,   0,   0                                     ; 375c: 60 1e 12... `..            ; visible vertical door at 30,18 to door 0 in room 0
     !byte 0                                                           ; 3761: 00          .              ; terminator for doors
     !byte 0                                                           ; 3762: 00          .              ; terminator for keys
-    !byte $c2, $0f, $0f                                               ; 3763: c2 0f 0f    ...            ; computer at 15,15
-    !byte $c2, $15, $0f                                               ; 3766: c2 15 0f    ...            ; computer at 21,15
-    !byte $c1, $0f, $18                                               ; 3769: c1 0f 18    ...            ; computer at 15,24
-    !byte $c1, $15, $18                                               ; 376c: c1 15 18    ...            ; computer at 21,24
+    !byte $c2, $0f, $0f                                               ; 3763: c2 0f 0f    ...            ; computer type 2 at 15,15
+    !byte $c2, $15, $0f                                               ; 3766: c2 15 0f    ...            ; computer type 2 at 21,15
+    !byte $c1, $0f, $18                                               ; 3769: c1 0f 18    ...            ; computer type 1 at 15,24
+    !byte $c1, $15, $18                                               ; 376c: c1 15 18    ...            ; computer type 1 at 21,24
     !byte 0                                                           ; 376f: 00          .              ; terminator for computers
     !byte $c2, $0f, $14                                               ; 3770: c2 0f 14    ...            ; collectible at 15,20
     !byte $c3, $11, $14                                               ; 3773: c3 11 14    ...            ; collectible at 17,20
@@ -9160,8 +9160,8 @@ room_48_definition
     !byte $c3,   8, $13                                               ; 385d: c3 08 13    ...            ; key at 8,19
     !byte $c0, $1f, $13                                               ; 3860: c0 1f 13    ...            ; key at 31,19
     !byte 0                                                           ; 3863: 00          .              ; terminator for keys
-    !byte $c0,   8, $15                                               ; 3864: c0 08 15    ...            ; computer at 8,21
-    !byte $c0, $1c, $15                                               ; 3867: c0 1c 15    ...            ; computer at 28,21
+    !byte $c0,   8, $15                                               ; 3864: c0 08 15    ...            ; computer type 0 at 8,21
+    !byte $c0, $1c, $15                                               ; 3867: c0 1c 15    ...            ; computer type 0 at 28,21
     !byte 0                                                           ; 386a: 00          .              ; terminator for computers
     !byte 0                                                           ; 386b: 00          .              ; terminator for collectibles
     !byte 0                                                           ; 386c: 00          .              ; terminator for title
@@ -9615,8 +9615,8 @@ room_52_definition
     !byte   4, $23,   6,   8, $36                                     ; 3aa7: 04 23 06... .#.            ; invisible horizontal door at 35,6 to door 8 in room 54
     !byte 0                                                           ; 3aac: 00          .              ; terminator for doors
     !byte 0                                                           ; 3aad: 00          .              ; terminator for keys
-    !byte $c1,   8, $15                                               ; 3aae: c1 08 15    ...            ; computer at 8,21
-    !byte $c2, $1c, $15                                               ; 3ab1: c2 1c 15    ...            ; computer at 28,21
+    !byte $c1,   8, $15                                               ; 3aae: c1 08 15    ...            ; computer type 1 at 8,21
+    !byte $c2, $1c, $15                                               ; 3ab1: c2 1c 15    ...            ; computer type 2 at 28,21
     !byte 0                                                           ; 3ab4: 00          .              ; terminator for computers
     !byte 0                                                           ; 3ab5: 00          .              ; terminator for collectibles
     !text "The Helicopter Pa", $80+'d'                                ; 3ab6: 54 68 65... The            ; "The Helicopter Pad"
@@ -9736,6 +9736,8 @@ room_54_definition
     !byte 0                                                           ; 3b64: 00          .              ; terminator for collectibles
     !text "East Of The Towe", $80+'r'                                 ; 3b65: 45 61 73... Eas            ; "East Of The Tower"
 
+; ***************************************************************************************
+; read the next byte from ROM, preserving X and Y
 get_random_byte
     sty temp_store_y                                                  ; 3b76: 84 3b       .;
     inc rnd_offset                                                    ; 3b78: e6 3c       .<
@@ -9752,6 +9754,7 @@ skip_reset_rnd_addr
     ldy temp_store_y                                                  ; 3b8c: a4 3b       .;
     rts                                                               ; 3b8e: 60          `
 
+; ***************************************************************************************
 ; Each enemy state has 6 bytes:
 ;     byte 0 = zero means not used, otherwise:
 ;         bits 0-1: dissolve animation step
@@ -9806,7 +9809,8 @@ next_enemy
 return1
     rts                                                               ; 3bd3: 60          `
 
-update_enemy_spawning
+; ***************************************************************************************
+update_enemy_spawn
     jsr check_enemy_spawn_position_clear                              ; 3bd4: 20 28 3d     (=
     bcs no_spawn                                                      ; 3bd7: b0 07       ..
     lda #$20                                                          ; 3bd9: a9 20       .
@@ -9831,7 +9835,7 @@ clear_direction_draw_enemy_and_update_animation
 draw_enemy_and_update_animation
     lda enemies_state,y                                               ; 3bfe: b9 00 0c    ...
     and #$40                                                          ; 3c01: 29 40       )@
-    bne update_enemy_spawning                                         ; 3c03: d0 cf       ..
+    bne update_enemy_spawn                                            ; 3c03: d0 cf       ..
     jsr check_enemy_spawn_position_clear                              ; 3c05: 20 28 3d     (=
     bcc spawn                                                         ; 3c08: 90 42       .B
     lda #$63                                                          ; 3c0a: a9 63       .c
@@ -9935,6 +9939,7 @@ set_random_new_direction
     sta enemies_state + 4,y                                           ; 3cca: 99 04 0c    ...            ; set enemy delta Y
     jmp move_enemy_if_possible                                        ; 3ccd: 4c 6d 3c    Lm<
 
+; ***************************************************************************************
 enemy_dies
     lda #0                                                            ; 3cd0: a9 00       ..
     sta enemies_state,y                                               ; 3cd2: 99 00 0c    ...
@@ -9952,6 +9957,7 @@ enemy_dies
     ldy delta_y                                                       ; 3cef: a4 06       ..
     jmp decrement_loop_counter                                        ; 3cf1: 4c c8 3b    L.;
 
+; ***************************************************************************************
 ; carry clear if the collision map is empty at (cell_x,cell_y) with
 ; size delta_x square
 is_collision_map_empty_here
@@ -9991,6 +9997,7 @@ done
     ldy delta_y                                                       ; 3d25: a4 06       ..
     rts                                                               ; 3d27: 60          `
 
+; ***************************************************************************************
 ; return with carry clear if the requested spawn position is available
 check_enemy_spawn_position_clear
     ldx enemies_state + 5,y                                           ; 3d28: be 05 0c    ...            ; enemy sprite number
@@ -10061,6 +10068,7 @@ pull_a_and_return
 return2
     rts                                                               ; 3d8b: 60          `
 
+; ***************************************************************************************
 update_enemies
     ldy #0                                                            ; 3d8c: a0 00       ..
     ldx number_of_enemies                                             ; 3d8e: a6 37       .7
@@ -10163,6 +10171,7 @@ delta_x_table
 delta_y_table
     !byte $ff, $ff,   0,   1,   1,   1,   0, $ff                      ; 3e46: ff ff 00... ...
 
+; ***************************************************************************************
 print_following_string
     pla                                                               ; 3e4e: 68          h
     sta print_addr_low                                                ; 3e4f: 85 2f       ./
@@ -10186,6 +10195,7 @@ increment_print_address
 return3
     rts                                                               ; 3e70: 60          `
 
+; ***************************************************************************************
 print_decimal_number
     lda #$0a                                                          ; 3e71: a9 0a       ..
     sta temp_slash_divisor                                            ; 3e73: 85 31       .1
@@ -10207,6 +10217,7 @@ print_digit_loop
 return4
     rts                                                               ; 3e8c: 60          `
 
+; ***************************************************************************************
 divide
     lda #0                                                            ; 3e8d: a9 00       ..
     ldy #8                                                            ; 3e8f: a0 08       ..
@@ -10222,6 +10233,7 @@ divide_next_bit
     bne divide_loop                                                   ; 3e9d: d0 f2       ..
     rts                                                               ; 3e9f: 60          `
 
+; ***************************************************************************************
 show_keys_and_zero_score
     jsr print_following_string                                        ; 3ea0: 20 4e 3e     N>
     !text $16, 4, $13, 1, 0, 0, 0, 0, $17, 1, 0, 0, 0, 0, 0, 0, 0, 0  ; 3ea3: 16 04 13... ...
@@ -10263,12 +10275,15 @@ print_keys_loop
     sta score_digits_6                                                ; 3f18: 85 2e       ..
     jmp print_score                                                   ; 3f1a: 4c e3 3f    L.?
 
+; ***************************************************************************************
 increment_computer_bar
     ldx #<computer_bar_screen_address                                 ; 3f1d: a2 50       .P
     ldy #>computer_bar_screen_address                                 ; 3f1f: a0 5b       .[
     lda computer_bar_level                                            ; 3f21: a5 40       .@
     inc computer_bar_level                                            ; 3f23: e6 40       .@
     bne draw_bar                                                      ; 3f25: d0 1b       ..
+
+; ***************************************************************************************
 increment_energy_bar
     ldx #<energy_bar_screen_address                                   ; 3f27: a2 d0       ..
     ldy #>energy_bar_screen_address                                   ; 3f29: a0 58       .X
@@ -10277,6 +10292,8 @@ increment_energy_bar
     beq return5                                                       ; 3f2f: f0 29       .)
     inc energy_bar_level                                              ; 3f31: e6 32       .2
     bne draw_bar                                                      ; 3f33: d0 0d       ..
+
+; ***************************************************************************************
 increment_ammo_bar
     ldx #<ammo_bar_screen_address                                     ; 3f35: a2 10       ..
     ldy #>ammo_bar_screen_address                                     ; 3f37: a0 5a       .Z
@@ -10308,6 +10325,8 @@ return5
 bar_pixels_set_table
     !byte 0                                                           ; 3f5b: 00          .
     !byte $80, $c0, $e0, $f0, $f8, $fc, $fe, $ff                      ; 3f5c: 80 c0 e0... ...
+
+; ***************************************************************************************
 decrement_computer_bar
     ldx #<computer_bar_screen_address                                 ; 3f64: a2 50       .P
     ldy #>computer_bar_screen_address                                 ; 3f66: a0 5b       .[
@@ -10315,6 +10334,7 @@ decrement_computer_bar
     lda computer_bar_level                                            ; 3f6a: a5 40       .@
     jmp print_decremented_bar                                         ; 3f6c: 4c 8b 3f    L.?
 
+; ***************************************************************************************
 decrement_energy_bar
     lda #4                                                            ; 3f6f: a9 04       ..
     jsr check_play_sound_a                                            ; 3f71: 20 65 40     e@
@@ -10323,6 +10343,8 @@ decrement_energy_bar
     ldx #<energy_bar_screen_address                                   ; 3f78: a2 d0       ..
     ldy #>energy_bar_screen_address                                   ; 3f7a: a0 58       .X
     bne print_decremented_bar                                         ; 3f7c: d0 0d       ..
+
+; ***************************************************************************************
 decrement_ammo_bar
     lda ammo_bar_level                                                ; 3f7e: a5 33       .3
     beq check_energy                                                  ; 3f80: f0 21       .!
@@ -10358,6 +10380,7 @@ check_energy
 return6
     rts                                                               ; 3fac: 60          `
 
+; ***************************************************************************************
 refill_bars
     lda #0                                                            ; 3fad: a9 00       ..
     sta energy_bar_level                                              ; 3faf: 85 32       .2
@@ -10373,6 +10396,7 @@ refill_bars_loop
     bne refill_bars_loop                                              ; 3fc5: d0 f0       ..
     rts                                                               ; 3fc7: 60          `
 
+; ***************************************************************************************
 increment_score
     lda #1                                                            ; 3fc8: a9 01       ..
 add_a_to_score
@@ -10404,6 +10428,7 @@ print_score_loop
     bpl print_score_loop                                              ; 3ffb: 10 f7       ..
     rts                                                               ; 3ffd: 60          `
 
+; ***************************************************************************************
 wait
     lda #osword_read_clock                                            ; 3ffe: a9 01       ..
     ldx #<(wait_clock_read_value)                                     ; 4000: a2 17       ..
@@ -10421,6 +10446,8 @@ wait_clock_read_value
     !byte 0, 0, 0, 0, 0                                               ; 4017: 00 00 00... ...
 wait_clock_write_value
     !byte 0                                                           ; 401c: 00          .
+
+; ***************************************************************************************
 check_sound_on_off
     ldx #inkey_key_q                                                  ; 401d: a2 ef       ..
     jsr read_key                                                      ; 401f: 20 54 49     TI
@@ -10436,6 +10463,7 @@ skip
 return7
     rts                                                               ; 4033: 60          `
 
+; ***************************************************************************************
 check_paws
     ldx #inkey_key_o                                                  ; 4034: a2 c9       ..
     jsr read_key                                                      ; 4036: 20 54 49     TI
@@ -10452,6 +10480,7 @@ paws_loop
     !text $1f, " ", 3, "       ", $80+' '                             ; 4059: 1f 20 03... . .
     rts                                                               ; 4064: 60          `
 
+; ***************************************************************************************
 check_play_sound_a
     pha                                                               ; 4065: 48          H
     lda sound_duration                                                ; 4066: a5 35       .5
@@ -10506,6 +10535,7 @@ sound7_pitch = sound7+4
 sound8
     !byte 1, 0, 0, 0, 0, 0, 3, 0                                      ; 40da: 01 00 00... ...
 
+; ***************************************************************************************
 collision_map_addr_low
     !byte $d8,   0, $28, $50, $78, $a0, $c8, $f0, $18, $40, $68, $90  ; 40e2: d8 00 28... ..(
     !byte $b8, $e0,   8, $30, $58, $80, $a8, $d0, $f8, $20, $48, $70  ; 40ee: b8 e0 08... ...
@@ -10515,6 +10545,7 @@ collision_map_addr_high
     !byte $0f, $0f, $10, $10, $10, $10, $10, $10, $10, $11, $11, $11  ; 4109: 0f 0f 10... ...
     !byte $11, $11, $11                                               ; 4115: 11 11 11    ...
 
+; ***************************************************************************************
 room_decoder_routine_table_low
     !byte              <room_decode_plot_strip                        ; 4118: 61          a
     !byte              <room_decode_plot_strip                        ; 4119: 61          a
@@ -10534,6 +10565,7 @@ room_decoder_routine_table_high
     !byte              >room_decode_set_sprite                        ; 4126: 42          B
     !byte               >room_decode_draw_rect                        ; 4127: 43          C
 
+; ***************************************************************************************
 clear_memory
     lda #$80                                                          ; 4128: a9 80       ..
     sta collision_map_byte_to_write                                   ; 412a: 85 0c       ..
@@ -10551,6 +10583,7 @@ clear_memory_loop
     bne clear_memory_loop                                             ; 4146: d0 e8       ..
     jmp clear_play_area                                               ; 4148: 4c e8 43    L.C
 
+; ***************************************************************************************
 decode_room_commands
     stx current_room_low                                              ; 414b: 86 08       ..
     sty current_room_high                                             ; 414d: 84 09       ..
@@ -10596,6 +10629,7 @@ routine_addr_high = opcode1+2
 return8
     rts                                                               ; 4191: 60          `
 
+; ***************************************************************************************
 prepare_room
     jsr decode_room_commands                                          ; 4192: 20 4b 41     KA
     lda #$80                                                          ; 4195: a9 80       ..
@@ -10805,6 +10839,7 @@ print_spaces_to_end_of_line
     bne print_spaces_to_end_of_line                                   ; 42c2: d0 f2       ..
     rts                                                               ; 42c4: 60          `
 
+; ***************************************************************************************
 room_decode_set_deltax_or_y
     ldx #0                                                            ; 42c5: a2 00       ..
     stx delta_x                                                       ; 42c7: 86 05       ..
@@ -10834,6 +10869,7 @@ negative_delta
     inx                                                               ; 42eb: e8          .
     jmp set_delta                                                     ; 42ec: 4c d5 42    L.B
 
+; ***************************************************************************************
 room_decode_set_cellxy
     and #$1f                                                          ; 42ef: 29 1f       ).
     sta cell_y                                                        ; 42f1: 85 01       ..
@@ -10845,6 +10881,7 @@ room_decode_set_cellxy
     sta temp_byte                                                     ; 42fc: 85 0b       ..
     rts                                                               ; 42fe: 60          `
 
+; ***************************************************************************************
 room_decode_set_sprite
     ldx #0                                                            ; 42ff: a2 00       ..             ; redundant
     ldx #$80                                                          ; 4301: a2 80       ..             ; use collision map value $80 if A>=0
@@ -10863,6 +10900,7 @@ set_sprite_a_and_collision_x
     stx collision_map_byte_to_write                                   ; 4316: 86 0c       ..
     rts                                                               ; 4318: 60          `
 
+; ***************************************************************************************
 room_decode_draw_rect
     and #$1f                                                          ; 4319: 29 1f       ).
     sta temp_addr_low                                                 ; 431b: 85 1d       ..             ; rectangle height
@@ -10906,6 +10944,7 @@ loop_plot_rect_inner
     sta temp_byte                                                     ; 435e: 85 0b       ..
     rts                                                               ; 4360: 60          `
 
+; ***************************************************************************************
 room_decode_plot_strip
     sta plot_strip_loop_counter                                       ; 4361: 85 0a       ..
     tya                                                               ; 4363: 98          .
@@ -10933,6 +10972,7 @@ room_plot_at_first_position
     iny                                                               ; 4386: c8          .
     rts                                                               ; 4387: 60          `
 
+; ***************************************************************************************
 room_decode_move_in_delta_direction
     and #$1f                                                          ; 4388: 29 1f       ).
     tax                                                               ; 438a: aa          .
@@ -10950,6 +10990,7 @@ move_in_delta_loop
     iny                                                               ; 439c: c8          .
     rts                                                               ; 439d: 60          `
 
+; ***************************************************************************************
 plot_room_sprite_xy
     stx cell_x                                                        ; 439e: 86 00       ..
     sty cell_y                                                        ; 43a0: 84 01       ..
@@ -10998,6 +11039,7 @@ collision_map_dest_high = inner_loop+2
 return9
     rts                                                               ; 43e7: 60          `
 
+; ***************************************************************************************
 clear_play_area
     lda #$5e                                                          ; 43e8: a9 5e       .^
     sta play_area_screen_addr_high                                    ; 43ea: 8d f3 43    ..C
@@ -11014,6 +11056,7 @@ play_area_screen_addr_high = clear_play_area_loop+2
     bne clear_play_area_loop                                          ; 43ff: d0 f0       ..
     rts                                                               ; 4401: 60          `
 
+; ***************************************************************************************
 update_collision_map_at_player
     clc                                                               ; 4402: 18          .
     ldy cell_y                                                        ; 4403: a4 01       ..
@@ -11044,6 +11087,7 @@ eor_top_two_bits_internal_loop
 return10
     rts                                                               ; 4430: 60          `
 
+; ***************************************************************************************
 screen_address_table_low
     !byte <($5800 + 0 * $0140)                                        ; 4431: 00          .
     !byte <($5800 + 1 * $0140)                                        ; 4432: 40          @
@@ -11111,6 +11155,7 @@ screen_address_table_high
     !byte >($5800 + 30 * $0140)                                       ; 446f: 7d          }
     !byte >($5800 + 31 * $0140)                                       ; 4470: 7e          ~
 
+; ***************************************************************************************
 get_sprite_a_address
     tax                                                               ; 4471: aa          .
     ldy sprite_width_table,x                                          ; 4472: bc e8 1f    ...
@@ -11127,6 +11172,7 @@ get_sprite_a_address
     tax                                                               ; 4489: aa          .
     rts                                                               ; 448a: 60          `
 
+; ***************************************************************************************
 get_xy_screen_address
     pha                                                               ; 448b: 48          H
     lda cell_x                                                        ; 448c: a5 00       ..
@@ -11147,6 +11193,7 @@ get_xy_screen_address
     pla                                                               ; 44a7: 68          h
     rts                                                               ; 44a8: 60          `
 
+; ***************************************************************************************
 plot_sprite_xy_set
     stx cell_x                                                        ; 44a9: 86 00       ..
     sty cell_y                                                        ; 44ab: 84 01       ..
@@ -11183,6 +11230,7 @@ dest1_screen_addr_high = opcode2+2
 return11
     rts                                                               ; 44e3: 60          `
 
+; ***************************************************************************************
 plot_sprite_xy_and
     stx cell_x                                                        ; 44e4: 86 00       ..
     sty cell_y                                                        ; 44e6: 84 01       ..
@@ -11226,6 +11274,7 @@ dest2_screen_addr_high = opcode5+2
 return12
     rts                                                               ; 452d: 60          `
 
+; ***************************************************************************************
 plot_sprite_xy_clear
     stx cell_x                                                        ; 452e: 86 00       ..
     sty cell_y                                                        ; 4530: 84 01       ..
@@ -11259,6 +11308,7 @@ dest3_screen_addr_high = opcode6+2
 return13
     rts                                                               ; 4564: 60          `
 
+; ***************************************************************************************
 plot_sprite_xy_eor
     stx cell_x                                                        ; 4565: 86 00       ..
     sty cell_y                                                        ; 4567: 84 01       ..
@@ -11303,6 +11353,7 @@ dest4_screen_addr_high = opcode8+2
 return14
     rts                                                               ; 45ae: 60          `
 
+; ***************************************************************************************
 plot_sprite_xy_mask
     stx cell_x                                                        ; 45af: 86 00       ..
     sty cell_y                                                        ; 45b1: 84 01       ..
@@ -11350,6 +11401,7 @@ screen_addr_high = opcode10+2
 return15
     rts                                                               ; 45ff: 60          `
 
+; ***************************************************************************************
 update_doors
     ldy current_room_cache                                            ; 4600: ac 00 04    ...
 update_doors_loop
@@ -11400,6 +11452,7 @@ door_finished_opening
 return16
     rts                                                               ; 464f: 60          `
 
+; ***************************************************************************************
 get_next_two_room_bytes_into_xy
     sty delta_y                                                       ; 4650: 84 06       ..
     pha                                                               ; 4652: 48          H
@@ -11409,6 +11462,7 @@ get_next_two_room_bytes_into_xy
     pla                                                               ; 465a: 68          h
     rts                                                               ; 465b: 60          `
 
+; ***************************************************************************************
 add_dying_item
     pha                                                               ; 465c: 48          H
     stx cell_x                                                        ; 465d: 86 00       ..
@@ -11436,6 +11490,7 @@ found_dying_item_free_slot
     sta dying_items,y                                                 ; 4684: 99 00 05    ...
     jmp plot_room_sprite_a_to_collision_map                           ; 4687: 4c a7 43    L.C
 
+; ***************************************************************************************
 update_dying_items
     lda number_of_dying_items                                         ; 468a: a5 19       ..
     sta delta_x                                                       ; 468c: 85 05       ..
@@ -11477,6 +11532,7 @@ next_dying_item
 return17
     rts                                                               ; 46cc: 60          `
 
+; ***************************************************************************************
 remove_fully_dissolved_object
     lda temp_byte                                                     ; 46cd: a5 0b       ..
     jsr plot_sprite_xy_clear                                          ; 46cf: 20 2e 45     .E
@@ -11490,6 +11546,7 @@ remove_fully_dissolved_object
     dec number_of_dying_items                                         ; 46e2: c6 19       ..
     jmp check_if_done                                                 ; 46e4: 4c c2 46    L.F
 
+; ***************************************************************************************
 update_player
     ldx player_x                                                      ; 46e7: a6 1a       ..
     ldy player_y                                                      ; 46e9: a4 1b       ..
@@ -11550,6 +11607,7 @@ check_for_collision_horizontal_loop
 finished_collision_check
     jmp check_fire_key_local                                          ; 474d: 4c 36 48    L6H
 
+; ***************************************************************************************
 check_for_collisions
     jsr update_collision_map_at_player                                ; 4750: 20 02 44     .D
     lda #0                                                            ; 4753: a9 00       ..
@@ -11707,6 +11765,7 @@ check_fire_key
 check_fire_key_done
     jmp check_return_key                                              ; 4868: 4c ff 4a    L.J
 
+; ***************************************************************************************
 ; each arrow is stored in three bytes, the first byte has bottom bit
 ; for active/dead, and top bit for left/right direction, bytes two and
 ; three are the X,Y position
@@ -11754,6 +11813,7 @@ skip_make_arrow_right_facing
 return18
     rts                                                               ; 48b3: 60          `
 
+; ***************************************************************************************
 handle_z_pressed
     lda player_sprite                                                 ; 48b4: a5 1c       ..
     cmp #$41                                                          ; 48b6: c9 41       .A
@@ -11781,6 +11841,7 @@ return19
 change_room_local
     jmp change_room                                                   ; 48dc: 4c ee 4b    L.K
 
+; ***************************************************************************************
 handle_x_pressed
     lda player_sprite                                                 ; 48df: a5 1c       ..
     cmp #$41                                                          ; 48e1: c9 41       .A
@@ -11806,6 +11867,7 @@ skip_turn_right
 return20
     rts                                                               ; 4908: 60          `
 
+; ***************************************************************************************
 handle_shift_pressed
     lda player_y                                                      ; 4909: a5 1b       ..
     cmp #6                                                            ; 490b: c9 06       ..
@@ -11824,6 +11886,7 @@ handle_shift_pressed
 return21
     rts                                                               ; 4924: 60          `
 
+; ***************************************************************************************
 update_falling
     lda player_y                                                      ; 4925: a5 1b       ..
     cmp #$1d                                                          ; 4927: c9 1d       ..
@@ -11842,6 +11905,7 @@ update_falling
 return22
     rts                                                               ; 4940: 60          `
 
+; ***************************************************************************************
 get_player_collision_address
     ldy player_y                                                      ; 4941: a4 1b       ..
     dey                                                               ; 4943: 88          .
@@ -11854,11 +11918,13 @@ get_player_collision_address
     sta temp_addr_high                                                ; 4951: 85 1e       ..
     rts                                                               ; 4953: 60          `
 
+; ***************************************************************************************
 read_key
     lda #osbyte_inkey                                                 ; 4954: a9 81       ..
     ldy #$ff                                                          ; 4956: a0 ff       ..
     jmp osbyte                                                        ; 4958: 4c f4 ff    L..
 
+; ***************************************************************************************
 draw_arrows
     lda number_of_arrows_in_flight                                    ; 495b: a5 1f       ..
     sta arrow_loop_counter                                            ; 495d: 85 20       .
@@ -11891,6 +11957,7 @@ next_arrow
 return23
     rts                                                               ; 498a: 60          `
 
+; ***************************************************************************************
 update_all_arrows
     lda #osbyte_vsync                                                 ; 498b: a9 13       ..
     jsr osbyte                                                        ; 498d: 20 f4 ff     ..
@@ -11920,6 +11987,7 @@ next_arrow2
 return24
     rts                                                               ; 49b8: 60          `
 
+; ***************************************************************************************
 update_arrow
     sty temp_loop_counter                                             ; 49b9: 84 21       .!
     ldx arrow_slots + 2,y                                             ; 49bb: be 82 05    ...
@@ -11939,7 +12007,7 @@ update_arrow
     and #4                                                            ; 49da: 29 04       ).
     bne draw_arrow                                                    ; 49dc: d0 04       ..
     lda (temp_addr_low,x)                                             ; 49de: a1 1d       ..
-    bne update_collectibles                                           ; 49e0: d0 1d       ..
+    bne check_for_arrow_colliding_with_collectibles                   ; 49e0: d0 1d       ..
 draw_arrow
     ldx #$29                                                          ; 49e2: a2 29       .)             ; X = left facing arrow sprite
     lda arrow_slots,y                                                 ; 49e4: b9 80 05    ...
@@ -11960,7 +12028,7 @@ arrow_finished
     dec number_of_arrows_in_flight                                    ; 49fc: c6 1f       ..
     rts                                                               ; 49fe: 60          `
 
-update_collectibles
+check_for_arrow_colliding_with_collectibles
     ldx arrow_slots + 1,y                                             ; 49ff: be 81 05    ...
     stx temp_addr_low                                                 ; 4a02: 86 1d       ..
     ldx arrow_slots + 2,y                                             ; 4a04: be 82 05    ...
@@ -11971,7 +12039,7 @@ update_collectibles
     pla                                                               ; 4a0f: 68          h
     dec number_of_arrows_in_flight                                    ; 4a10: c6 1f       ..
     ror                                                               ; 4a12: 6a          j
-    bcc update_computers                                              ; 4a13: 90 34       .4
+    bcc check_for_arrow_colliding_with_computers                      ; 4a13: 90 34       .4
     ldy offset_to_start_of_collectibles                               ; 4a15: a4 0f       ..
 collectible_loop
     lda current_room_cache,y                                          ; 4a17: b9 00 04    ...
@@ -12000,7 +12068,8 @@ next_collectible2
     iny                                                               ; 4a45: c8          .
     iny                                                               ; 4a46: c8          .
     bne collectible_loop                                              ; 4a47: d0 ce       ..
-update_computers
+
+check_for_arrow_colliding_with_computers
     ror                                                               ; 4a49: 6a          j
     ror                                                               ; 4a4a: 6a          j
     ror                                                               ; 4a4b: 6a          j
@@ -12040,21 +12109,21 @@ next_computer2
     bne computer_loop                                                 ; 4a8a: d0 c4       ..
 done_updating_computers
     ror                                                               ; 4a8c: 6a          j
-    bcc update_enemies_state                                          ; 4a8d: 90 0c       ..
+    bcc check_for_arrow_colliding_with_enemies                        ; 4a8d: 90 0c       ..
     ldx temp_addr_low                                                 ; 4a8f: a6 1d       ..
     ldy temp_addr_high                                                ; 4a91: a4 1e       ..
     lda #1                                                            ; 4a93: a9 01       ..
     jsr add_dying_item                                                ; 4a95: 20 5c 46     \F
     jmp increment_score                                               ; 4a98: 4c c8 3f    L.?
 
-update_enemies_state
+check_for_arrow_colliding_with_enemies
     ror                                                               ; 4a9b: 6a          j
     bcc finished_updating                                             ; 4a9c: 90 5c       .\
     ldy #0                                                            ; 4a9e: a0 00       ..
-update_enemies_state_loop
+check_enemies_state_loop
     lda enemies_state,y                                               ; 4aa0: b9 00 0c    ...
-    beq update_next_enemy_state                                       ; 4aa3: f0 4e       .N
-    bmi update_next_enemy_state                                       ; 4aa5: 30 4c       0L
+    beq check_next_enemy_state                                        ; 4aa3: f0 4e       .N
+    bmi check_next_enemy_state                                        ; 4aa5: 30 4c       0L
     ldx enemies_state + 5,y                                           ; 4aa7: be 05 0c    ...            ; enemy sprite number
     lda sprite_height_table,x                                         ; 4aaa: bd 3d 20    .=
     sta delta_x                                                       ; 4aad: 85 05       ..
@@ -12062,12 +12131,13 @@ update_enemies_state_loop
     sec                                                               ; 4ab1: 38          8
     sbc enemies_state + 1,y                                           ; 4ab2: f9 01 0c    ...
     cmp delta_x                                                       ; 4ab5: c5 05       ..
-    bcs update_next_enemy_state                                       ; 4ab7: b0 3a       .:
+    bcs check_next_enemy_state                                        ; 4ab7: b0 3a       .:
     lda temp_addr_high                                                ; 4ab9: a5 1e       ..
     sec                                                               ; 4abb: 38          8
     sbc enemies_state + 2,y                                           ; 4abc: f9 02 0c    ...
     cmp delta_x                                                       ; 4abf: c5 05       ..
-    bcs update_next_enemy_state                                       ; 4ac1: b0 30       .0
+    bcs check_next_enemy_state                                        ; 4ac1: b0 30       .0
+; enemy hit
     lda #0                                                            ; 4ac3: a9 00       ..
     sta enemies_state,y                                               ; 4ac5: 99 00 0c    ...
     dec number_of_enemies                                             ; 4ac8: c6 37       .7
@@ -12094,18 +12164,19 @@ update_enemies_state_loop
     lda #2                                                            ; 4aee: a9 02       ..
     jmp check_play_sound_a                                            ; 4af0: 4c 65 40    Le@
 
-update_next_enemy_state
+check_next_enemy_state
     tya                                                               ; 4af3: 98          .
     clc                                                               ; 4af4: 18          .
     adc #6                                                            ; 4af5: 69 06       i.
     tay                                                               ; 4af7: a8          .
-    bne update_enemies_state_loop                                     ; 4af8: d0 a6       ..
+    bne check_enemies_state_loop                                      ; 4af8: d0 a6       ..
 finished_updating
     lda #$ff                                                          ; 4afa: a9 ff       ..
     sta temp_counter                                                  ; 4afc: 85 3a       .:
 return25
     rts                                                               ; 4afe: 60          `
 
+; ***************************************************************************************
 check_return_key
     ldx #inkey_key_return                                             ; 4aff: a2 b6       ..
     jsr read_key                                                      ; 4b01: 20 54 49     TI
@@ -12191,6 +12262,7 @@ plot_updated_number
     lda #$20                                                          ; 4b8e: a9 20       .
     jmp oswrch                                                        ; 4b90: 4c ee ff    L..
 
+; ***************************************************************************************
 start_new_room
     tsx                                                               ; 4b93: ba          .
     stx stack_ptr                                                     ; 4b94: 86 36       .6
@@ -12234,6 +12306,7 @@ no_teleport_destination_found
     txa                                                               ; 4bec: 8a          .
     rts                                                               ; 4bed: 60          `
 
+; ***************************************************************************************
 change_room
     ldx stack_ptr                                                     ; 4bee: a6 36       .6
     txs                                                               ; 4bf0: 9a          .
@@ -12302,6 +12375,7 @@ skip2
 room_ready
     jmp start_new_room                                                ; 4c59: 4c 93 4b    L.K
 
+; ***************************************************************************************
 ; returns with carry clear if a closed door is near the player
 is_closed_door_near_player
     lda current_room_cache,y                                          ; 4c5c: b9 00 04    ...
@@ -12344,6 +12418,7 @@ no_door_found
     sec                                                               ; 4c96: 38          8
     rts                                                               ; 4c97: 60          `
 
+; ***************************************************************************************
 get_teleport_destination
     ldy room_definition_low,x                                         ; 4c98: bc 4b 39    .K9
     sty temp_addr_low                                                 ; 4c9b: 84 1d       ..
@@ -12363,6 +12438,8 @@ teleport_info_found
     tay                                                               ; 4cb1: a8          .
     rts                                                               ; 4cb2: 60          `
 
+; ***************************************************************************************
+; the program starts executing here
 entry_point
     jsr one_time_init                                                 ; 4cb3: 20 ae 50     .P
     lda #0                                                            ; 4cb6: a9 00       ..
@@ -12397,6 +12474,7 @@ title_and_game_loop
     lda #0                                                            ; 4cfa: a9 00       ..
     sta music_index                                                   ; 4cfc: 85 42       .B
     jsr update_highscores                                             ; 4cfe: 20 77 52     wR
+; ***************************************************************************************
 reset_rooms_and_goto_title
     jsr reset_rooms                                                   ; 4d01: 20 3b 50     ;P
     jmp title_and_game_loop                                           ; 4d04: 4c da 4c    L.L
@@ -12425,6 +12503,7 @@ attract_loop
     jsr press_space                                                   ; 4e11: 20 17 4e     .N
     jmp attract_loop                                                  ; 4e14: 4c 0d 4d    L.M
 
+; ***************************************************************************************
 press_space
     jsr print_following_string                                        ; 4e17: 20 4e 3e     N>
     !text $1f, $0a, $1f, "Press space to star", $80+'t'               ; 4e1a: 1f 0a 1f... ...
@@ -12451,6 +12530,7 @@ space_pressed
     pla                                                               ; 4e53: 68          h
     rts                                                               ; 4e54: 60          `
 
+; ***************************************************************************************
 wait_for_key
     lda #osbyte_clear_escape                                          ; 4e55: a9 7c       .|
     jsr osbyte                                                        ; 4e57: 20 f4 ff     ..
@@ -12463,6 +12543,7 @@ wait_for_key_loop
     bcs wait_for_key_loop                                             ; 4e73: b0 fb       ..
     jmp clear_play_area                                               ; 4e75: 4c e8 43    L.C
 
+; ***************************************************************************************
 check_for_key
     lda #osbyte_inkey                                                 ; 4e78: a9 81       ..
     ldx #0                                                            ; 4e7a: a2 00       ..
@@ -12474,6 +12555,7 @@ pull_and_reset
     pla                                                               ; 4e82: 68          h
     jmp reset_music_rooms_and_goto_title                              ; 4e83: 4c 07 4d    L.M
 
+; ***************************************************************************************
 show_title_and_play_game
     lda #0                                                            ; 4e86: a9 00       ..
     sta sound_duration                                                ; 4e88: 85 35       .5
@@ -12539,6 +12621,7 @@ end_of_game
     !text "Oh well, such is lif", $80+'e'                             ; 4f34: 4f 68 20... Oh
     rts                                                               ; 4f49: 60          `
 
+; ***************************************************************************************
 game_completed
     ldy #1                                                            ; 4f4a: a0 01       ..
     lda #$11                                                          ; 4f4c: a9 11       ..
@@ -12575,6 +12658,7 @@ destroyed_computer
     ldy #3                                                            ; 5006: a0 03       ..
     jmp add_to_score_loop                                             ; 5008: 4c cc 3f    L.?
 
+; ***************************************************************************************
 update_notes
     jsr get_channel_1_bytes_free                                      ; 500b: 20 32 50     2P
     cpx #0                                                            ; 500e: e0 00       ..
@@ -12597,12 +12681,14 @@ play_next_note
 return28
     rts                                                               ; 5031: 60          `
 
+; ***************************************************************************************
 get_channel_1_bytes_free
     lda #osbyte_read_adc_or_get_buffer_status                         ; 5032: a9 80       ..
     ldx #$fa                                                          ; 5034: a2 fa       ..
     ldy #$ff                                                          ; 5036: a0 ff       ..
     jmp osbyte                                                        ; 5038: 4c f4 ff    L..
 
+; ***************************************************************************************
 reset_rooms
     ldx #0                                                            ; 503b: a2 00       ..
     stx sprite_cell_height                                            ; 503d: 86 03       ..
@@ -12653,28 +12739,33 @@ reset_next_section_loop
 return29
     rts                                                               ; 5083: 60          `
 
+; ***************************************************************************************
 set_colour_one_white
     jsr print_following_string                                        ; 5084: 20 4e 3e     N>
     !text $13, 1, 7, 0, 0, $80+$00                                    ; 5087: 13 01 07... ...
     rts                                                               ; 508d: 60          `
 
+; ***************************************************************************************
 set_colour_one_black
     jsr print_following_string                                        ; 508e: 20 4e 3e     N>
     !text $13, 1, 0, 0, 0, $80+$00                                    ; 5091: 13 01 00... ...
     rts                                                               ; 5097: 60          `
 
+; ***************************************************************************************
 reset_current_text_colours
     jsr print_following_string                                        ; 5098: 20 4e 3e     N>
     !text $11, 1, $80+$11                                             ; 509b: 11 01 91    ...
     lda #$80                                                          ; 509e: a9 80       ..
     jmp oswrch                                                        ; 50a0: 4c ee ff    L..
 
+; ***************************************************************************************
 set_inverse_colours
     jsr print_following_string                                        ; 50a3: 20 4e 3e     N>
     !text $11, 0, $80+$11                                             ; 50a6: 11 00 91    ...
     lda #$81                                                          ; 50a9: a9 81       ..
     jmp oswrch                                                        ; 50ab: 4c ee ff    L..
 
+; ***************************************************************************************
 one_time_init
     ldy #$70                                                          ; 50ae: a0 70       .p
     ldx #2                                                            ; 50b0: a2 02       ..
@@ -12731,6 +12822,8 @@ music_pitch_table
     !byte $50, $64, $74, $80, $78, $74, $64, $64, $58, $64, $6c, $70  ; 5180: 50 64 74... Pdt
     !byte $6c, $64, $58, $50, $44, $50, $64, $74, $6c, $64, $50, $50  ; 518c: 6c 64 58... ldX
     !byte $6c, $64, $30, $64,   0                                     ; 5198: 6c 64 30... ld0
+; ***************************************************************************************
+; event routine for updating music
 event_routine
     cmp #4                                                            ; 519d: c9 04       ..
     bne return30                                                      ; 519f: d0 26       .&
@@ -12760,8 +12853,11 @@ reset_music
     sta music_index                                                   ; 51c8: 85 42       .B
     rts                                                               ; 51ca: 60          `
 
+; author's comment (unused)
     !text "....If God had meant us to look at other peoples code h"   ; 51cb: 2e 2e 2e... ...
     !text "e would have given us memory editors...."                  ; 5202: 65 20 77... e w
+
+; ***************************************************************************************
 no_highscore
     jsr print_following_string                                        ; 522a: 20 4e 3e     N>
     !text $1f, 3, 6, "Your feeble attempt didn't even make", $1f, 7   ; 522d: 1f 03 06... ...
@@ -12771,6 +12867,7 @@ no_highscore
 no_highscore_local
     jmp no_highscore                                                  ; 5274: 4c 2a 52    L*R
 
+; ***************************************************************************************
 update_highscores
     ldy #0                                                            ; 5277: a0 00       ..
     sty delta_x                                                       ; 5279: 84 05       ..
@@ -12884,6 +12981,7 @@ delete_pressed
     dec player_y                                                      ; 539b: c6 1b       ..
     jmp input_name_loop                                               ; 539d: 4c 4e 53    LNS
 
+; ***************************************************************************************
 compare_scores
     ldx #6                                                            ; 53a0: a2 06       ..
     ldy cell_y                                                        ; 53a2: a4 01       ..
@@ -12898,6 +12996,7 @@ compare_scores_loop
 return31
     rts                                                               ; 53b1: 60          `
 
+; ***************************************************************************************
 show_highscore_table
     ldy #0                                                            ; 53b2: a0 00       ..
     sty sprite_pixel_width_minus_one                                  ; 53b4: 84 02       ..
@@ -12952,6 +13051,7 @@ write_highscore_loop
     bne show_highscores_loop                                          ; 5414: d0 ae       ..
     rts                                                               ; 5416: 60          `
 
+; ***************************************************************************************
 ; High score table
 initial_highscore_table
     !text "                         "                                 ; 5417: 20 20 20...
@@ -12964,6 +13064,7 @@ initial_highscore_table
     !text "                         "                                 ; 54c6: 20 20 20...
     !text "                         "                                 ; 54df: 20 20 20...
     !text "                         "                                 ; 54f8: 20 20 20...
+; highscores
     !text "0000000"                                                   ; 5511: 30 30 30... 000
     !text "0000000"                                                   ; 5518: 30 30 30... 000
     !text "0000000"                                                   ; 551f: 30 30 30... 000
@@ -12975,45 +13076,6 @@ initial_highscore_table
     !text "0000000"                                                   ; 5549: 30 30 30... 000
     !text "0000000"                                                   ; 5550: 30 30 30... 000
 pydis_end
-
-; Automatically generated labels:
-;     c3bd3
-;     c3d8b
-;     c3e70
-;     c3e8c
-;     c3f5a
-;     c3fac
-;     c4033
-;     c4191
-;     c43e7
-;     c4430
-;     c44e3
-;     c452d
-;     c4564
-;     c45ae
-;     c45ff
-;     c464f
-;     c46cc
-;     c48b3
-;     c48db
-;     c4908
-;     c4924
-;     c4940
-;     c498a
-;     c49b8
-;     c4afe
-;     c4c95
-;     c4e4d
-;     c5031
-;     c5083
-;     c51c7
-;     c53b1
-;     l0f00
-;     l1000
-;     l1100
-;     l110c
-;     loop_c3ca6
-;     loop_c4cac
 !if ($80+$00) != $80 {
     !error "Assertion failed: $80+$00 == $80"
 }
