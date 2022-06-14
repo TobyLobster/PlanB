@@ -42,6 +42,7 @@ from commands import *
 import acorn
 import trace6502
 import config
+import sys
 
 config.indent_loops = False
 config.set_label_references(False)
@@ -55,6 +56,9 @@ memory_binary = config.memory_binary
 return_index = 0
 found_keys = {}
 return_array = {}
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 def include_terminator_fn(by):
     return True
