@@ -1,3 +1,5 @@
+# This script makes assembly code and assembles it into the game 'PlanB', byte for byte identical to the original.
+
 function create_inf {
     local name=$1
     local load=$2

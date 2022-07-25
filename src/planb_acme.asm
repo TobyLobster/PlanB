@@ -1,121 +1,123 @@
-osword_sound = $07
-room_count = $37
-inkey_key_q = $ef
-inkey_key_w = $de
-inkey_key_o = $c9
-inkey_key_p = $c8
-inkey_key_z = $9e
-inkey_key_x = $bd
-inkey_key_shift = $ff
-inkey_key_space = $9d
-inkey_key_return = $b6
-osword_read_clock = $01
-osword_write_clock = $02
-osbyte_read_text_cursor_pos = $86
-osbyte_vsync = $13
-osbyte_inkey = $81
-osbyte_enable_event = $0e
-osbyte_set_cursor_editing = $04
-osbyte_tape = $8c
-osbyte_clear_escape = $7c
-osbyte_read_write_escape_break_effect = $c8
-osbyte_read_adc_or_get_buffer_status = $80
-osword_envelope = $08
-osbyte_flush_buffer = $15
+; Constants
+inkey_key_o                             = 201
+inkey_key_p                             = 200
+inkey_key_q                             = 239
+inkey_key_return                        = 182
+inkey_key_shift                         = 255
+inkey_key_space                         = 157
+inkey_key_w                             = 222
+inkey_key_x                             = 189
+inkey_key_z                             = 158
+osbyte_clear_escape                     = 124
+osbyte_enable_event                     = 14
+osbyte_flush_buffer                     = 21
+osbyte_inkey                            = 129
+osbyte_read_adc_or_get_buffer_status    = 128
+osbyte_read_text_cursor_pos             = 134
+osbyte_read_write_escape_break_effect   = 200
+osbyte_set_cursor_editing               = 4
+osbyte_tape                             = 140
+osbyte_vsync                            = 19
+osword_envelope                         = 8
+osword_read_clock                       = 1
+osword_sound                            = 7
+osword_write_clock                      = 2
+room_count                              = 55
 
-cell_x = $00
-cell_y = $01
-sprite_pixel_width_minus_one = $02
-sprite_cell_height = $03
-delta_x = $05
-delta_y = $06
-room_decode_sprite = $07
-current_room_low = $08
-current_room_high = $09
-plot_strip_loop_counter = $0a
-temp_byte = $0b
-collision_map_byte_to_write = $0c
-current_room_index = $0d
-offset_to_start_of_computers = $0e
+; Memory locations
+cell_x                          = $00
+cell_y                          = $01
+sprite_pixel_width_minus_one    = $02
+sprite_cell_height              = $03
+delta_x                         = $05
+delta_y                         = $06
+room_decode_sprite              = $07
+current_room_low                = $08
+current_room_high               = $09
+plot_strip_loop_counter         = $0a
+temp_byte                       = $0b
+collision_map_byte_to_write     = $0c
+current_room_index              = $0d
+offset_to_start_of_computers    = $0e
 offset_to_start_of_collectibles = $0f
-current_room_header = $11
-room_decode_sprite_height = $13
-current_room_door_celly = $13
-room_decode_sprite_width = $14
-current_room_door_cellx = $14
-temp_sprite = $14
-room_decode_rect_width = $15
-current_room_door_info = $15
-temp_door_byte = $15
-temp_y = $16
-sprite_width_minus_one = $17
-sprite_height = $18
-number_of_dying_items = $19
-player_x = $1a
-player_y = $1b
-player_sprite = $1c
-temp_addr_low = $1d
-temp_addr_high = $1e
-number_of_arrows_in_flight = $1f
-arrow_loop_counter = $20
-temp_loop_counter = $21
-old_player_x = $22
-old_player_y = $23
-number_of_key0_held = $24
-number_of_key1_held = $25
-number_of_key2_held = $26
-number_of_key3_held = $27
-score_digits_0 = $28
-score_digits_1 = $29
-score_digits_2 = $2a
-score_digits_3 = $2b
-score_digits_4 = $2c
-score_digits_5 = $2d
-score_digits_6 = $2e
-print_addr_low = $2f
-print_addr_high = $30
-temp_slash_divisor = $31
-energy_bar_level = $32
-ammo_bar_level = $33
-temp_enemy_count = $34
-sound_duration = $35
-stack_ptr = $36
-number_of_enemies = $37
-rnd_rom_addr_low = $38
-rnd_rom_addr_high = $39
-temp_counter = $3a
-temp_store_y = $3b
-rnd_offset = $3c
-sprite_mask = $3d
-remember_x = $3e
-remember_y = $3f
-computer_bar_level = $40
-suppress_sound_flag = $41
-music_index = $42
-enter_next_room_horizontally = $43
-title_offset = $44
-half_length_of_room_title = $45
-os_escape_flag = $ff
-evntv = $0220
-current_room_cache = $0400
-dying_items = $0500
-arrow_slots = $0580
-highscore_table_names = $0600
-highscore_table_scores = $06fa
-enemies_state = $0c00
-clock = $0e00
-l0f00 = $0f00
-l1000 = $1000
-l1100 = $1100
-l110c = $110c
-address_to_overwrite = $5800
-energy_bar_screen_address = $58d0
-ammo_bar_screen_address = $5a10
-computer_bar_screen_address = $5b50
-osasci = $ffe3
-oswrch = $ffee
-osword = $fff1
-osbyte = $fff4
+current_room_header             = $11
+current_room_door_celly         = $13
+room_decode_sprite_height       = $13
+current_room_door_cellx         = $14
+room_decode_sprite_width        = $14
+temp_sprite                     = $14
+current_room_door_info          = $15
+room_decode_rect_width          = $15
+temp_door_byte                  = $15
+temp_y                          = $16
+sprite_width_minus_one          = $17
+sprite_height                   = $18
+number_of_dying_items           = $19
+player_x                        = $1a
+player_y                        = $1b
+player_sprite                   = $1c
+temp_addr_low                   = $1d
+temp_addr_high                  = $1e
+number_of_arrows_in_flight      = $1f
+arrow_loop_counter              = $20
+temp_loop_counter               = $21
+old_player_x                    = $22
+old_player_y                    = $23
+number_of_key0_held             = $24
+number_of_key1_held             = $25
+number_of_key2_held             = $26
+number_of_key3_held             = $27
+score_digits_0                  = $28
+score_digits_1                  = $29
+score_digits_2                  = $2a
+score_digits_3                  = $2b
+score_digits_4                  = $2c
+score_digits_5                  = $2d
+score_digits_6                  = $2e
+print_addr_low                  = $2f
+print_addr_high                 = $30
+temp_slash_divisor              = $31
+energy_bar_level                = $32
+ammo_bar_level                  = $33
+temp_enemy_count                = $34
+sound_duration                  = $35
+stack_ptr                       = $36
+number_of_enemies               = $37
+rnd_rom_addr_low                = $38
+rnd_rom_addr_high               = $39
+temp_counter                    = $3a
+temp_store_y                    = $3b
+rnd_offset                      = $3c
+sprite_mask                     = $3d
+remember_x                      = $3e
+remember_y                      = $3f
+computer_bar_level              = $40
+suppress_sound_flag             = $41
+music_index                     = $42
+enter_next_room_horizontally    = $43
+title_offset                    = $44
+half_length_of_room_title       = $45
+os_escape_flag                  = $ff
+evntv                           = $0220
+current_room_cache              = $0400
+dying_items                     = $0500
+arrow_slots                     = $0580
+highscore_table_names           = $0600
+highscore_table_scores          = $06fa
+enemies_state                   = $0c00
+clock                           = $0e00
+l0f00                           = $0f00
+l1000                           = $1000
+l1100                           = $1100
+l110c                           = $110c
+address_to_overwrite            = $5800
+energy_bar_screen_address       = $58d0
+ammo_bar_screen_address         = $5a10
+computer_bar_screen_address     = $5b50
+osasci                          = $ffe3
+oswrch                          = $ffee
+osword                          = $fff1
+osbyte                          = $fff4
 
     * = $1210
 
@@ -9916,13 +9918,13 @@ move_enemy_if_possible
     sta enemies_state + 2,y                                           ; 3c9e: 99 02 0c    ...
     ldx delta_y                                                       ; 3ca1: a6 06       ..
     dec enemies_state,x                                               ; 3ca3: de 00 0c    ...
-loop_c3ca6
+done_moving_enemy
     jmp draw_enemy_and_update_animation_2                             ; 3ca6: 4c 0f 3c    L.<
 
 not_suitable_for_moving_enemy
     lda #$20                                                          ; 3ca9: a9 20       .
     sta enemies_state,y                                               ; 3cab: 99 00 0c    ...
-    bne loop_c3ca6                                                    ; 3cae: d0 f6       ..             ; ALWAYS branch
+    bne done_moving_enemy                                             ; 3cae: d0 f6       ..             ; ALWAYS branch
 
 set_random_new_direction
     jsr get_random_byte                                               ; 3cb0: 20 76 3b     v;
@@ -10247,6 +10249,7 @@ show_keys_and_zero_score
     !text "COMPUTER"                                                  ; 3ed6: 43 4f 4d... COM
     !byte $1f, $0f,   0, $30, $0a,   8, $30, $0a,   8, $30, $0a,   8  ; 3ede: 1f 0f 00... ...
     !byte $b0                                                         ; 3eea: b0          .
+
 print_keys
     lda #0                                                            ; 3eeb: a9 00       ..
     sta print_addr_low                                                ; 3eed: 85 2f       ./
@@ -10471,6 +10474,7 @@ check_paws
     jsr set_inverse_colours                                           ; 403b: 20 a3 50     .P
     jsr print_following_string                                        ; 403e: 20 4e 3e     N>
     !text $1f, " ", 3, "  PAWS ", $80+' '                             ; 4041: 1f 20 03... . .
+
 paws_loop
     ldx #inkey_key_p                                                  ; 404c: a2 c8       ..
     jsr read_key                                                      ; 404e: 20 54 49     TI
@@ -10478,6 +10482,7 @@ paws_loop
     jsr reset_current_text_colours                                    ; 4053: 20 98 50     .P
     jsr print_following_string                                        ; 4056: 20 4e 3e     N>
     !text $1f, " ", 3, "       ", $80+' '                             ; 4059: 1f 20 03... . .
+
     rts                                                               ; 4064: 60          `
 
 ; ***************************************************************************************
@@ -10797,6 +10802,7 @@ plot_room_title
     sty title_offset                                                  ; 4277: 84 44       .D
     jsr print_following_string                                        ; 4279: 20 4e 3e     N>
     !text $1f, 0, $80+$05                                             ; 427c: 1f 00 85    ...
+
     ldy title_offset                                                  ; 427f: a4 44       .D
     ldx #0                                                            ; 4281: a2 00       ..
     lda current_room_cache,y                                          ; 4283: b9 00 04    ...
@@ -11614,7 +11620,7 @@ check_for_collisions
     sta collision_map_byte_to_write                                   ; 4755: 85 0c       ..
     ldy offset_to_start_of_collectibles                               ; 4757: a4 0f       ..
 check_collectibles_collision_loop
-    lda current_room_cache,y                                          ; 4759: b9 00 04    ...            ; ALWAYS branch
+    lda current_room_cache,y                                          ; 4759: b9 00 04    ...
     beq check_keys_collision                                          ; 475c: f0 64       .d
     bpl check_next_collectible                                        ; 475e: 10 5d       .]
     lda current_room_cache + 1,y                                      ; 4760: b9 01 04    ...
@@ -11623,7 +11629,7 @@ check_collectibles_collision_loop
     cmp #3                                                            ; 4766: c9 03       ..
     bcc overlaps_in_x                                                 ; 4768: 90 04       ..
     cmp #$ff                                                          ; 476a: c9 ff       ..
-    bne check_next_collectible                                        ; 476c: d0 4f       .O
+    bne check_next_collectible                                        ; 476c: d0 4f       .O             ; ALWAYS branch
 overlaps_in_x
     lda current_room_cache + 2,y                                      ; 476e: b9 02 04    ...
     sec                                                               ; 4771: 38          8
@@ -12430,10 +12436,10 @@ get_teleport_destination
     cpx #0                                                            ; 4ca7: e0 00       ..
     beq teleport_info_found                                           ; 4ca9: f0 06       ..
     clc                                                               ; 4cab: 18          .
-loop_c4cac
+find_teleport_info_loop
     adc #5                                                            ; 4cac: 69 05       i.
     dex                                                               ; 4cae: ca          .
-    bne loop_c4cac                                                    ; 4caf: d0 fb       ..
+    bne find_teleport_info_loop                                       ; 4caf: d0 fb       ..
 teleport_info_found
     tay                                                               ; 4cb1: a8          .
     rts                                                               ; 4cb2: 60          `
@@ -12493,12 +12499,15 @@ attract_loop
     !text $1f, $0a, $17, "Return.....Open door", $1f, 6, $1a, "Q.."   ; 4d90: 1f 0a 17... ...
     !text "enable  Sound  disable..W", $1f, 6, $1c, "O..stop    Pa"   ; 4dad: 65 6e 61... ena
     !text "use    start..", $80+'P'                                   ; 4dd6: 75 73 65... use
+
+
     jsr press_space                                                   ; 4de5: 20 17 4e     .N
     jsr clear_play_area                                               ; 4de8: 20 e8 43     .C
     lda #0                                                            ; 4deb: a9 00       ..
     sta delta_x                                                       ; 4ded: 85 05       ..
     jsr print_following_string                                        ; 4def: 20 4e 3e     N>
     !text $1f, 7, 8, "T O P  T E N  S C O R E ", $80+'S'              ; 4df2: 1f 07 08... ...
+
     jsr show_highscore_table                                          ; 4e0e: 20 b2 53     .S
     jsr press_space                                                   ; 4e11: 20 17 4e     .N
     jmp attract_loop                                                  ; 4e14: 4c 0d 4d    L.M
@@ -12507,6 +12516,7 @@ attract_loop
 press_space
     jsr print_following_string                                        ; 4e17: 20 4e 3e     N>
     !text $1f, $0a, $1f, "Press space to star", $80+'t'               ; 4e1a: 1f 0a 1f... ...
+
     ldy #$64                                                          ; 4e31: a0 64       .d
     sty temp_byte                                                     ; 4e33: 84 0b       ..
 wait_for_space_loop
@@ -12538,6 +12548,7 @@ wait_for_key
     bcc wait_for_key                                                  ; 4e5d: 90 f6       ..
     jsr print_following_string                                        ; 4e5f: 20 4e 3e     N>
     !text $1f, $0e, $1f, "Press a ke", $80+'y'                        ; 4e62: 1f 0e 1f... ...
+
 wait_for_key_loop
     jsr check_for_key                                                 ; 4e70: 20 78 4e     xN
     bcs wait_for_key_loop                                             ; 4e73: b0 fb       ..
@@ -12619,6 +12630,7 @@ end_of_game
     jsr print_following_string                                        ; 4f0e: 20 4e 3e     N>
     !text $1f, 5, $0e, "You appear to have snuffed it", $1f, 9, $10   ; 4f11: 1f 05 0e... ...
     !text "Oh well, such is lif", $80+'e'                             ; 4f34: 4f 68 20... Oh
+
     rts                                                               ; 4f49: 60          `
 
 ; ***************************************************************************************
@@ -12642,17 +12654,20 @@ wait_for_sounds_to_finish_loop
     jsr clear_play_area                                               ; 4f6a: 20 e8 43     .C
     jsr print_following_string                                        ; 4f6d: 20 4e 3e     N>
     !text $1f, 5, $0e, "You have escaped the compute", $80+'r'        ; 4f70: 1f 05 0e... ...
+
     lda computer_bar_level                                            ; 4f90: a5 40       .@
     beq destroyed_computer                                            ; 4f92: f0 3e       .>
     jsr print_following_string                                        ; 4f94: 20 4e 3e     N>
     !text $1f, 6, $10, "but you haven't destroyed it", $1f, 8, $13    ; 4f97: 1f 06 10... ...
     !text "You'll have to try agai", $80+'n'                          ; 4fb9: 59 6f 75... You
+
     rts                                                               ; 4fd1: 60          `
 
 destroyed_computer
     jsr print_following_string                                        ; 4fd2: 20 4e 3e     N>
     !text $1f, 8, $10, "and rendered it useless", $1f, $0b, $13, "B"  ; 4fd5: 1f 08 10... ...
     !text "onus 5,000 point", $80+'s'                                 ; 4ff3: 6f 6e 75... onu
+
 ; add 5000 to score
     lda #5                                                            ; 5004: a9 05       ..
     ldy #3                                                            ; 5006: a0 03       ..
@@ -12743,18 +12758,21 @@ return29
 set_colour_one_white
     jsr print_following_string                                        ; 5084: 20 4e 3e     N>
     !text $13, 1, 7, 0, 0, $80+$00                                    ; 5087: 13 01 07... ...
+
     rts                                                               ; 508d: 60          `
 
 ; ***************************************************************************************
 set_colour_one_black
     jsr print_following_string                                        ; 508e: 20 4e 3e     N>
     !text $13, 1, 0, 0, 0, $80+$00                                    ; 5091: 13 01 00... ...
+
     rts                                                               ; 5097: 60          `
 
 ; ***************************************************************************************
 reset_current_text_colours
     jsr print_following_string                                        ; 5098: 20 4e 3e     N>
     !text $11, 1, $80+$11                                             ; 509b: 11 01 91    ...
+
     lda #$80                                                          ; 509e: a9 80       ..
     jmp oswrch                                                        ; 50a0: 4c ee ff    L..
 
@@ -12762,6 +12780,7 @@ reset_current_text_colours
 set_inverse_colours
     jsr print_following_string                                        ; 50a3: 20 4e 3e     N>
     !text $11, 0, $80+$11                                             ; 50a6: 11 00 91    ...
+
     lda #$81                                                          ; 50a9: a9 81       ..
     jmp oswrch                                                        ; 50ab: 4c ee ff    L..
 
@@ -12822,6 +12841,7 @@ music_pitch_table
     !byte $50, $64, $74, $80, $78, $74, $64, $64, $58, $64, $6c, $70  ; 5180: 50 64 74... Pdt
     !byte $6c, $64, $58, $50, $44, $50, $64, $74, $6c, $64, $50, $50  ; 518c: 6c 64 58... ldX
     !byte $6c, $64, $30, $64,   0                                     ; 5198: 6c 64 30... ld0
+
 ; ***************************************************************************************
 ; event routine for updating music
 event_routine
@@ -12862,6 +12882,7 @@ no_highscore
     jsr print_following_string                                        ; 522a: 20 4e 3e     N>
     !text $1f, 3, 6, "Your feeble attempt didn't even make", $1f, 7   ; 522d: 1f 03 06... ...
     !text 8, "it into the top ten score", $80+'s'                     ; 5256: 08 69 74... .it
+
     jmp wait_for_key                                                  ; 5271: 4c 55 4e    LUN
 
 no_highscore_local
@@ -12920,10 +12941,12 @@ made_space_in_highscore_table
     jsr print_following_string                                        ; 52d0: 20 4e 3e     N>
     !text $1f, 2, 6, "Your score is good enough to go into", $1f, 2   ; 52d3: 1f 02 06... ...
     !text 8, "the top ten, please enter your name", $80+':'           ; 52fc: 08 74 68... .th
+
     jsr set_inverse_colours                                           ; 5321: 20 a3 50     .P
 ; show cursor and start to position the cursor
     jsr print_following_string                                        ; 5324: 20 4e 3e     N>
     !text $17, 1, 1, 0, 0, 0, 0, 0, 0, 0, $1f, $80+$03                ; 5327: 17 01 01... ...
+
     lda #$0a                                                          ; 5333: a9 0a       ..
     sec                                                               ; 5335: 38          8
     sbc delta_x                                                       ; 5336: e5 05       ..
@@ -12948,6 +12971,7 @@ input_name_loop
 return_key_pressed
     jsr print_following_string                                        ; 5357: 20 4e 3e     N>
     !text $17, 1, 0, 0, 0, 0, 0, 0, 0, $80+$00                        ; 535a: 17 01 00... ...
+
     jmp reset_current_text_colours                                    ; 5364: 4c 98 50    L.P
 
 input_name_key_pressed
@@ -13006,6 +13030,7 @@ show_highscore_table
     sty delta_y                                                       ; 53bc: 84 06       ..
     jsr print_following_string                                        ; 53be: 20 4e 3e     N>
     !text $1f, 0, $80+$0b                                             ; 53c1: 1f 00 8b    ...
+
 show_highscores_loop
     lda delta_y                                                       ; 53c4: a5 06       ..
     cmp delta_x                                                       ; 53c6: c5 05       ..
@@ -13020,10 +13045,12 @@ skip_invert_colours
     beq skip_leading_space                                            ; 53d6: f0 04       ..
     jsr print_following_string                                        ; 53d8: 20 4e 3e     N>
     !text $80+' '                                                     ; 53db: a0          .
+
 skip_leading_space
     jsr print_decimal_number                                          ; 53dc: 20 71 3e     q>
     jsr print_following_string                                        ; 53df: 20 4e 3e     N>
     !text $80+' '                                                     ; 53e2: a0          .
+
     ldy sprite_pixel_width_minus_one                                  ; 53e3: a4 02       ..
     ldx #$19                                                          ; 53e5: a2 19       ..
 write_highscore_name_loop
@@ -13035,6 +13062,7 @@ write_highscore_name_loop
     sty sprite_pixel_width_minus_one                                  ; 53f1: 84 02       ..
     jsr print_following_string                                        ; 53f3: 20 4e 3e     N>
     !text " ", $80+' '                                                ; 53f6: 20 a0        .
+
     ldy sprite_cell_height                                            ; 53f8: a4 03       ..
     ldx #7                                                            ; 53fa: a2 07       ..
 write_highscore_loop
@@ -13046,6 +13074,7 @@ write_highscore_loop
     sty sprite_cell_height                                            ; 5406: 84 03       ..
     jsr print_following_string                                        ; 5408: 20 4e 3e     N>
     !text "   ", $80+$0d                                              ; 540b: 20 20 20...
+
     jsr reset_current_text_colours                                    ; 540f: 20 98 50     .P
     dec delta_y                                                       ; 5412: c6 06       ..
     bne show_highscores_loop                                          ; 5414: d0 ae       ..
@@ -13076,6 +13105,12 @@ initial_highscore_table
     !text "0000000"                                                   ; 5549: 30 30 30... 000
     !text "0000000"                                                   ; 5550: 30 30 30... 000
 pydis_end
+
+; Automatically generated labels:
+;     l0f00
+;     l1000
+;     l1100
+;     l110c
 !if ($80+$00) != $80 {
     !error "Assertion failed: $80+$00 == $80"
 }
