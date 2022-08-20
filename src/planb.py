@@ -112,6 +112,8 @@ load(0x1210, "ORIGINAL_DISK/PLANB", "6502")
 
 acorn.mos_labels()
 acorn.hardware_bbc()
+no_automatic_comment(0x533b)
+
 constant(0x07, "osword_sound")
 
 sprite_widths = [
@@ -1448,8 +1450,6 @@ label(0x52c9, "made_space_in_highscore_table")
 comment(0x5324, "show cursor and start to position the cursor")
 comment(0x533b, "finish positioning the cursor by setting the Y coordinate", True)
 comment(0x533e, "input name routine")
-comment(0x5340, "clear escape condition", True)
-comment(0x5347, "flush keyboard buffer", True)
 label(0x534e, "input_name_loop")
 comment(0x5353, "check for ESCAPE key")
 comment(0x5357, "hide cursor")
